@@ -62,16 +62,12 @@ function setHeaders({ contentType, authToken }) {
 function handleError(error) {
   const { response = {} } = error || {};
 
-  const { MESSAGE } = response.data || {};
-console.log("Error",error)
- 
 
-  return Promise.reject(error);
+  return Promise.reject(response.data?response.data:{});
 }
 const fetchUrl = ({ type, url, data = {}, config = {} }) => {
   setHeaders(config);
   const handler = ACTION_HANDLERS[type.toUpperCase()];
-  console.log("Handlr",handler)
   return handler(url, data, config.headers)
     .then((response) => Promise.resolve(response.data))
     .catch(handleError);

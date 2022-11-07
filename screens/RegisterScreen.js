@@ -22,12 +22,12 @@ const registrationValidationSchema = yup.object().shape({
     .required("Email Address is required."),
   password: yup
     .string()
-    .min(8, ({ min }) => `Password must be at least ${min} characters`)
+    // .min(8, ({ min }) => `Password must be at least ${min} characters`)
     .required("Password is required")
-    .matches(/[0-9]/, "Password requires a number")
-    .matches(/[a-z]/, "Password requires a lowercase letter")
-    .matches(/[A-Z]/, "Password requires an uppercase letter")
-    .matches(/[^\w]/, "Password requires a symbol"),
+    .matches(/[0-9]/, "Password requires a number"),
+  // .matches(/[a-z]/, "Password requires a lowercase letter")
+  // .matches(/[A-Z]/, "Password requires an uppercase letter")
+  // .matches(/[^\w]/, "Password requires a symbol"),
 
   confirmPassword: yup
     .string()
@@ -36,16 +36,20 @@ const registrationValidationSchema = yup.object().shape({
 });
 
 const RegisterScreen = ({ navigation }) => {
-  const register = async () => {
+  const register = async (data, setFieldError, setSubmitting) => {
     await commonApi({
       action: "register",
-      data: {},
-    }).then(({ DATA = {} }) => {
-      console.log(DATA);
-      navigation.navigate("VerifyScreen", {
-        screen: "VerifyScreen",
+      data: data,
+    })
+      .then(({ DATA = {} }) => {
+        navigation.navigate("VerifyScreen", {
+          screen: "VerifyScreen",
+        });
+      })
+      .catch((error) => {
+        setFieldError(error.DATA, error.MESSAGE);
+        setSubmitting(true);
       });
-    });
   };
 
   return (
@@ -67,9 +71,16 @@ const RegisterScreen = ({ navigation }) => {
           password: "",
           confirmPassword: "",
         }}
+        validateOnBlur={true}
+        validateOnChange={true}
         validateOnMount={true}
-        onSubmit={(values, actions) => {
-          if (values.firstName) actions.resetForm();
+        onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
+          let { confirmPassword, ...formValue } = values;
+          formValue.phone = {
+            countryCode: "+1",
+            phone: formValue.phone,
+          };
+          register(formValue, setFieldError, setSubmitting);
         }}
         validationSchema={registrationValidationSchema}
       >
@@ -152,11 +163,9 @@ const RegisterScreen = ({ navigation }) => {
             <Text>Agree to terms and conditions</Text>
 
             <View style={styles.buttons}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={props.handleSubmit}>
                 <View style={styles.signup}>
-                  <Text style={styles.signupText} onPress={props.handleSubmit}>
-                    Create Account
-                  </Text>
+                  <Text style={styles.signupText}>Create Account</Text>
                 </View>
               </TouchableOpacity>
 
