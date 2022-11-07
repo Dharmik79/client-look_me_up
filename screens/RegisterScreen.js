@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,11 +8,35 @@ import {
   Button,
   TextInput,
 } from "react-native";
+import * as yup from "yup";
+import { Formik } from "formik";
 import commonApi from "../api/common";
+
+const registrationValidationSchema = yup.object().shape({
+  firstName: yup.string().required("FirstName is required"),
+  lastName: yup.string().required("Last Name is required"),
+  phone: yup.string().matches(/^[0-9]{10}$/, "Phone number is not valid"),
+  email: yup
+    .string()
+    .email("Please Enter the valid Email")
+    .required("Email Address is required."),
+  password: yup
+    .string()
+    .min(8, ({ min }) => `Password must be at least ${min} characters`)
+    .required("Password is required")
+    .matches(/[0-9]/, "Password requires a number")
+    .matches(/[a-z]/, "Password requires a lowercase letter")
+    .matches(/[A-Z]/, "Password requires an uppercase letter")
+    .matches(/[^\w]/, "Password requires a symbol"),
+
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Must match password field value")
+    .required("Confirm Password is Required"),
+});
 
 const RegisterScreen = ({ navigation }) => {
   const register = async () => {
-    console.log("Clicked")
     await commonApi({
       action: "register",
       data: {},
@@ -34,46 +58,124 @@ const RegisterScreen = ({ navigation }) => {
           source={require("../assets/create_account.png")}
         />
       </View>
-      <View style={styles.body}>
-        <Text style={{ marginBottom: 5 }}>Full Name</Text>
-        <TextInput style={styles.input} keyboardType="default" />
-        <Text style={styles.errors}>Name cannot be left empty</Text>
-        <Text style={{ marginBottom: 5 }}>Mobile Number</Text>
-        <TextInput style={styles.input} keyboardType="numeric" />
-        <Text style={styles.errors}>Mobile Number already registered</Text>
-        <Text style={{ marginBottom: 5 }}>Email</Text>
-        <TextInput style={styles.input} keyboardType="default" />
-        <Text style={styles.errors}>Email already exists</Text>
-        <Text style={{ marginBottom: 5 }}>Password</Text>
-        <TextInput style={styles.input} keyboardType="default" />
-        <Text style={styles.errors}>Passwords dont match</Text>
-        <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
-        <TextInput style={styles.input} keyboardType="default" />
-        <Text style={styles.errors}>Passwords dont match</Text>
+      <Formik
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          phone: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
+        validateOnMount={true}
+        onSubmit={(values, actions) => {
+          if (values.firstName) actions.resetForm();
+        }}
+        validationSchema={registrationValidationSchema}
+      >
+        {(props) => (
+          <View style={styles.body}>
+            <Text style={{ marginBottom: 5 }}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="default"
+              onChangeText={props.handleChange("firstName")}
+              value={props.values.firstName}
+              onBlur={props.handleBlur("firstName")}
+            />
+            {props.errors.firstName && props.touched.firstName && (
+              <Text style={styles.errors}>{props.errors.firstName}</Text>
+            )}
+            <Text style={{ marginBottom: 5 }}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="default"
+              onChangeText={props.handleChange("lastName")}
+              value={props.values.lastName}
+              onBlur={props.handleBlur("lastName")}
+            />
+            {props.errors.lastName && props.touched.lastName && (
+              <Text style={styles.errors}>{props.errors.lastName}</Text>
+            )}
 
-        <Text>Agree to terms and conditions</Text>
+            <Text style={{ marginBottom: 5 }}>Mobile Number</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              onChangeText={props.handleChange("phone")}
+              value={props.values.phone}
+              onBlur={props.handleBlur("phone")}
+              maxLength={10}
+            />
+            {props.errors.phone && props.touched.phone && (
+              <Text style={styles.errors}>{props.errors.phone}</Text>
+            )}
 
-        <View style={styles.buttons}>
-          <TouchableOpacity>
-            <View style={styles.signup}>
-              <Text style={styles.signupText} onPress={() => register()}>
-                Create Account
+            <Text style={{ marginBottom: 5 }}>Email</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="default"
+              onChangeText={props.handleChange("email")}
+              value={props.values.email}
+              onBlur={props.handleBlur("email")}
+            />
+            {props.errors.email && props.touched.email && (
+              <Text style={styles.errors}>{props.errors.email}</Text>
+            )}
+
+            <Text style={{ marginBottom: 5 }}>Password</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="default"
+              onChangeText={props.handleChange("password")}
+              value={props.values.password}
+              onBlur={props.handleBlur("password")}
+              secureTextEntry
+            />
+            {props.errors.password && props.touched.password && (
+              <Text style={styles.errors}>{props.errors.password}</Text>
+            )}
+
+            <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="default"
+              onChangeText={props.handleChange("confirmPassword")}
+              value={props.values.confirmPassword}
+              onBlur={props.handleBlur("confirmPassword")}
+              secureTextEntry
+            />
+            {props.errors.confirmPassword && props.touched.confirmPassword && (
+              <Text style={styles.errors}>{props.errors.confirmPassword}</Text>
+            )}
+
+            <Text>Agree to terms and conditions</Text>
+
+            <View style={styles.buttons}>
+              <TouchableOpacity>
+                <View style={styles.signup}>
+                  <Text style={styles.signupText} onPress={props.handleSubmit}>
+                    Create Account
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              {/* <StatusBar style="auto" /> */}
+              <Text>Already have an account?</Text>
+              <Text
+                style={{ color: "#3491ff" }}
+                onPress={() =>
+                  navigation.navigate("LoginScreen", {
+                    screen: "LoginScreen",
+                  })
+                }
+              >
+                Sign In
               </Text>
             </View>
-          </TouchableOpacity>
-
-          {/* <StatusBar style="auto" /> */}
-          <Text>Already have an account?</Text>
-          <Text
-            style={{ color: "#3491ff" }}
-            onPress={() =>
-              navigation.navigate("LoginScreen", { screen: "LoginScreen" })
-            }
-          >
-            Sign In
-          </Text>
-        </View>
-      </View>
+          </View>
+        )}
+      </Formik>
     </View>
   );
 };
