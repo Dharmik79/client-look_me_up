@@ -8,5 +8,9 @@ const apiList = {
     url: () => "auth/login",
     method: "post"
   },
+  verifyEmailOTP:{
+    url:()=>"auth/verify-email",
+    method:"put"
+  }
 };
 export default apiList;

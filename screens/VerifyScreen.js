@@ -8,9 +8,30 @@ import {
   Button,
   TextInput,
 } from "react-native";
+import * as yup from "yup";
+import { Formik } from "formik";
+import commonApi from "../api/common";
+
+const loginValidationSchema = yup.object().shape({
+  OTP: yup.string().required("OTP is required"),
+});
 
 const VerifyScreen = ({ navigation }) => {
-   let email=navigation.getParam("email")
+  let email = navigation.getParam("email");
+  const verify = async (data, setFieldError, setSubmitting) => {
+    await commonApi({
+      action: "verifyEmailOTP",
+      data: { email: email, OTP: data.OTP },
+    })
+      .then(({ DATA = {} }) => {
+        console.log("Home Screen Navigation");
+      })
+      .catch((error) => {
+       
+        setFieldError("OTP", error.MESSAGE);
+        setSubmitting(true);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -20,30 +41,51 @@ const VerifyScreen = ({ navigation }) => {
           source={require("../assets/verify_account.png")}
         />
       </View>
-     
-      <View style={styles.body}>
-        <Text style={{ marginBottom: 5 }}>
-          Enter 6 digit OTP send on mobile
-        </Text>
-        <TextInput style={styles.input} keyboardType="default" maxLength={6} />
-
-        <View style={styles.buttons}>
-          <TouchableOpacity>
-            <View style={styles.done} >
-              <Text style={styles.doneText}>Done</Text>
+      <Formik
+        initialValues={{
+          OTP: "",
+        }}
+        validateOnBlur={true}
+        validateOnChange={true}
+        validateOnMount={true}
+        onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
+          verify(values, setFieldError, setSubmitting);
+        }}
+        validationSchema={loginValidationSchema}
+      >
+        {(props) => (
+          <View style={styles.body}>
+            <Text style={{ marginBottom: 5 }}>
+              Enter 6 digit OTP send on mobile
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              maxLength={6}
+              onChangeText={props.handleChange("OTP")}
+              value={props.values.OTP}
+              onBlur={props.handleBlur("OTP")}
+            />
+            {props.errors.OTP && props.touched.OTP && (
+              <Text style={styles.errors}>{props.errors.OTP}</Text>
+            )}
+            <View style={styles.buttons}>
+              <TouchableOpacity onPress={props.handleSubmit}>
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>SUBMIT</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterScreen")}
+              >
+                <View style={styles.cancel}>
+                  <Text style={styles.cancelText}>Cancel</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("RegisterScreen")
-            }
-          >
-            <View style={styles.cancel}>
-              <Text style={styles.cancelText}>Cancel</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+          </View>
+        )}
+      </Formik>
     </View>
   );
 };
@@ -141,6 +183,11 @@ const styles = StyleSheet.create({
   cancelText: {
     color: "#ffffff",
     fontSize: 16,
+  },
+  errors: {
+    // marginTop: 5,
+    marginBottom: 5,
+    color: "red",
   },
 });
 

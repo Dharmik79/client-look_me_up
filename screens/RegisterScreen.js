@@ -42,7 +42,7 @@ const RegisterScreen = ({ navigation }) => {
       data: data,
     })
       .then(({ DATA = {} }) => {
-        navigation.navigate("VerifyScreen");
+        navigation.navigate("VerifyScreen",{email:data.email});
       })
       .catch((error) => {
         setFieldError(error.DATA, error.MESSAGE);
