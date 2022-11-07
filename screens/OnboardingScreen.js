@@ -13,10 +13,10 @@ const OnboardingScreen = ({navigation}) => {
           </View>
           {/* <TouchableOpacity>  */}
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.login} onPress={() => navigation.navigate('RegisterScreen', { screen: 'RegisterScreen' })}>
+            <TouchableOpacity style={styles.login} onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={styles.loginText}>Join Now</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.signup} onPress={() => navigation.navigate('LoginScreen', { screen: 'LoginScreen' })}>
+            <TouchableOpacity style={styles.signup} onPress={() => navigation.navigate('LoginScreen')}>
               <Text style={styles.signupText}>Sign In</Text>
             </TouchableOpacity>
             {/* <StatusBar style="auto" /> */}

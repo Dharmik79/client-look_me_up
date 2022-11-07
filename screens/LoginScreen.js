@@ -26,9 +26,13 @@ const LoginScreen = ({ navigation }) => {
       data: data,
     })
       .then(({ DATA = {} }) => {
-        navigation.navigate("VerifyScreen", {
-          screen: "VerifyScreen",
-        });
+        if (!DATA.isEmailVerified) {
+          navigation.navigate("VerifyScreen", {
+            email: data.email,
+          });
+        } else {
+          console.log("DOne");
+        }
       })
       .catch((error) => {
         setFieldError(error.DATA, error.MESSAGE);
@@ -95,11 +99,7 @@ const LoginScreen = ({ navigation }) => {
               <Text>Don't have an account?</Text>
               <Text
                 style={{ color: "#3491ff" }}
-                onPress={() =>
-                  navigation.navigate("RegisterScreen", {
-                    screen: "RegisterScreen",
-                  })
-                }
+                onPress={() => navigation.navigate("RegisterScreen")}
               >
                 Sign Up
               </Text>
@@ -119,9 +119,7 @@ const LoginScreen = ({ navigation }) => {
         <Text>Don't have an account?</Text>
         <Text
           style={{ color: "#3491ff" }}
-          onPress={() =>
-            navigation.navigate("RegisterScreen", { screen: "RegisterScreen" })
-          }
+          onPress={() => navigation.navigate("RegisterScreen")}
         >
           Sign Up
         </Text>

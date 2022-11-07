@@ -42,9 +42,7 @@ const RegisterScreen = ({ navigation }) => {
       data: data,
     })
       .then(({ DATA = {} }) => {
-        navigation.navigate("VerifyScreen", {
-          screen: "VerifyScreen",
-        });
+        navigation.navigate("VerifyScreen");
       })
       .catch((error) => {
         setFieldError(error.DATA, error.MESSAGE);
@@ -174,9 +172,7 @@ const RegisterScreen = ({ navigation }) => {
               <Text
                 style={{ color: "#3491ff" }}
                 onPress={() =>
-                  navigation.navigate("LoginScreen", {
-                    screen: "LoginScreen",
-                  })
+                  navigation.navigate("LoginScreen")
                 }
               >
                 Sign In

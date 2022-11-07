@@ -1,32 +1,16 @@
-import React from 'react'
-import {View, Text} from 'react-native'
+import React from "react";
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import OnboardingScreen from '../screens/OnboardingScreen';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
 
+import HomeScreen from "../screens/HomeScreen";
 
+const screens = {
+  HomeScreen: {
+    screen: HomeScreen,
+  },
+};
 
-const Stack = createNativeStackNavigator();
+const AppStack = createStackNavigator(screens);
 
-const AppStack = () => {
-    return(
-        <Stack.Navigator>
-        {/* <Stack.Screen 
-        // component={LoginScreen} 
-        component={OnboardingScreen} 
-        name="OnboardingScreen" 
-        options={{headerShown:false}}
-        /> */}
-        <Stack.Screen 
-        component={HomeScreen} 
-        name="HomeScreen" 
-        options={{headerShown:false}}
-        />
-      </Stack.Navigator>
-    )
-}
-
-export default AppStack
+export default createAppContainer(AppStack);
