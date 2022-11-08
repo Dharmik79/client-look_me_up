@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  AsyncStorage
 } from "react-native";
+// import {AsyncStorage} from "react-native-community/async-storage"
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
@@ -25,12 +27,18 @@ const LoginScreen = ({ navigation }) => {
       action: "login",
       data: data,
     })
-      .then(({ DATA = {} }) => {
+      .then(async({ DATA = {} }) => {
         if (!DATA.isEmailVerified) {
           navigation.navigate("VerifyScreen", {
             email: data.email,
           });
         } else {
+          await AsyncStorage.setItem(
+            'User',
+            JSON.stringify(DATA));
+
+            let getData=await AsyncStorage.getItem("User")
+            console.log(JSON.parse(getData).token)
           // Navigate to Home Screen
         }
       })
