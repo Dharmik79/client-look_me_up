@@ -24,12 +24,23 @@ const VerifyScreen = ({ navigation }) => {
       data: { email: email, OTP: data.OTP },
     })
       .then(({ DATA = {} }) => {
-        console.log("Home Screen Navigation");
+        navigation.navigate("LoginScreen");
       })
       .catch((error) => {
-       
         setFieldError("OTP", error.MESSAGE);
         setSubmitting(true);
+      });
+  };
+
+  const resendOTP = async () => {
+    await commonApi({ action: "resendEmailOTP", data: { email: email } })
+      .then(({ DATA = {} }) => {
+        console.log("Send Successfully");
+        // TODO
+        // Add the animation for the button to stop
+      })
+      .catch((error) => {
+        console.log("Error in sending the OTP");
       });
   };
   return (
@@ -50,6 +61,9 @@ const VerifyScreen = ({ navigation }) => {
         validateOnMount={true}
         onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
           verify(values, setFieldError, setSubmitting);
+
+          // TODO
+          // actions.resetForm() ;
         }}
         validationSchema={loginValidationSchema}
       >
@@ -73,6 +87,12 @@ const VerifyScreen = ({ navigation }) => {
               <TouchableOpacity onPress={props.handleSubmit}>
                 <View style={styles.done}>
                   <Text style={styles.doneText}>SUBMIT</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={resendOTP}>
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>Resend OTP</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
