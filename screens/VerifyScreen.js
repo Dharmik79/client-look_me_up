@@ -15,9 +15,8 @@ import commonApi from "../api/common";
 const loginValidationSchema = yup.object().shape({
   OTP: yup.string().required("OTP is required"),
 });
-
-const VerifyScreen = ({ navigation }) => {
-  let email = navigation.getParam("email");
+const VerifyScreen = ({ navigation ,route}) => {
+  let {email} = route.params;
   const verify = async (data, setFieldError, setSubmitting) => {
     await commonApi({
       action: "verifyEmailOTP",
@@ -26,6 +25,7 @@ const VerifyScreen = ({ navigation }) => {
       .then(({ DATA = {} }) => {
         navigation.navigate("LoginScreen", {
           screen: "LoginScreen",
+          reset:true
         });
       })
       .catch((error) => {

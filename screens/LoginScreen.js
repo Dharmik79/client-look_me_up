@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect}from "react";
 import {
   View,
   Text,
@@ -21,8 +21,8 @@ const loginValidationSchema = yup.object().shape({
     .required("Email Address is required."),
   password: yup.string().required("Password is required"),
 });
-const LoginScreen = ({ navigation }) => {
-  const login = async (data, setFieldError, setSubmitting) => {
+const LoginScreen = ({ navigation ,route}) => {
+  const login = async (data, setFieldError, setSubmitting, actions) => {
     await commonApi({
       action: "login",
       data: data,
@@ -31,19 +31,18 @@ const LoginScreen = ({ navigation }) => {
         if (!DATA.isEmailVerified) {
           navigation.navigate("VerifyScreen", {
             screen: "VerifyScreen",
-            params: {
-              email: data.email,
-            },
+            email: data.email,
           });
+          actions.resetForm();
         } else {
           await AsyncStorage.setItem("User", JSON.stringify(DATA));
-
           let getData = await AsyncStorage.getItem("User");
           console.log(JSON.parse(getData).token);
           // Navigate to Home Screen
           navigation.navigate("HomeScreen", {
             screen: "HomeScreen",
           });
+          actions.resetForm();
         }
       })
       .catch((error) => {
@@ -67,7 +66,7 @@ const LoginScreen = ({ navigation }) => {
         validateOnChange={true}
         validateOnMount={true}
         onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
-          login(values, setFieldError, setSubmitting);
+          login(values, setFieldError, setSubmitting, actions);
         }}
         validationSchema={loginValidationSchema}
       >
@@ -123,27 +122,6 @@ const LoginScreen = ({ navigation }) => {
           </View>
         )}
       </Formik>
-
-      <View style={styles.buttons}>
-        <TouchableOpacity>
-          <View style={styles.signup}>
-            <Button color="#3491ff" title="Log In" />
-          </View>
-        </TouchableOpacity>
-
-        {/* <StatusBar style="auto" /> */}
-        <Text>Don't have an account?</Text>
-        <Text
-          style={{ color: "#3491ff" }}
-          onPress={() =>
-            navigation.navigate("RegisterScreen", {
-              screen: "RegisterScreen",
-            })
-          }
-        >
-          Sign Up
-        </Text>
-      </View>
     </View>
   );
 };

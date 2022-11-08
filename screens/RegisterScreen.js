@@ -36,16 +36,18 @@ const registrationValidationSchema = yup.object().shape({
 });
 
 const RegisterScreen = ({ navigation }) => {
-  const register = async (data, setFieldError, setSubmitting) => {
+  const register = async (data, setFieldError, setSubmitting,actions) => {
     await commonApi({
       action: "register",
       data: data,
     })
       .then(({ DATA = {} }) => {
+  
         navigation.navigate("VerifyScreen", {
           screen: "VerifyScreen",
-          params: { email: data.email },
+         email: data.email,
         });
+        actions.resetForm();
       })
       .catch((error) => {
         setFieldError(error.DATA, error.MESSAGE);
@@ -81,7 +83,7 @@ const RegisterScreen = ({ navigation }) => {
             countryCode: "+1",
             phone: formValue.phone,
           };
-          register(formValue, setFieldError, setSubmitting);
+          register(formValue, setFieldError, setSubmitting,actions);
         }}
         validationSchema={registrationValidationSchema}
       >
