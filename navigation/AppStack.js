@@ -1,16 +1,27 @@
 import React from "react";
-
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
+import { View, Text } from "react-native";
+import {
+  createNativeStackNavigator,
+  NavigationContainer,
+} from "@react-navigation/native-stack";
 
 import HomeScreen from "../screens/HomeScreen";
+import AuthStack from "./AuthStack";
 
-const screens = {
-  HomeScreen: {
-    screen: HomeScreen
-  },
+const Stack = createNativeStackNavigator();
+
+const AppStack = () => {
+  return (
+
+      <Stack.Navigator>
+     
+        <Stack.Screen name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+
+  );
 };
 
-const AppStack = createStackNavigator(screens);
-
-export default createAppContainer(AppStack);
+export default AppStack;

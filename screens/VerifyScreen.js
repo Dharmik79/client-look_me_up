@@ -24,7 +24,9 @@ const VerifyScreen = ({ navigation }) => {
       data: { email: email, OTP: data.OTP },
     })
       .then(({ DATA = {} }) => {
-        navigation.navigate("LoginScreen");
+        navigation.navigate("LoginScreen",{
+          screen:"LoginScreen"
+        });
       })
       .catch((error) => {
         setFieldError("OTP", error.MESSAGE);
@@ -96,7 +98,9 @@ const VerifyScreen = ({ navigation }) => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("LoginScreen")}
+                onPress={() => navigation.navigate("LoginScreen",{
+                  screen:"LoginScreen"
+                })}
               >
                 <View style={styles.cancel}>
                   <Text style={styles.cancelText}>Cancel</Text>

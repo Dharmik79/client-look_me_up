@@ -30,7 +30,10 @@ const LoginScreen = ({ navigation }) => {
       .then(async({ DATA = {} }) => {
         if (!DATA.isEmailVerified) {
           navigation.navigate("VerifyScreen", {
-            email: data.email,
+            screen:"VerifyScreen",
+            params:{
+              email: data.email,
+            }
           });
         } else {
           await AsyncStorage.setItem(
@@ -40,6 +43,9 @@ const LoginScreen = ({ navigation }) => {
             let getData=await AsyncStorage.getItem("User")
             console.log(JSON.parse(getData).token)
           // Navigate to Home Screen
+          navigation.navigate("HomeScreen",{
+            screen:"HomeScreen"
+          })
         }
       })
       .catch((error) => {
@@ -107,7 +113,9 @@ const LoginScreen = ({ navigation }) => {
               <Text>Don't have an account?</Text>
               <Text
                 style={{ color: "#3491ff" }}
-                onPress={() => navigation.navigate("RegisterScreen")}
+                onPress={() => navigation.navigate("RegisterScreen",{
+                  screen:"RegisterScreen"
+                })}
               >
                 Sign Up
               </Text>
@@ -127,7 +135,9 @@ const LoginScreen = ({ navigation }) => {
         <Text>Don't have an account?</Text>
         <Text
           style={{ color: "#3491ff" }}
-          onPress={() => navigation.navigate("RegisterScreen")}
+          onPress={() => navigation.navigate("RegisterScreen",{
+            screen:"RegisterScreen"
+          })}
         >
           Sign Up
         </Text>

@@ -1,36 +1,41 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
-import OnboardingScreen from "../screens/OnboardingScreen";
-import HomeScreen from "../screens/HomeScreen";
-import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
+import React from 'react'
+import {View, Text} from 'react-native'
+
+import { createNativeStackNavigator,NavigationContainer } from '@react-navigation/native-stack';
+import OnboardingScreen from '../screens/OnboardingScreen';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 import VerifyScreen from "../screens/VerifyScreen";
 
-const screens = {
-  OnboardingScreen: {
-    screen: OnboardingScreen,
-  },
-  LoginScreen: {
-    screen: LoginScreen,
-    headerShown: false,
-  },
-  RegisterScreen: {
-    screen: RegisterScreen,
-    headerShown: false,
-  },
-  VerifyScreen: {
-    screen: VerifyScreen,
-    headerShown: false,
-  },
-};
 
-const AuthStack = createStackNavigator(screens, {
-  defaultNavigationOptions: {
-    headerShown: false,
-    gestureEnabled: false,
-  },
-});
+const Stack = createNativeStackNavigator();
 
-export default createAppContainer(AuthStack);
+const AuthStack = () => {
+    return(
+    
+        <Stack.Navigator>
+       
+        <Stack.Screen component={OnboardingScreen} 
+        name="OnboardingScreen" 
+        options={{headerShown:false}}
+        />
+        <Stack.Screen component={LoginScreen} 
+        name="LoginScreen" 
+        options={{headerShown:false}}
+        />
+        <Stack.Screen 
+        component={RegisterScreen} 
+        name="RegisterScreen" 
+        options={{headerShown:false}}
+        />
+        <Stack.Screen 
+        component={VerifyScreen} 
+        name="VerifyScreen" 
+        options={{headerShown:false}}
+        />
+      </Stack.Navigator>
+     
+    )
+}
+
+export default AuthStack
