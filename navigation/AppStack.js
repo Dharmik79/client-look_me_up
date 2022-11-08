@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ gestureEnabled: false, headerShown: false }}>
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
