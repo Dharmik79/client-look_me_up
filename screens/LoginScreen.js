@@ -8,6 +8,8 @@ import {
   Button,
   TextInput,
 } from "react-native";
+import { CheckBox } from "react-native-btr";
+
 
 
 
@@ -31,15 +33,24 @@ const LoginScreen = ({navigation}) => {
                 />
                 <Text>Password</Text>
                 <TextInput
+                secureTextEntry={true}
                     style={styles.input}
                     keyboardType="default"
                 />
 
                 <View style={styles.rememberme}>
-                    <Text>Remember Me</Text>
+                <View style={styles.rememberme2}>
+                <CheckBox
+                checked='true'
+                color="#3491ff"/>
+                    <Text style={{marginLeft:5}}>Remember Me</Text>
+                    </View>
+                    
+                   
                     <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen', { screen: 'ResetPasswordScreen' })}>
                     <Text>Forgot Password </Text>
                     </TouchableOpacity>
+                    
                 </View>
                 </View>
 
@@ -132,6 +143,10 @@ const styles = StyleSheet.create({
     rememberme: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    rememberme2: {
+        flexDirection: 'row',
+       justifyContent: 'space-between',
     },
     input: {
         height: 40,

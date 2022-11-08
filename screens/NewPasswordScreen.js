@@ -25,11 +25,19 @@ const NewPasswordScreen = ({ navigation }) => {
           Create new password
         </Text>
 
-        <TextInput style={styles.input} keyboardType="default" />
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          keyboardType="default"
+        />
 
         <Text style={{ marginBottom: 5 }}>Confirm password</Text>
 
-        <TextInput style={styles.input} keyboardType="default" />
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          keyboardType="default"
+        />
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity>
