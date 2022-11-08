@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
 } from "react-native";
 // import {AsyncStorage} from "react-native-community/async-storage"
 import * as yup from "yup";
@@ -27,25 +27,23 @@ const LoginScreen = ({ navigation }) => {
       action: "login",
       data: data,
     })
-      .then(async({ DATA = {} }) => {
+      .then(async ({ DATA = {} }) => {
         if (!DATA.isEmailVerified) {
           navigation.navigate("VerifyScreen", {
-            screen:"VerifyScreen",
-            params:{
+            screen: "VerifyScreen",
+            params: {
               email: data.email,
-            }
+            },
           });
         } else {
-          await AsyncStorage.setItem(
-            'User',
-            JSON.stringify(DATA));
+          await AsyncStorage.setItem("User", JSON.stringify(DATA));
 
-            let getData=await AsyncStorage.getItem("User")
-            console.log(JSON.parse(getData).token)
+          let getData = await AsyncStorage.getItem("User");
+          console.log(JSON.parse(getData).token);
           // Navigate to Home Screen
-          navigation.navigate("HomeScreen",{
-            screen:"HomeScreen"
-          })
+          navigation.navigate("HomeScreen", {
+            screen: "HomeScreen",
+          });
         }
       })
       .catch((error) => {
@@ -113,9 +111,11 @@ const LoginScreen = ({ navigation }) => {
               <Text>Don't have an account?</Text>
               <Text
                 style={{ color: "#3491ff" }}
-                onPress={() => navigation.navigate("RegisterScreen",{
-                  screen:"RegisterScreen"
-                })}
+                onPress={() =>
+                  navigation.navigate("RegisterScreen", {
+                    screen: "RegisterScreen",
+                  })
+                }
               >
                 Sign Up
               </Text>
@@ -135,9 +135,11 @@ const LoginScreen = ({ navigation }) => {
         <Text>Don't have an account?</Text>
         <Text
           style={{ color: "#3491ff" }}
-          onPress={() => navigation.navigate("RegisterScreen",{
-            screen:"RegisterScreen"
-          })}
+          onPress={() =>
+            navigation.navigate("RegisterScreen", {
+              screen: "RegisterScreen",
+            })
+          }
         >
           Sign Up
         </Text>
