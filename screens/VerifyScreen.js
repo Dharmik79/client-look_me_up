@@ -96,7 +96,7 @@ const VerifyScreen = ({ navigation }) => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigation.navigate("RegisterScreen")}
+                onPress={() => navigation.navigate("LoginScreen")}
               >
                 <View style={styles.cancel}>
                   <Text style={styles.cancelText}>Cancel</Text>
