@@ -57,9 +57,8 @@ const ResetPasswordScreen = ({ navigation }) => {
             navigation.navigate("LoginScreen", { screen: "LoginScreen" })
           }
         >
-          <View style={styles.cancel}>
-            <Text style={styles.cancelText}>Cancel</Text>
-          </View>
+           <Text>Already have an account?</Text>
+                    <Text style={{ color: '#3491ff' }} onPress={() => navigation.navigate('LoginScreen', { screen: 'LoginScreen' })}>Sign In</Text>
         </TouchableOpacity>
       </View>
     </View>
