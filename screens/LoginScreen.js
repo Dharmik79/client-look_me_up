@@ -57,14 +57,14 @@ const LoginScreen = ({navigation}) => {
             </View>
      
 
-        <View style={styles.buttons}>
+        {/* <View style={styles.buttons}>
           <TouchableOpacity>
             <View style={styles.signup}>
               <Button color="#3491ff" title="Log In" />
             </View>
           </TouchableOpacity>
 
-          {/* <StatusBar style="auto" /> */}
+          
           <Text>Don't have an account?</Text>
           <Text
             style={{ color: "#3491ff" }}
@@ -74,7 +74,7 @@ const LoginScreen = ({navigation}) => {
           >
             Sign Up
           </Text>
-        </View>
+        </View> */}
     </View>
   );
 };
