@@ -10,76 +10,43 @@ import {
 } from "react-native";
 
 
-const VerifyScreen = ({ navigation }) => {
+const NewPasswordScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
-        <Text style={styles.mainText}>Verify {"\n"}Account</Text>
+        <Text style={styles.mainText}>Choose new {"\n"}Password</Text>
         <Image
           style={styles.logo}
-          source={require("../assets/verify_account.png")}
+          source={require("../assets/new_password.png")}
         />
       </View>
       <View style={styles.body}>
-        <Text style={{ marginTop: 80, marginBottom: 30 }}>
-          Enter 6 digit OTP send on mobile
+        <Text style={{ marginTop: 80, marginBottom: 5 }}>
+          Create new password
         </Text>
-        <View style={{ justifyContent: "space-evenly", flexDirection: "row" }}>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-        </View>
-        <Text
-          style={{
-            marginBottom: 20,
-            marginTop: 20,
-            fontWeight: "500",
-            textDecorationLine: "underline",
-            textAlign:'center',
-          }}
-        >
-          Send again
-        </Text>
+
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          keyboardType="default"
+        />
+
+        <Text style={{ marginBottom: 5 }}>Confirm password</Text>
+
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          keyboardType="default"
+        />
       </View>
       <View style={styles.buttons}>
         <TouchableOpacity>
           <View style={styles.done} onPress={""}>
-            <Text style={styles.doneText}>Done</Text>
+            <Text style={styles.doneText}>Submit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("RegisterScreen", { screen: "RegisterScreen" })
-          }
-        >
+        <TouchableOpacity>
           <View style={styles.cancel}>
             <Text style={styles.cancelText}>Cancel</Text>
           </View>
@@ -106,8 +73,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     // marginLeft:130,
     //marginTop:100,
-    height: 207,
-    width: 140,
+    height: 242,
+    width: 200,
     marginRight: 20,
   },
   header: {
@@ -136,23 +103,24 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    // marginTop:10,
-    // marginBottom:10,
-    backgroundColor: "#BABABA",
-    fontWeight: "600",
-    fontSize: 18,
-    alignSelf: "center",
-    padding: 10,
-    height: 50,
-    width: "12%",
+    // backgroundColor: "#BABABA",
+    // fontSize: 18,
+    // alignSelf: "center",
+    // padding: 10,
+    // width: "100%",
+    // borderWidth: 0.5,
+    // borderColor: "grey",
+    // borderRadius: 10,
+
+    // marginBottom: 10,
+    // justifyContent: "center",
+
+    height: 40,
     //margin: 12,
-    borderWidth: 0.5,
-    borderColor: "grey",
+    borderWidth: 1,
     borderRadius: 10,
-    //padding: 10,
+    padding: 10,
     marginBottom: 10,
-    justifyContent: "center",
-    textAlign: "center",
   },
 
   mainText: {
@@ -163,8 +131,8 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginTop: 10,
-    height:'20%',
-    width:'100%',
+    height: "20%",
+    width: "100%",
     //flex: 2,
     //width: 100,
     padding: 10,
@@ -198,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyScreen;
+export default NewPasswordScreen;

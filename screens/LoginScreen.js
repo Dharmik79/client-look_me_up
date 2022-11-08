@@ -8,6 +8,8 @@ import {
   Button,
   TextInput,
 } from "react-native";
+import { CheckBox } from "react-native-btr";
+
 
 
 
@@ -24,22 +26,33 @@ const LoginScreen = ({navigation}) => {
             </View>
             <View style={styles.body}>
 
-                <Text style={{ marginBottom: 5 }}>Email</Text>
+                <Text style={{ marginBottom: 5, }}>Email</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="default"
                 />
                 <Text>Password</Text>
                 <TextInput
+                secureTextEntry={true}
                     style={styles.input}
                     keyboardType="default"
                 />
 
                 <View style={styles.rememberme}>
-                    <Text>Remember Me</Text>
+                <View style={styles.rememberme2}>
+                <CheckBox
+                checked='true'
+                color="#3491ff"/>
+                    <Text style={{marginLeft:5}}>Remember Me</Text>
+                    </View>
+                    
+                   
+                    <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen', { screen: 'ResetPasswordScreen' })}>
                     <Text>Forgot Password </Text>
+                    </TouchableOpacity>
+                    
                 </View>
-
+                </View>
 
                 <View style={styles.buttons}>
                     <TouchableOpacity >
@@ -54,17 +67,17 @@ const LoginScreen = ({navigation}) => {
 
                 </View>
 
-            </View>
+            
      
 
-        <View style={styles.buttons}>
+        {/* <View style={styles.buttons}>
           <TouchableOpacity>
             <View style={styles.signup}>
               <Button color="#3491ff" title="Log In" />
             </View>
           </TouchableOpacity>
 
-          {/* <StatusBar style="auto" /> */}
+          
           <Text>Don't have an account?</Text>
           <Text
             style={{ color: "#3491ff" }}
@@ -74,7 +87,7 @@ const LoginScreen = ({navigation}) => {
           >
             Sign Up
           </Text>
-        </View>
+        </View> */}
     </View>
   );
 };
@@ -83,7 +96,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        marginTop: 40,
+        marginTop: 35,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -97,6 +110,7 @@ const styles = StyleSheet.create({
         // marginTop:20,
         // marginLeft:130,
         //marginTop:100,
+        marginTop:10,
         height: 167,
         width: 179,
 
@@ -121,20 +135,25 @@ const styles = StyleSheet.create({
     },
     body: {
         //flex: 5,
+
         padding: 10,
         width: '100%',
-        height: '70%',
+        height: '50%',
     },
     rememberme: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    rememberme2: {
+        flexDirection: 'row',
+       justifyContent: 'space-between',
     },
     input: {
         height: 40,
         //margin: 12,
         borderWidth: 1,
         borderRadius: 10,
-        //padding: 10,
+        padding: 10,
         marginBottom: 10,
     },
 
@@ -147,8 +166,10 @@ const styles = StyleSheet.create({
     buttons: {
         marginTop: 10,
         //flex: 2,
-        //width: 100,
-        //padding: 10,
+        width: '100%',
+        height:'20%',
+        padding: 10,
+
         // backgroundColor: 'red',
     },
     login: {

@@ -10,52 +10,28 @@ import {
 } from "react-native";
 
 
-const VerifyScreen = ({ navigation }) => {
+const ResetPasswordScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
-        <Text style={styles.mainText}>Verify {"\n"}Account</Text>
+        <Text style={styles.mainText}>Reset {"\n"}Password</Text>
         <Image
           style={styles.logo}
-          source={require("../assets/verify_account.png")}
+          source={require("../assets/reset_password.png")}
         />
       </View>
       <View style={styles.body}>
         <Text style={{ marginTop: 80, marginBottom: 30 }}>
-          Enter 6 digit OTP send on mobile
+          Enter your email to reset your password
         </Text>
-        <View style={{ justifyContent: "space-evenly", flexDirection: "row" }}>
+        <View>
           <TextInput
             style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
+            keyboardType="default"
+           
           />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
+
         </View>
         <Text
           style={{
@@ -70,19 +46,20 @@ const VerifyScreen = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() =>
+            navigation.navigate("NewPasswordScreen", { screen: "NewPasswordScreen" })
+          }>
           <View style={styles.done} onPress={""}>
-            <Text style={styles.doneText}>Done</Text>
+            <Text style={styles.doneText}>Send One Time Password</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("RegisterScreen", { screen: "RegisterScreen" })
+            navigation.navigate("LoginScreen", { screen: "LoginScreen" })
           }
         >
-          <View style={styles.cancel}>
-            <Text style={styles.cancelText}>Cancel</Text>
-          </View>
+           <Text>Already have an account?</Text>
+                    <Text style={{ color: '#3491ff' }} onPress={() => navigation.navigate('LoginScreen', { screen: 'LoginScreen' })}>Sign In</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -103,11 +80,11 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
   },
   logo: {
-    marginTop: 10,
+    //marginTop: 10,
     // marginLeft:130,
     //marginTop:100,
-    height: 207,
-    width: 140,
+    height: 227,
+    width: 160,
     marginRight: 20,
   },
   header: {
@@ -136,23 +113,12 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    // marginTop:10,
-    // marginBottom:10,
-    backgroundColor: "#BABABA",
-    fontWeight: "600",
-    fontSize: 18,
-    alignSelf: "center",
-    padding: 10,
-    height: 50,
-    width: "12%",
+    height: 40,
     //margin: 12,
-    borderWidth: 0.5,
-    borderColor: "grey",
+    borderWidth: 1,
     borderRadius: 10,
-    //padding: 10,
+    padding: 10,
     marginBottom: 10,
-    justifyContent: "center",
-    textAlign: "center",
   },
 
   mainText: {
@@ -198,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyScreen;
+export default ResetPasswordScreen;
