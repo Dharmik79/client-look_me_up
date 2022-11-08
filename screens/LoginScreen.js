@@ -24,7 +24,7 @@ const LoginScreen = ({navigation}) => {
             </View>
             <View style={styles.body}>
 
-                <Text style={{ marginBottom: 5 }}>Email</Text>
+                <Text style={{ marginBottom: 5, }}>Email</Text>
                 <TextInput
                     style={styles.input}
                     keyboardType="default"
@@ -39,7 +39,7 @@ const LoginScreen = ({navigation}) => {
                     <Text>Remember Me</Text>
                     <Text>Forgot Password </Text>
                 </View>
-
+                </View>
 
                 <View style={styles.buttons}>
                     <TouchableOpacity >
@@ -54,7 +54,7 @@ const LoginScreen = ({navigation}) => {
 
                 </View>
 
-            </View>
+            
      
 
         {/* <View style={styles.buttons}>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        marginTop: 40,
+        marginTop: 35,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
         // marginTop:20,
         // marginLeft:130,
         //marginTop:100,
+        marginTop:10,
         height: 167,
         width: 179,
 
@@ -121,9 +122,10 @@ const styles = StyleSheet.create({
     },
     body: {
         //flex: 5,
+
         padding: 10,
         width: '100%',
-        height: '70%',
+        height: '50%',
     },
     rememberme: {
         flexDirection: 'row',
@@ -147,8 +149,10 @@ const styles = StyleSheet.create({
     buttons: {
         marginTop: 10,
         //flex: 2,
-        //width: 100,
-        //padding: 10,
+        width: '100%',
+        height:'20%',
+        padding: 10,
+
         // backgroundColor: 'red',
     },
     login: {

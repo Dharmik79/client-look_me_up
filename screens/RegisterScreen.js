@@ -15,7 +15,7 @@ const RegisterScreen = ({navigation}) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 {/* <Text>Open up App.js to start working on your app!</Text> */}
-                <Text style={styles.mainText}>Create Account</Text>
+                <Text style={styles.mainText}>Create {'\n'}Account</Text>
                 <Image style={styles.logo} source={require('../assets/create_account.png')} />
             </View>
             <View style={styles.body}>
@@ -51,12 +51,13 @@ const RegisterScreen = ({navigation}) => {
                 <Text style={styles.errors}>Passwords dont match</Text>
 
                 <Text>Agree to terms and conditions</Text>
+                </View>
 
 
                 <View style={styles.buttons}>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={() => navigation.navigate('VerifyScreen', { screen: 'VerifyScreen' })}>
                         <View style={styles.signup} >
-                            <Text style={styles.signupText} onPress={() => navigation.navigate('VerifyScreen', { screen: 'VerifyScreen' })}>Create Account</Text>
+                            <Text style={styles.signupText} >Create Account</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -66,7 +67,7 @@ const RegisterScreen = ({navigation}) => {
 
                 </View>
 
-            </View>
+            
         </View>
 
 
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        marginTop: 40,
+        marginTop: 35,
         flexDirection: 'column',
         // justifyContent:'center',
         alignItems: 'center',
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
         //flex: 5,
         padding: 10,
         width: '100%',
-        height: '70%',
+        height: '65%',
     },
     input: {
         height: 40,
@@ -131,13 +132,14 @@ const styles = StyleSheet.create({
     mainText: {
         color: 'black',
         padding: 10,
-        fontSize: 20,
+        fontSize: 24,
     },
     buttons: {
-        marginTop: 10,
+        //marginTop: 10,
         //flex: 2,
-        //width: 100,
-        //padding: 10,
+        width: '100%',
+        height:'20%',
+        padding: 10,
         // backgroundColor: 'red',
     },
     signup: {
