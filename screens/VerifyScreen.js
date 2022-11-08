@@ -9,6 +9,7 @@ import {
   TextInput,
 } from "react-native";
 
+
 const VerifyScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>

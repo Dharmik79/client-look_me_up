@@ -9,6 +9,7 @@ import {
   TextInput,
 } from "react-native";
 
+
 const NewPasswordScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>

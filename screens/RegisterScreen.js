@@ -7,12 +7,16 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 import { CheckBox } from "react-native-btr";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 
 const RegisterScreen = ({ navigation }) => {
   return (
+    
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
       <View style={styles.header}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
@@ -69,6 +73,7 @@ const RegisterScreen = ({ navigation }) => {
         </Text>
       </View>
     </View>
+    </KeyboardAwareScrollView>
   );
 };
 
