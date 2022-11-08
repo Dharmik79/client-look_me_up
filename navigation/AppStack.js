@@ -7,7 +7,7 @@ import HomeScreen from "../screens/HomeScreen";
 
 const screens = {
   HomeScreen: {
-    screen: HomeScreen,
+    screen: HomeScreen
   },
 };
 

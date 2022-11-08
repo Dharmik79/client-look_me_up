@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
             email: data.email,
           });
         } else {
-          console.log("DOne");
+          // Navigate to Home Screen
         }
       })
       .catch((error) => {
@@ -85,7 +85,7 @@ const LoginScreen = ({ navigation }) => {
             )}
             <View style={styles.rememberme}>
               <Text>Remember Me</Text>
-              <Text>Forgot Password </Text>
+              <Text>Forgot Password ?</Text>
             </View>
 
             <View style={styles.buttons}>

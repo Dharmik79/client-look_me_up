@@ -11,18 +11,24 @@ import VerifyScreen from '../screens/VerifyScreen';
 const screens = {
   OnboardingScreen: {
     screen: OnboardingScreen,
+    
   },
   LoginScreen: {
     screen: LoginScreen,
+    headerShown: false
   },
   RegisterScreen: {
     screen: RegisterScreen,
+    headerShown: false
   },
   VerifyScreen: {
     screen: VerifyScreen,
+    headerShown: false
   },
 };
 
-const AuthStack = createStackNavigator(screens);
+const AuthStack = createStackNavigator(screens,{defaultNavigationOptions:{
+  headerShown:false
+}});
 
 export default createAppContainer(AuthStack);
