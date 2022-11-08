@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         //margin: 12,
         borderWidth: 1,
         borderRadius: 10,
-        //padding: 10,
+        padding: 10,
     },
 
     mainText: {

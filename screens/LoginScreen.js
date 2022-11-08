@@ -37,7 +37,9 @@ const LoginScreen = ({navigation}) => {
 
                 <View style={styles.rememberme}>
                     <Text>Remember Me</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('ResetPasswordScreen', { screen: 'ResetPasswordScreen' })}>
                     <Text>Forgot Password </Text>
+                    </TouchableOpacity>
                 </View>
                 </View>
 
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
         //margin: 12,
         borderWidth: 1,
         borderRadius: 10,
-        //padding: 10,
+        padding: 10,
         marginBottom: 10,
     },
 
