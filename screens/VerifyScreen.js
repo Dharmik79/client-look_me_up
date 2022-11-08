@@ -20,6 +20,7 @@ const VerifyScreen = ({ navigation }) => {
                     style={styles.input}
                     keyboardType="default"
                 />
+                <Text style={{ marginBottom: 5, fontWeight:'500' , textDecorationLine:'underline' }}>Send again</Text>
 
                 <View style={styles.buttons}>
                     <TouchableOpacity >
