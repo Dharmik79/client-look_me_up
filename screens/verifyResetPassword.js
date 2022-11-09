@@ -11,87 +11,104 @@ import {
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Please Enter the valid Email")
-    .required("Email Address is required."),
-});
-const ResetPasswordScreen = ({ navigation }) => {
 
-  const sendOTP=async(data, setFieldError, setSubmitting, actions)=>{
+const loginValidationSchema = yup.object().shape({
+  OTP: yup.string().required("OTP is required"),
+});
+const VerifyResetScreen = ({ navigation, route }) => {
+  let { email } = route.params;
+  const verify = async (data, setFieldError, setSubmitting) => {
     await commonApi({
-      action: "resetPassword",
-      data: data,
+      action: "verifyResetPassword",
+      data: { email: email, OTP: data.OTP },
     })
-      .then(async ({ DATA = {} }) => {
-       console.log(DATA)
-        
-        navigation.navigate("VerifyResetPasswordScreen", {
-          screen: "VerifyResetPasswordScreen ",
-          email:data.email
-        })
-          actions.resetForm();
-        
+      .then(({ DATA = {} }) => {
+        navigation.navigate("NewPasswordScreen", {
+          screen: "NewPasswordScreen",
+          email: data.email,
+          OTP: data.OTP,
+        });
       })
       .catch((error) => {
-        setFieldError(error.DATA, error.MESSAGE);
+        setFieldError("OTP", error.MESSAGE);
         setSubmitting(true);
       });
+  };
 
- }
+  const resendOTP = async () => {
+    await commonApi({ action: "resetPassword", data: { email: email } })
+      .then(({ DATA = {} }) => {
+        console.log("Send Successfully");
+        // TODO
+        // Add the animation for the button to stop
+      })
+      .catch((error) => {
+        console.log(error)
+        console.log("Error in sending the OTP");
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.mainText}>Reset {"\n"}Password</Text>
+        <Text style={styles.mainText}>Verify {"\n"}Account</Text>
         <Image
           style={styles.logo}
-          source={require("../assets/reset_password.png")}
+          source={require("../assets/verify_account.png")}
         />
       </View>
       <Formik
         initialValues={{
-          email: "",
+          OTP: "",
         }}
         validateOnBlur={true}
         validateOnChange={true}
         validateOnMount={true}
         onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
-          sendOTP(values, setFieldError, setSubmitting, actions);
+          verify(values, setFieldError, setSubmitting);
+
+          // TODO
+          // actions.resetForm() ;
         }}
-        validationSchema={validationSchema}
+        validationSchema={loginValidationSchema}
       >
         {(props) => (
           <View style={styles.body}>
-            <Text style={{ marginTop: 80, marginBottom: 30 }}>
-              Enter your email to reset your password
+            <Text style={{ marginBottom: 5 }}>
+              Enter 6 digit OTP send on mobile
             </Text>
-            <View>
-              <TextInput
-                style={styles.input}
-                keyboardType="default"
-                onChangeText={props.handleChange("email")}
-                value={props.values.email}
-                onBlur={props.handleBlur("email")}
-              />
-              {props.errors.email && props.touched.email && (
-                <Text style={styles.errors}>{props.errors.email}</Text>
-              )}
-            </View>
-
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              maxLength={6}
+              onChangeText={props.handleChange("OTP")}
+              value={props.values.OTP}
+              onBlur={props.handleBlur("OTP")}
+            />
+            {props.errors.OTP && props.touched.OTP && (
+              <Text style={styles.errors}>{props.errors.OTP}</Text>
+            )}
             <View style={styles.buttons}>
               <TouchableOpacity onPress={props.handleSubmit}>
                 <View style={styles.done}>
-                  <Text style={styles.doneText}>Send One Time Password</Text>
+                  <Text style={styles.doneText}>SUBMIT</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={resendOTP}>
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>Resend OTP</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("LoginScreen", { screen: "LoginScreen" })
+                  navigation.navigate("LoginScreen", {
+                    screen: "LoginScreen",
+                  })
                 }
               >
-                <Text>Already have an account?</Text>
-                <Text style={{ color: "#3491ff" }}>Sign In</Text>
+                <View style={styles.cancel}>
+                  <Text style={styles.cancelText}>Cancel</Text>
+                </View>
               </TouchableOpacity>
             </View>
           </View>
@@ -105,7 +122,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    marginTop: 35,
+    marginTop: 40,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -115,11 +132,11 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
   },
   logo: {
-    //marginTop: 10,
+    marginTop: 10,
     // marginLeft:130,
     //marginTop:100,
-    height: 227,
-    width: 160,
+    height: 207,
+    width: 140,
     marginRight: 20,
   },
   header: {
@@ -144,7 +161,7 @@ const styles = StyleSheet.create({
     //flex: 5,
     padding: 10,
     width: "100%",
-    height: "50%",
+    height: "70%",
   },
 
   input: {
@@ -152,23 +169,21 @@ const styles = StyleSheet.create({
     //margin: 12,
     borderWidth: 1,
     borderRadius: 10,
-    padding: 10,
+    //padding: 10,
     marginBottom: 10,
   },
 
   mainText: {
     color: "black",
     padding: 10,
-    fontSize: 24,
+    fontSize: 20,
     //marginTop: 10,
   },
   buttons: {
     marginTop: 10,
-    height: "20%",
-    width: "100%",
     //flex: 2,
     //width: 100,
-    padding: 10,
+    //padding: 10,
     // backgroundColor: 'red',
   },
   done: {
@@ -197,6 +212,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
   },
+  errors: {
+    // marginTop: 5,
+    marginBottom: 5,
+    color: "red",
+  },
 });
 
-export default ResetPasswordScreen;
+export default VerifyResetScreen;

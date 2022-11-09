@@ -45,7 +45,13 @@ const NewPasswordScreen = ({ navigation }) => {
             <Text style={styles.doneText}>Submit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("AuthScreen", {
+              screen: "ResetPasswordScreen",
+            });
+          }}
+        >
           <View style={styles.cancel}>
             <Text style={styles.cancelText}>Cancel</Text>
           </View>

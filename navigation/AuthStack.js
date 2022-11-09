@@ -9,7 +9,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import VerifyScreen from '../screens/VerifyScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen';
-
+import VerifyResetPasswordScreen from "../screens/verifyResetPassword"
 const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -20,6 +20,8 @@ const AuthStack = () => {
       <Stack.Screen component={RegisterScreen} name="RegisterScreen" />
       <Stack.Screen component={VerifyScreen} name="VerifyScreen" />
       <Stack.Screen component={ResetPasswordScreen} name="ResetPasswordScreen" />
+      <Stack.Screen component={VerifyResetPasswordScreen} name="VerifyResetPasswordScreen" />
+
        <Stack.Screen component={NewPasswordScreen} name="NewPasswordScreen" />
     </Stack.Navigator>
   );
