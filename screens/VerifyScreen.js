@@ -15,8 +15,8 @@ import commonApi from "../api/common";
 const loginValidationSchema = yup.object().shape({
   OTP: yup.string().required("OTP is required"),
 });
-const VerifyScreen = ({ navigation, route }) => {
-  let { email } = route.params;
+const VerifyScreen = ({ navigation ,route}) => {
+  let {email} = route.params;
   const verify = async (data, setFieldError, setSubmitting) => {
     await commonApi({
       action: "verifyEmailOTP",
@@ -25,7 +25,7 @@ const VerifyScreen = ({ navigation, route }) => {
       .then(({ DATA = {} }) => {
         navigation.navigate("LoginScreen", {
           screen: "LoginScreen",
-          reset: true,
+          reset:true
         });
       })
       .catch((error) => {
@@ -48,7 +48,7 @@ const VerifyScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <Text style={styles.mainText}>Verify {"\n"}Account</Text>
+        <Text style={styles.mainText}>Verify {"\n"}Account</Text>
         <Image
           style={styles.logo}
           source={require("../assets/verify_account.png")}
@@ -85,19 +85,6 @@ const VerifyScreen = ({ navigation, route }) => {
             {props.errors.OTP && props.touched.OTP && (
               <Text style={styles.errors}>{props.errors.OTP}</Text>
             )}
-            <TouchableOpacity onPress={resendOTP}>
-            <Text
-            style={{
-              marginBottom: 20,
-              marginTop: 20,
-              fontWeight: "500",
-              textDecorationLine: "underline",
-              textAlign:'center',
-            }}
-          >
-            Send again
-          </Text>
-          </TouchableOpacity>
             <View style={styles.buttons}>
               <TouchableOpacity onPress={props.handleSubmit}>
                 <View style={styles.done}>
@@ -105,7 +92,11 @@ const VerifyScreen = ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>
 
-             
+              <TouchableOpacity onPress={resendOTP}>
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>Resend OTP</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("LoginScreen", {
@@ -129,7 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    marginTop: 35,
+    marginTop: 40,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -168,42 +159,29 @@ const styles = StyleSheet.create({
     //flex: 5,
     padding: 10,
     width: "100%",
-    height: "50%",
+    height: "70%",
   },
 
   input: {
-    // marginTop:10,
-    // marginBottom:10,
-    backgroundColor: "#BABABA",
-    fontWeight: "600",
-    fontSize: 18,
-    alignSelf: "center",
-    padding: 10,
-    height: 50,
-    width: "12%",
+    height: 40,
     //margin: 12,
-    borderWidth: 0.5,
-    borderColor: "grey",
+    borderWidth: 1,
     borderRadius: 10,
     //padding: 10,
     marginBottom: 10,
-    justifyContent: "center",
-    textAlign: "center",
   },
 
   mainText: {
     color: "black",
     padding: 10,
-    fontSize: 24,
+    fontSize: 20,
     //marginTop: 10,
   },
   buttons: {
     marginTop: 10,
-    height:'20%',
-    width:'100%',
     //flex: 2,
     //width: 100,
-    padding: 10,
+    //padding: 10,
     // backgroundColor: 'red',
   },
   done: {
@@ -231,6 +209,11 @@ const styles = StyleSheet.create({
   cancelText: {
     color: "#ffffff",
     fontSize: 16,
+  },
+  errors: {
+    // marginTop: 5,
+    marginBottom: 5,
+    color: "red",
   },
 });
 
