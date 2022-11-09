@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
-const baseUrl = "http://192.168.0.116:3000/";
+const baseUrl = "https://look-me-up-server.herokuapp.com/";
 const GET = "GET";
 const DELETE = "DELETE";
 const POST = "POST";
