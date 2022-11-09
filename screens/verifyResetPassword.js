@@ -25,7 +25,7 @@ const VerifyResetScreen = ({ navigation, route }) => {
       .then(({ DATA = {} }) => {
         navigation.navigate("NewPasswordScreen", {
           screen: "NewPasswordScreen",
-          email: data.email,
+          email: email,
           OTP: data.OTP,
         });
       })
