@@ -29,12 +29,13 @@ const App = () => {
         <Stack.Screen
         name="AuthScreen"
         component={AuthStack}
-        options={{ headerShown: false }}
+        options={{ headerShown: false,gestureEnabled:false }}
+
       />
       <Stack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{ headerShown: false }}
+      options={{ headerShown: false,gestureEnabled:false }}
     />
 
       </Stack.Navigator>

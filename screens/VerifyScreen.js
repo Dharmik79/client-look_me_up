@@ -75,7 +75,7 @@ const VerifyScreen = ({ navigation, route }) => {
               Enter 6 digit OTP send on mobile
             </Text>
             <TextInput
-              // style={styles.input}
+              style={styles.input}
               keyboardType="numeric"
               maxLength={6}
               onChangeText={props.handleChange("OTP")}

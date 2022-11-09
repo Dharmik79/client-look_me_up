@@ -1,5 +1,5 @@
 import React ,{useEffect} from "react";
-import { View, Text,AsyncStorage } from "react-native";
+import { View, Text,AsyncStorage, Button } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
   
@@ -11,6 +11,10 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Home Screen</Text>
+
+      <Button title="Login" onPress={()=>{navigation.navigate("AuthScreen",{
+        screen:"LoginScreen"
+      })}}></Button>
     </View>
   );
 };

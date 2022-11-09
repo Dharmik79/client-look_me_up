@@ -40,11 +40,11 @@ const LoginScreen = ({ navigation, route }) => {
           let getData = await AsyncStorage.getItem("User");
           console.log(JSON.parse(getData).token);
           // Navigate to Home Screen
-          actions.resetForm();
+        
           navigation.navigate("HomeScreen", {
             screen: "HomeScreen",
           });
-        
+          actions.resetForm();
         }
       })
       .catch((error) => {
