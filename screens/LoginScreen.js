@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
   AsyncStorage,
+  BackHandler,
 } from "react-native";
 // import {AsyncStorage} from "react-native-community/async-storage"
 import * as yup from "yup";
@@ -40,7 +41,7 @@ const LoginScreen = ({ navigation, route }) => {
           let getData = await AsyncStorage.getItem("User");
           console.log(JSON.parse(getData).token);
           // Navigate to Home Screen
-        
+
           navigation.navigate("HomeScreen", {
             screen: "HomeScreen",
           });
@@ -53,9 +54,19 @@ const LoginScreen = ({ navigation, route }) => {
       });
   };
 
-  useEffect(()=>{
-
-  },[])
+  useEffect(() => {
+    const backPressed = () => {
+      navigation.navigate("OnboardingScreen",{
+        screen:"OnboardingScreen"
+      })
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backPressed
+    );
+    return () => backHandler.remove();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
