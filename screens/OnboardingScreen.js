@@ -65,7 +65,6 @@ const OnboardingScreen = ({ navigation }) => {
   return (
     <View style={styles.container} {...panResponder(backPressed).panHandlers}>
       <View style={styles.header}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
         <Image style={styles.logo} source={require("../assets/logo.png")} />
         <Text style={styles.mainText}>
           Explore the best experience based on your interest.
