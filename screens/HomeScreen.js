@@ -12,7 +12,6 @@ const HomeScreen = ({ navigation }) => {
   useEffect(async () => {
     let getData = await AsyncStorage.getItem("User");
     const backPressed = () => {
-      console.log("here");
       Alert.alert(
         "Exit App",
         "Do you want to exit?",
