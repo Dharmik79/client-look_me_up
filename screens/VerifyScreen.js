@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  BackHandler
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -33,7 +34,13 @@ const VerifyScreen = ({ navigation ,route}) => {
         setSubmitting(true);
       });
   };
-
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
   const resendOTP = async () => {
     await commonApi({ action: "resendEmailOTP", data: { email: email } })
       .then(({ DATA = {} }) => {

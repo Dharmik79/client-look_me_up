@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  BackHandler
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -18,7 +19,13 @@ const validationSchema = yup.object().shape({
     .required("Email Address is required."),
 });
 const ResetPasswordScreen = ({ navigation }) => {
-
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
   const sendOTP=async(data, setFieldError, setSubmitting, actions)=>{
     await commonApi({
       action: "resetPassword",

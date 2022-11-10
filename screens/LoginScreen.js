@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
   AsyncStorage,
+  BackHandler,  PanResponder,
 } from "react-native";
 // import {AsyncStorage} from "react-native-community/async-storage"
 import * as yup from "yup";
@@ -22,6 +23,23 @@ const loginValidationSchema = yup.object().shape({
     .required("Email Address is required."),
   password: yup.string().required("Password is required"),
 });
+
+let panResponder = (callback) =>
+  PanResponder.create({
+    onMoveShouldSetResponderCapture: () => true,
+    onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+      return Math.abs(gestureState.dx) > 5;
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (Platform.OS != "ios") return;
+      if (
+        Math.floor(gestureState.moveX) >= 0 &&
+        Math.floor(gestureState.moveX) <= 900 / 2
+      ) {
+        callback();
+      }
+    },
+  });
 const LoginScreen = ({ navigation, route }) => {
   const login = async (data, setFieldError, setSubmitting, actions) => {
     await commonApi({
@@ -40,7 +58,7 @@ const LoginScreen = ({ navigation, route }) => {
           let getData = await AsyncStorage.getItem("User");
           console.log(JSON.parse(getData).token);
           // Navigate to Home Screen
-        
+
           navigation.navigate("HomeScreen", {
             screen: "HomeScreen",
           });
@@ -52,12 +70,24 @@ const LoginScreen = ({ navigation, route }) => {
         setSubmitting(true);
       });
   };
+  const backPressed = () => {
+    navigation.navigate("OnboardingScreen",{
+      screen:"OnboardingScreen"
+    })
+    return true;
+  };
+  useEffect(() => {
+   
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backPressed
+    );
 
-  useEffect(()=>{
-
-  },[])
+   
+    return () => backHandler.remove();
+  }, []);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...panResponder(backPressed).panHandlers}>
       <View style={styles.header}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
         <Text style={styles.mainText}>Welcome {"\n"}back</Text>

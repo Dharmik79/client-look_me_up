@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  BackHandler
 } from "react-native";
 import { Formik } from "formik";
 import commonApi from "../api/common";
@@ -53,6 +54,14 @@ const NewPasswordScreen = ({ navigation ,route}) => {
         setSubmitting(true);
       });
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>

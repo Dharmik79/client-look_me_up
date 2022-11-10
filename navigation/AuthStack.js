@@ -14,22 +14,25 @@ const Stack = createNativeStackNavigator();
 const AuthStack = () => {
   return (
     <Stack.Navigator
-      screenOptions={{ gestureEnabled: false, headerShown: false }}
+      screenOptions={{ headerShown: false
+       }}
     >
       <Stack.Screen component={OnboardingScreen} name="OnboardingScreen" />
       <Stack.Screen component={LoginScreen} name="LoginScreen" />
       <Stack.Screen component={RegisterScreen} name="RegisterScreen" />
-      <Stack.Screen component={VerifyScreen} name="VerifyScreen" />
+      <Stack.Screen component={VerifyScreen} name="VerifyScreen" options={{ gestureEnabled: false}}/>
       <Stack.Screen
         component={ResetPasswordScreen}
         name="ResetPasswordScreen"
+        options={{ gestureEnabled: false}}
       />
       <Stack.Screen
         component={VerifyResetPasswordScreen}
         name="VerifyResetPasswordScreen"
+        options={{ gestureEnabled: false}}
       />
 
-      <Stack.Screen component={NewPasswordScreen} name="NewPasswordScreen" />
+      <Stack.Screen component={NewPasswordScreen} name="NewPasswordScreen" options={{gestureEnabled: false}}/>
     </Stack.Navigator>
   );
 };

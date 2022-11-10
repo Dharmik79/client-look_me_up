@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,64 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Button,
+  Platform,
+  PanResponder,
+  BackHandler,
+  Alert,
 } from "react-native";
 
+let panResponder = (callback) =>
+  PanResponder.create({
+    onMoveShouldSetResponderCapture: () => true,
+    onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+      return Math.abs(gestureState.dx) > 5;
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (Platform.OS != "ios") return;
+      if (
+        Math.floor(gestureState.moveX) >= 0 &&
+        Math.floor(gestureState.moveX) <= 900 / 2
+      ) {
+        callback();
+      }
+    },
+  });
 const OnboardingScreen = ({ navigation }) => {
+  const backPressed = () => {
+    Alert.alert(
+      "Exit App",
+      "Do you want to exit?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            if (Platform.OS != "ios") {
+              BackHandler.exitApp();
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+    return true;
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backPressed
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...panResponder(backPressed).panHandlers}>
       <View style={styles.header}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
         <Image style={styles.logo} source={require("../assets/logo.png")} />
         <Text style={styles.mainText}>
           Explore the best experience based on your interest.

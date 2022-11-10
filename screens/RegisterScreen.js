@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
   KeyboardAvoidingView,
+  BackHandler
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -56,7 +57,19 @@ const RegisterScreen = ({ navigation }) => {
         setSubmitting(true);
       });
   };
-
+  useEffect(() => {
+    const backPressed = () => {
+      navigation.navigate("OnboardingScreen",{
+        screen:"OnboardingScreen"
+      })
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backPressed
+    );
+    return () => backHandler.remove();
+  }, []);
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
