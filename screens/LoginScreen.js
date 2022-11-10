@@ -65,6 +65,8 @@ const LoginScreen = ({ navigation, route }) => {
       "hardwareBackPress",
       backPressed
     );
+
+   
     return () => backHandler.remove();
   }, []);
   return (
