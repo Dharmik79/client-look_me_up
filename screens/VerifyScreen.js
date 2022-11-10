@@ -8,83 +8,110 @@ import {
   Button,
   TextInput,
 } from "react-native";
+import * as yup from "yup";
+import { Formik } from "formik";
+import commonApi from "../api/common";
 
+const loginValidationSchema = yup.object().shape({
+  OTP: yup.string().required("OTP is required"),
+});
+const VerifyScreen = ({ navigation ,route}) => {
+  let {email} = route.params;
+  const verify = async (data, setFieldError, setSubmitting) => {
+    await commonApi({
+      action: "verifyEmailOTP",
+      data: { email: email, OTP: data.OTP },
+    })
+      .then(({ DATA = {} }) => {
+        navigation.navigate("LoginScreen", {
+          screen: "LoginScreen",
+          reset:true
+        });
+      })
+      .catch((error) => {
+        setFieldError("OTP", error.MESSAGE);
+        setSubmitting(true);
+      });
+  };
 
-const VerifyScreen = ({ navigation }) => {
+  const resendOTP = async () => {
+    await commonApi({ action: "resendEmailOTP", data: { email: email } })
+      .then(({ DATA = {} }) => {
+        console.log("Send Successfully");
+        // TODO
+        // Add the animation for the button to stop
+      })
+      .catch((error) => {
+        console.log("Error in sending the OTP");
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
         <Text style={styles.mainText}>Verify {"\n"}Account</Text>
         <Image
           style={styles.logo}
           source={require("../assets/verify_account.png")}
         />
       </View>
-      <View style={styles.body}>
-        <Text style={{ marginTop: 80, marginBottom: 30 }}>
-          Enter 6 digit OTP send on mobile
-        </Text>
-        <View style={{ justifyContent: "space-evenly", flexDirection: "row" }}>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-        </View>
-        <Text
-          style={{
-            marginBottom: 20,
-            marginTop: 20,
-            fontWeight: "500",
-            textDecorationLine: "underline",
-            textAlign:'center',
-          }}
-        >
-          Send again
-        </Text>
-      </View>
-      <View style={styles.buttons}>
-        <TouchableOpacity>
-          <View style={styles.done} onPress={""}>
-            <Text style={styles.doneText}>Done</Text>
+      <Formik
+        initialValues={{
+          OTP: "",
+        }}
+        validateOnBlur={true}
+        validateOnChange={true}
+        validateOnMount={true}
+        onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
+          verify(values, setFieldError, setSubmitting);
+
+          // TODO
+          // actions.resetForm() ;
+        }}
+        validationSchema={loginValidationSchema}
+      >
+        {(props) => (
+          <View style={styles.body}>
+            <Text style={{ marginBottom: 5 }}>
+              Enter 6 digit OTP send on mobile
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              maxLength={6}
+              onChangeText={props.handleChange("OTP")}
+              value={props.values.OTP}
+              onBlur={props.handleBlur("OTP")}
+            />
+            {props.errors.OTP && props.touched.OTP && (
+              <Text style={styles.errors}>{props.errors.OTP}</Text>
+            )}
+            <View style={styles.buttons}>
+              <TouchableOpacity onPress={props.handleSubmit}>
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>SUBMIT</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={resendOTP}>
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>Resend OTP</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("LoginScreen", {
+                    screen: "LoginScreen",
+                  })
+                }
+              >
+                <View style={styles.cancel}>
+                  <Text style={styles.cancelText}>Cancel</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("RegisterScreen", { screen: "RegisterScreen" })
-          }
-        >
-          <View style={styles.cancel}>
-            <Text style={styles.cancelText}>Cancel</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+        )}
+      </Formik>
     </View>
   );
 };
@@ -93,7 +120,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    marginTop: 35,
+    marginTop: 40,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -132,42 +159,29 @@ const styles = StyleSheet.create({
     //flex: 5,
     padding: 10,
     width: "100%",
-    height: "50%",
+    height: "70%",
   },
 
   input: {
-    // marginTop:10,
-    // marginBottom:10,
-    backgroundColor: "#BABABA",
-    fontWeight: "600",
-    fontSize: 18,
-    alignSelf: "center",
-    padding: 10,
-    height: 50,
-    width: "12%",
+    height: 40,
     //margin: 12,
-    borderWidth: 0.5,
-    borderColor: "grey",
+    borderWidth: 1,
     borderRadius: 10,
     //padding: 10,
     marginBottom: 10,
-    justifyContent: "center",
-    textAlign: "center",
   },
 
   mainText: {
     color: "black",
     padding: 10,
-    fontSize: 24,
+    fontSize: 20,
     //marginTop: 10,
   },
   buttons: {
     marginTop: 10,
-    height:'20%',
-    width:'100%',
     //flex: 2,
     //width: 100,
-    padding: 10,
+    //padding: 10,
     // backgroundColor: 'red',
   },
   done: {
@@ -195,6 +209,11 @@ const styles = StyleSheet.create({
   cancelText: {
     color: "#ffffff",
     fontSize: 16,
+  },
+  errors: {
+    // marginTop: 5,
+    marginBottom: 5,
+    color: "red",
   },
 });
 

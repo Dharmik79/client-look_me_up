@@ -8,19 +8,74 @@ import {
   Button,
   TextInput,
 } from "react-native";
+import { Formik } from "formik";
+import commonApi from "../api/common";
+import * as yup from "yup";
+const validationSchema = yup.object().shape({
 
+  password: yup
+    .string()
+    // .min(8, ({ min }) => `Password must be at least ${min} characters`)
+    .required("Password is required")
+    .matches(/[0-9]/, "Password requires a number"),
+  // .matches(/[a-z]/, "Password requires a lowercase letter")
+  // .matches(/[A-Z]/, "Password requires an uppercase letter")
+  // .matches(/[^\w]/, "Password requires a symbol"),
 
-const NewPasswordScreen = ({ navigation }) => {
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Must match password field value")
+    .required("Confirm Password is Required"),
+});
+
+const NewPasswordScreen = ({ navigation ,route}) => {
+  let {email,OTP} = route.params;
+
+  const setPassword = async (data, setFieldError, setSubmitting, actions) => {
+    await commonApi({
+      action: "resetOTPpassword",
+      data: {
+        email:email,
+        OTP:OTP,
+        password:data.password
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+    
+          navigation.navigate("AuthScreen", {
+            screen: "LoginScreen",
+          });
+          actions.resetForm();
+      
+      })
+      .catch((error) => {
+        setFieldError(error.DATA, error.MESSAGE);
+        setSubmitting(true);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
         <Text style={styles.mainText}>Choose new {"\n"}Password</Text>
         <Image
           style={styles.logo}
           source={require("../assets/new_password.png")}
         />
       </View>
+      <Formik
+      initialValues={{
+        password: "",
+        confirmPassword:""
+      }}
+      validateOnBlur={true}
+      validateOnChange={true}
+      validateOnMount={true}
+      onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
+        setPassword(values, setFieldError, setSubmitting, actions);
+      }}
+      validationSchema={validationSchema}
+    >
+      {(props) => (
       <View style={styles.body}>
         <Text style={{ marginTop: 80, marginBottom: 5 }}>
           Create new password
@@ -30,28 +85,48 @@ const NewPasswordScreen = ({ navigation }) => {
           secureTextEntry={true}
           style={styles.input}
           keyboardType="default"
-        />
 
+          onChangeText={props.handleChange("password")}
+          value={props.values.password}
+          onBlur={props.handleBlur("password")}
+        />
+        {props.errors.password && props.touched.password && (
+          <Text style={styles.errors}>{props.errors.password}</Text>
+        )}
         <Text style={{ marginBottom: 5 }}>Confirm password</Text>
 
         <TextInput
           secureTextEntry={true}
           style={styles.input}
           keyboardType="default"
+          onChangeText={props.handleChange("confirmPassword")}
+          value={props.values.confirmPassword}
+          onBlur={props.handleBlur("confirmPassword")}
         />
-      </View>
+        {props.errors.confirmPassword && props.touched.confirmPassword && (
+          <Text style={styles.errors}>{props.errors.confirmPassword}</Text>
+        )}
       <View style={styles.buttons}>
-        <TouchableOpacity>
-          <View style={styles.done} onPress={""}>
+        <TouchableOpacity onPress={props.handleSubmit}>
+          <View style={styles.done} >
             <Text style={styles.doneText}>Submit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("AuthScreen", {
+              screen: "ResetPasswordScreen",
+            });
+          }}
+        >
           <View style={styles.cancel}>
             <Text style={styles.cancelText}>Cancel</Text>
           </View>
         </TouchableOpacity>
       </View>
+      </View>
+      )}
+      </Formik>
     </View>
   );
 };

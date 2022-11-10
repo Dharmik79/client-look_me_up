@@ -1,13 +1,22 @@
-import React from 'react'
-import {View, Text} from 'react-native'
+import React ,{useEffect} from "react";
+import { View, Text,AsyncStorage, Button } from "react-native";
 
+const HomeScreen = ({ navigation }) => {
+  
 
-const HomeScreen = () => {
-    return(
-        <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
-            <Text>Home Screen</Text>
-        </View>
-    )
-}
+  useEffect(async()=>{
+    let getData = await AsyncStorage.getItem("User");
+    console.log(JSON.parse(getData).token);
+  },[])
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Home Screen</Text>
 
-export default HomeScreen
+      <Button title="Login" onPress={()=>{navigation.navigate("AuthScreen",{
+        screen:"LoginScreen"
+      })}}></Button>
+    </View>
+  );
+};
+
+export default HomeScreen;
