@@ -9,7 +9,7 @@ import GroupsHome from './GroupsHome'
 import Story from '../components/Story'
 import Post from '../components/Post'
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     return(
         // <KeyboardAwareScrollView>
         // <>

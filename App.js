@@ -9,14 +9,19 @@ import HomeScreen from './screens/HomeScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
 import AuthStack from './navigation/AuthStack';
 import AppStack from './navigation/AppStack';
+import MainContainer from './navigation/MainContainer';
 
-const Stack = createNativeStackNavigator();
+//const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
+    
     <NavigationContainer>
-     {/* <AuthStack/> */}
-     <AppStack/>
+      
+     {/* <AuthStack/>  */}
+     
+     {/* <AppStack/>  */}
+     <MainContainer/>
     </NavigationContainer>
   );
 }
