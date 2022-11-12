@@ -6,6 +6,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import TopBar from '../components/TopBar'
 import CreatePost from '../components/CreatePost'
 import GroupsHome from './GroupsHome'
+import Story from '../components/Story'
+import Post from '../components/Post'
 
 const HomeScreen = () => {
     return(
@@ -17,9 +19,10 @@ const HomeScreen = () => {
                 <ScrollView>
                 <TopBar/>
                 <CreatePost/>
+                <Story/>
                 <GroupsHome/>
+                <Post/>
                 </ScrollView>
-
         </View>
         // {/* </StatusBar> */}
         // </>
@@ -32,8 +35,8 @@ const styles = StyleSheet.create({
       backgroundColor: "#ffffff",
       marginTop: 35,
       //padding:10,
-      paddingLeft:10,
-      paddingRight:10,
+      //paddingLeft:10,
+      //paddingRight:10,
     
     },
   

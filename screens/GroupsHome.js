@@ -60,11 +60,12 @@ const styles = StyleSheet.create({
     height: 60,
     marginTop: 10,
     //backgroundColor: "#3491ff",
-    borderRadius:10,
+    //borderRadius:10,
     borderWidth:2,
     borderColor: "#f0f0f0",
     flexDirection: "row",
     alignItems: "center",
+    paddingLeft:5,
   },
 
   group: {
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     borderColor: "#3491ff",
     backgroundColor:'#3491ff',
     marginRight: 10,
-    marginLeft:5,
+    //marginLeft:5,
   },
   text: {
     color: "#ffffff",

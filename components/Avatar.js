@@ -36,6 +36,8 @@ const Avatar = ({source}) => {
       borderRadius:20,
       //padding:10,
       //alignItems:'center',
+      borderColor:'#ffffff',
+      borderWidth:2,
   },
   });
   
