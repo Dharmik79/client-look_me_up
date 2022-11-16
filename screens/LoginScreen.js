@@ -8,13 +8,16 @@ import {
   Button,
   TextInput,
   AsyncStorage,
-  BackHandler,  PanResponder,
+  BackHandler,  PanResponder, Pressable
 } from "react-native";
 // import {AsyncStorage} from "react-native-community/async-storage"
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
 import { CheckBox } from "react-native-btr";
+//below icon is for showing password visibility
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -41,6 +44,8 @@ let panResponder = (callback) =>
     },
   });
 const LoginScreen = ({ navigation, route }) => {
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+
   const login = async (data, setFieldError, setSubmitting, actions) => {
     await commonApi({
       action: "login",
@@ -120,14 +125,20 @@ const LoginScreen = ({ navigation, route }) => {
               <Text style={styles.errors}>{props.errors.email}</Text>
             )}
             <Text>Password</Text>
-            <TextInput
-              secureTextEntry={true}
-              style={styles.input}
-              keyboardType="default"
-              onChangeText={props.handleChange("password")}
-              value={props.values.password}
-              onBlur={props.handleBlur("password")}
-            />
+            <View style={(styles.view)}>
+              <TextInput
+                width= '90%'
+                secureTextEntry={passwordVisibility}
+                style={styles.viewinput}
+                keyboardType="default"
+                onChangeText={props.handleChange("password")}
+                value={props.values.password}
+                onBlur={props.handleBlur("password")}
+              />
+              <Pressable style={{ width: '10%' }} onPress={handlePasswordVisibility}>
+                <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+              </Pressable>
+            </View>
             {props.errors.password && props.touched.password && (
               <Text style={styles.errors}>{props.errors.password}</Text>
             )}
@@ -284,6 +295,20 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
   },
+  view: {
+    borderWidth: 1,
+    borderRadius: 10,
+    // backgroundColor: "red",
+    marginBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  viewinput: {
+    marginLeft: 20,
+    height: 40,
+    marginRight: 5,
+}
 });
 
 export default LoginScreen;

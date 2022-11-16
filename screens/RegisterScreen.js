@@ -8,13 +8,16 @@ import {
   Button,
   TextInput,
   KeyboardAvoidingView,
-  BackHandler
+  BackHandler,
+  Pressable
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
 import { CheckBox } from "react-native-btr";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
 
 const registrationValidationSchema = yup.object().shape({
   firstName: yup.string().required("FirstName is required"),
@@ -40,6 +43,8 @@ const registrationValidationSchema = yup.object().shape({
 });
 
 const RegisterScreen = ({ navigation }) => {
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+
   const register = async (data, setFieldError, setSubmitting, actions) => {
     await commonApi({
       action: "register",
@@ -154,27 +159,39 @@ const RegisterScreen = ({ navigation }) => {
               )}
 
               <Text style={{ marginBottom: 5 }}>Password</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="default"
-                onChangeText={props.handleChange("password")}
-                value={props.values.password}
-                onBlur={props.handleBlur("password")}
-                secureTextEntry
-              />
+              <View style={(styles.view)}>
+                <TextInput
+                  width= '90%'
+                  style={styles.viewinput}
+                  keyboardType="default"
+                  onChangeText={props.handleChange("password")}
+                  value={props.values.password}
+                  onBlur={props.handleBlur("password")}
+                  secureTextEntry={passwordVisibility}
+                />
+                <Pressable style={{ width: '10%' }} onPress={handlePasswordVisibility}>
+                  <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                </Pressable>
+              </View>
               {props.errors.password && props.touched.password && (
                 <Text style={styles.errors}>{props.errors.password}</Text>
               )}
 
               <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
-              <TextInput
-                style={styles.input}
-                keyboardType="default"
-                onChangeText={props.handleChange("confirmPassword")}
-                value={props.values.confirmPassword}
-                onBlur={props.handleBlur("confirmPassword")}
-                secureTextEntry
-              />
+              <View style={(styles.view)}>
+                <TextInput
+                  width= '90%'
+                  style={styles.viewinput}
+                  keyboardType="default"
+                  onChangeText={props.handleChange("confirmPassword")}
+                  value={props.values.confirmPassword}
+                  onBlur={props.handleBlur("confirmPassword")}
+                  secureTextEntry={passwordVisibility}
+                />
+                <Pressable style={{ width: '10%' }} onPress={handlePasswordVisibility}>
+                  <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                </Pressable>
+            </View>
               {props.errors.confirmPassword &&
                 props.touched.confirmPassword && (
                   <Text style={styles.errors}>
@@ -297,6 +314,20 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
   },
+  view: {
+    borderWidth: 1,
+    borderRadius: 10,
+    // backgroundColor: "red",
+    marginBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  viewinput: {
+    marginLeft: 20,
+    height: 40,
+    marginRight: 5,
+  }
 });
 
 export default RegisterScreen;
