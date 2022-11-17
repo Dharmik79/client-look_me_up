@@ -31,7 +31,7 @@ const App = () => {
      {/* <AppStack/>  */}
      {/* <MainContainer/> */}
       <Stack.Navigator>
-       
+      
      
         <Stack.Screen
         name="AuthScreen"
@@ -39,12 +39,13 @@ const App = () => {
         options={{ headerShown: false,gestureEnabled:false }}
 
       />
+   
       <Stack.Screen
       name="HomeScreen"
-      component={HomeScreen}
+      component={MainContainer}
       options={{ headerShown: false,gestureEnabled:false }}
-    />
 
+    />
       </Stack.Navigator>
     </NavigationContainer>
   );

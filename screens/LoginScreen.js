@@ -65,7 +65,7 @@ const LoginScreen = ({ navigation, route }) => {
           // Navigate to Home Screen
 
           navigation.navigate("HomeScreen", {
-            screen: "HomeScreen",
+            screen: "Home",
           });
           actions.resetForm();
         }
