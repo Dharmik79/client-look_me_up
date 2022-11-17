@@ -1,6 +1,14 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, Button } from 'react-native';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Button,
+} from "react-native";
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,7 +30,23 @@ const App = () => {
      
      {/* <AppStack/>  */}
      <MainContainer/>
+      <Stack.Navigator>
+       
+     
+        <Stack.Screen
+        name="AuthScreen"
+        component={AuthStack}
+        options={{ headerShown: false,gestureEnabled:false }}
+
+      />
+      <Stack.Screen
+      name="HomeScreen"
+      component={HomeScreen}
+      options={{ headerShown: false,gestureEnabled:false }}
+    />
+
+      </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 export default App;
