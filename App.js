@@ -10,19 +10,26 @@ import {
   Button,
 } from "react-native";
 
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import OnboardingScreen from "./screens/OnboardingScreen";
-import AuthStack from "./navigation/AuthStack";
-import AppStack from "./navigation/AppStack";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import OnboardingScreen from './screens/OnboardingScreen';
+import AuthStack from './navigation/AuthStack';
+import AppStack from './navigation/AppStack';
+import MainContainer from './navigation/MainContainer';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
+    
     <NavigationContainer>
+      
+     {/* <AuthStack/>  */}
+     
+     {/* <AppStack/>  */}
+     {/* <MainContainer/> */}
       <Stack.Navigator>
        
      

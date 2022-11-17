@@ -1,51 +1,112 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
-  AsyncStorage,
-  Button,
-  BackHandler,
-  Alert,
+  StyleSheet,
+  StatusBar,
+  ScrollView,
+  SafeAreaView,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+import TopBar from "../components/TopBar";
+import CreatePost from "../components/CreatePost";
+import GroupsHome from "./GroupsHome";
+import Story from "../components/Story";
+import Post from "../components/Post";
+import BottomTabNavigator from "../components/BottomTabNavigator";
 
 const HomeScreen = ({ navigation }) => {
-  useEffect(async () => {
-    let getData = await AsyncStorage.getItem("User");
-    const backPressed = () => {
-      Alert.alert(
-        "Exit App",
-        "Do you want to exit?",
-        [
-          {
-            text: "No",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-          { text: "Yes", onPress: () => BackHandler.exitApp() },
-        ],
-        { cancelable: false }
-      );
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backPressed
-    );
-    return () => backHandler.remove();
-  }, []);
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Login"
-        onPress={() => {
-          navigation.navigate("AuthScreen", {
-            screen: "LoginScreen",
-          });
-        }}
-      ></Button>
+    // <KeyboardAwareScrollView>
+    // <>
+    // <StatusBar backgroundColor="#ffffff"
+    // barStyle="dark-content">
+    <View style={styles.container}>
+      <ScrollView>
+        <TopBar />
+        <CreatePost />
+        <Story />
+        <GroupsHome />
+        <Post />
+        {/* <SafeAreaView
+          style={styles.bottomNavigation}
+        >
+          <BottomTabNavigator />
+        </SafeAreaView> */}
+      </ScrollView>
     </View>
+    // {/* </StatusBar> */}
+    // </>
+    // </KeyboardAwareScrollView>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    marginTop: 35,
+    //padding:10,
+    //paddingLeft:10,
+    //paddingRight:10,
+  },
+  bottomNavigation: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    justifyContent: "flex-end",
+    backgroundColor: "#3491ff",
+  },
+});
+
+// import React, { useEffect } from "react";
+// import {
+//   View,
+//   Text,
+//   AsyncStorage,
+//   Button,
+//   BackHandler,
+//   Alert,
+// } from "react-native";
+
+// const HomeScreen = ({ navigation }) => {
+//   useEffect(async () => {
+//     let getData = await AsyncStorage.getItem("User");
+//     const backPressed = () => {
+//       Alert.alert(
+//         "Exit App",
+//         "Do you want to exit?",
+//         [
+//           {
+//             text: "No",
+//             onPress: () => console.log("Cancel Pressed"),
+//             style: "cancel",
+//           },
+//           { text: "Yes", onPress: () => BackHandler.exitApp() },
+//         ],
+//         { cancelable: false }
+//       );
+//       return true;
+//     };
+//     const backHandler = BackHandler.addEventListener(
+//       "hardwareBackPress",
+//       backPressed
+//     );
+//     return () => backHandler.remove();
+//   }, []);
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Home Screen</Text>
+//       <Button
+//         title="Login"
+//         onPress={() => {
+//           navigation.navigate("AuthScreen", {
+//             screen: "LoginScreen",
+//           });
+//         }}
+//       ></Button>
+//     </View>
+//   );
+// };
 
 export default HomeScreen;
