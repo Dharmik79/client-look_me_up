@@ -19,7 +19,7 @@ import AuthStack from './navigation/AuthStack';
 import AppStack from './navigation/AppStack';
 import MainContainer from './navigation/MainContainer';
 
-//const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
@@ -29,7 +29,7 @@ const App = () => {
      {/* <AuthStack/>  */}
      
      {/* <AppStack/>  */}
-     <MainContainer/>
+     {/* <MainContainer/> */}
       <Stack.Navigator>
        
      
