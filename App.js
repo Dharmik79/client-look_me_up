@@ -26,19 +26,19 @@ const App = () => {
     <ContextProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          {user && token ? (
+       
             <Stack.Screen
               name="AuthScreen"
               component={AuthStack}
               options={{ headerShown: false, gestureEnabled: false }}
             />
-          ) : (
+         
             <Stack.Screen
               name="HomeScreen"
               component={MainContainer}
               options={{ headerShown: false, gestureEnabled: false }}
             />
-          )}
+          
         </Stack.Navigator>
       </NavigationContainer>
     </ContextProvider>

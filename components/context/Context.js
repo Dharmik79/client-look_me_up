@@ -1,11 +1,11 @@
 import { createContext, useEffect, useReducer } from "react";
-import { AsyncStorage } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 import Reducer from "./Reducer";
 const getUser=async()=>{
-    return await JSON.parse(AsyncStorage.getItem("user"));
+    return await SecureStore.getItemAsync("user");
 }
 const getToken=async()=>{
-    return await JSON.parse(AsyncStorage.getItem("token"));
+    return await SecureStore.getItemAsync("token");
 }
 const INITIAL_STATE = {
   user: getUser(),
@@ -18,11 +18,10 @@ export const Context = createContext(INITIAL_STATE);
 
 export const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, INITIAL_STATE);
-
   useEffect(() => {
     const setData = async () => {
-      await AsyncStorage.setItem("user", JSON.stringify(state.user));
-      await AsyncStorage.setItem("token", JSON.stringify(state.token));
+      await SecureStore.setItemAsync("user", JSON.stringify(state.user));
+      await SecureStore.setItemAsync("token", JSON.stringify(state.token));
     };
     setData();
   }, [state.user, state.token]);
