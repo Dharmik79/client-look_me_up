@@ -67,7 +67,6 @@ const LoginScreen = ({ navigation, route }) => {
           let { token, ...data } = DATA;
           dispatch({ type: "LOGIN_SUCCESS", payload: data, token: token });
           // Navigate to Home Screen
-
           navigation.navigate("HomeScreen", {
             screen: "Home",
           });
