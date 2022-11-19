@@ -12,25 +12,41 @@ import {
 } from "react-native";
 import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
-import CoverAndProfile from "../components/CoverAndProfile";
-import ProfileDetails from "../components/ProfileDetails";
-import UserFriends from "../components/UserFriends";
-import UserGroups from "../components/UserGroups";
-const ProfileScreen = ({ navigation }) => {
+
+const UserGroups = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <CoverAndProfile />
-        <ProfileDetails />
-       <UserFriends/>
-       <UserGroups/>
-
-        {/* Show only if the profile is users profile */}
-        <CreatePost />
-
-        {/* Show only users posts */}
-        <Post />
-      </ScrollView>
+ <View style={styles.friendsContainerBox}>
+          <View style={styles.friendsContainerOutline}>
+            <View style={styles.totalFriends}>
+              <Text>Groups (20) </Text>
+              <TouchableOpacity>
+                <Text style={{ textDecorationLine: "underline" }}>
+                  View All
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.friendsContainer}>
+              <Image
+                style={styles.friendImage}
+                source={require("../assets/1.jpg")}
+              />
+              <Image
+                style={styles.friendImage}
+                source={require("../assets/5.jpg")}
+              />
+              <Image
+                style={styles.friendImage}
+                source={require("../assets/4.jpg")}
+              />
+              <Image
+                style={styles.friendImage}
+                source={require("../assets/6.jpg")}
+              />
+            </View>
+          </View>
+        </View>
+     
     </View>
   );
 };
@@ -38,7 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    marginTop: 35,
+   // marginTop: 35,
     //padding:10,
     //paddingLeft:10,
     //paddingRight:10,
@@ -82,5 +98,6 @@ const styles = StyleSheet.create({
     height: 20,
     width: "100%",
   },
+  
 });
-export default ProfileScreen;
+export default UserGroups;

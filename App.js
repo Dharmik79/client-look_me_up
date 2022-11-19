@@ -31,7 +31,9 @@ const App = () => {
      
      {/* <AppStack/>  */}
      {/* <EditProfile/> */}
+     
      <MainContainer/>
+  
       {/* <Stack.Navigator>
        
      
