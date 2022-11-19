@@ -30,8 +30,8 @@ const App = () => {
      {/* <AuthStack/>  */}
      
      {/* <AppStack/>  */}
-     <EditProfile/>
-     {/* <MainContainer/> */}
+     {/* <EditProfile/> */}
+     <MainContainer/>
       {/* <Stack.Navigator>
        
      
