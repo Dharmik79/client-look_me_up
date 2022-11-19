@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     //flex: 5,
     padding: 10,
     width: "100%",
-    height: "50%",
+    height: "70%",
   },
 
   input: {
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     width: "100%",
     //flex: 2,
     //width: 100,
-    padding: 10,
+    //padding: 10,
     // backgroundColor: 'red',
   },
   done: {
