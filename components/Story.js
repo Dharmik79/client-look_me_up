@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
     //borderWidth:2,
     //borderColor:'#f0f0f0',
     // borderRadius:10,
-    marginTop: 10,
+   // marginTop: 10,
+    marginBottom:10,
 
     // backgroundColor: "#3491ff",
   },

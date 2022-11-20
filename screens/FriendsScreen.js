@@ -9,6 +9,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const FriendsScreen = ({navigation}) => {
     return (
@@ -16,7 +17,7 @@ const FriendsScreen = ({navigation}) => {
         <Text 
         onPress={()=>navigation.navigate('Home')}
         style={{fontSize:26, fontWeight:'bold'}}
-        >FriendsScreen</Text>
+        >Friends</Text>
     </View>
     );
 };

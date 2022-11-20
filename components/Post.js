@@ -1,7 +1,8 @@
-import React from "react";
+import React ,{useState} from "react";
 import {
   View,
   Text,
+  Modal,
   StyleSheet,
   Image,
   TouchableOpacity,
@@ -21,11 +22,51 @@ import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Post = () => {
+
+  const [modalOpen, setmodalOpen] = useState(false);
+  
+
   return (
     <>
       {/* STORY 1 */}
 
       <View style={styles.container}>
+
+      <Modal visible={modalOpen}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalContent}>
+            <Text style={{fontWeight:'bold',fontSize:16,textAlign:'center'}}>You really want to delete this masterpiece?</Text>
+            <View style={styles.fixButtons}>
+            {/* <Button
+                title="Delete"
+                color={'red'}
+              /> */}
+              <View style={styles.deletePost}>
+           
+           <Text style={styles.deleteYes} onPress={() => {setmodalOpen(false)}}>Delete</Text>
+         </View>
+              
+
+<View style={styles.deletefix}>
+{/* <Button
+                title="Cancel"
+                onPress={() => {
+                  setmodalOpen(false)
+                }}
+              /> */}
+              <View style={styles.cancelPost}>
+           
+            <Text style={styles.deleteCancel} onPress={() => {setmodalOpen(false)}}>Cancel</Text>
+          </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
         <View style={styles.header}>
           <View style={styles.row}>
             <Avatar source={require("../assets/a3.png")} />
@@ -37,7 +78,9 @@ const Post = () => {
               </View>
             </View>
           </View>
+          <TouchableOpacity onPress={() => setmodalOpen(true)}>
           <Icon name="dots-three-vertical" size={20} />
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.post}>This look good....!</Text>
@@ -379,7 +422,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: "#f0f0f0",
-    marginTop: 10,
+   // marginTop: 10,
+   marginBottom:10,
     marginLeft: 5,
     marginRight: 5,
   },
@@ -542,6 +586,89 @@ textAlign:'center',
   divider: {
     marginBottom: 10,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalContent: {
+    //height:250,
+    width: '70%',
+    backgroundColor: "#f0f0f0",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+ 
+  fixButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop:20,
+
+  },
+  deletefix:{
+    //marginLeft: 60,
+  },
+  deletePost: {
+   // flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginLeft: 2,
+    marginRight: 2,
+    height: 40,
+    width:80,
+    //width:50,
+    backgroundColor: "red",
+    // opacity:0.2,
+    borderRadius: 10,
+    marginBottom:10,
+ 
+  },
+  deleteYes: {
+    //paddingLeft:10,
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#ffffff",
+    backgroundColor:'red',
+    borderRadius: 10,
+    
+  },
+  cancelPost: {
+    // flex: 1,
+     flexDirection: "row",
+     alignItems: "center",
+     justifyContent: "space-evenly",
+     marginLeft: 15,
+     marginRight: 2,
+     height: 40,
+     width:80,
+     //width:50,
+     //color:'black',
+     backgroundColor: "#3491ff",
+     //borderColor:'#3491ff',
+     // opacity:0.2,
+     borderRadius: 10,
+     //borderWidth:2,
+   },
+  deleteCancel: {
+    //paddingLeft:10,
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#ffffff",
+    backgroundColor:'#3491ff',
+    borderRadius: 10,
+  }
 });
 
 export default Post;

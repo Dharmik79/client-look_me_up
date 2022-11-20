@@ -10,12 +10,14 @@ import ProfileIcon from 'react-native-vector-icons/Feather';
 import HomeScreen from '../screens/HomeScreen';
 import FriendsScreen from "../screens/FriendsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import EditProfile from "../screens/EditProfile";
 
 //Screen Names
 
 const homeName='Home';
 const friendsName='Friends';
 const profileName='Profile';
+const editProfile ='Settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +41,10 @@ const MainContainer = () => {
             } else if (rn === profileName) {
               iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
             }
-
+           else if (rn === editProfile) {
+            iconName = focused ? 'settings' : 'settings-outline';
+          }
+          
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />; 
           },
@@ -55,6 +60,8 @@ const MainContainer = () => {
         <Tab.Screen name={homeName} component={HomeScreen} options={{headerShown:false}}/>
         <Tab.Screen name={friendsName} component={FriendsScreen} options={{headerShown:false}} />
         <Tab.Screen name={profileName} component={ProfileScreen} options={{headerShown:false}}/>
+        <Tab.Screen name={editProfile} component={EditProfile} options={{headerShown : false}}/>
+        
 
       </Tab.Navigator>
      
