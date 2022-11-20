@@ -8,12 +8,11 @@ const getToken=async()=>{
     return await SecureStore.getItemAsync("token");
 }
 const INITIAL_STATE = {
-  user: getUser(),
-  token: getToken(),
+  user: null,
+  token: null,
   isFetching: false,
   error: false,
-};
-
+}
 export const Context = createContext(INITIAL_STATE);
 
 export const ContextProvider = ({ children }) => {
