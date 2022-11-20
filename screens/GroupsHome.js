@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 60,
-    marginTop: 10,
+   // marginTop: 10,
     //backgroundColor: "#3491ff",
     //borderRadius:10,
     borderWidth:2,
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingLeft:5,
+    marginBottom:10,
   },
 
   group: {

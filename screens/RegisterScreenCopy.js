@@ -110,7 +110,7 @@ const RegisterScreen = ({ navigation }) => {
         >
           {(props) => (
             <View style={styles.body}>
-              <Text style={{ marginBottom: 5 }}>First Name</Text>
+              <Text style={{ marginBottom: 5,opacity: 0.5, }}>First Name</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="default"
@@ -121,7 +121,7 @@ const RegisterScreen = ({ navigation }) => {
               {props.errors.firstName && props.touched.firstName && (
                 <Text style={styles.errors}>{props.errors.firstName}</Text>
               )}
-              <Text style={{ marginBottom: 5 }}>Last Name</Text>
+              <Text style={{ marginBottom: 5,opacity: 0.5, }}>Last Name</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="default"
@@ -133,7 +133,7 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.errors}>{props.errors.lastName}</Text>
               )}
 
-              <Text style={{ marginBottom: 5 }}>Mobile Number</Text>
+              <Text style={{ marginBottom: 5, opacity: 0.5, }}>Mobile Number</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -146,7 +146,7 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.errors}>{props.errors.phone}</Text>
               )}
 
-              <Text style={{ marginBottom: 5 }}>Email</Text>
+              <Text style={{ marginBottom: 5,opacity: 0.5, }}>Email</Text>
               <TextInput
                 style={styles.input}
                 keyboardType="default"
@@ -158,7 +158,7 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.errors}>{props.errors.email}</Text>
               )}
 
-              <Text style={{ marginBottom: 5 }}>Password</Text>
+              <Text style={{ marginBottom: 5,opacity: 0.5, }}>Password</Text>
               <View style={(styles.view)}>
                 <TextInput
                   width= '90%'
@@ -178,7 +178,7 @@ const RegisterScreen = ({ navigation }) => {
                 <Text style={styles.errors}>{props.errors.password}</Text>
               )}
 
-              <Text style={{ marginBottom: 5 }}>Confirm Password</Text>
+              <Text style={{ marginBottom: 5,opacity: 0.5, }}>Confirm Password</Text>
               <View style={(styles.view)}>
                 <TextInput
                   width= '90%'
@@ -202,7 +202,7 @@ const RegisterScreen = ({ navigation }) => {
 
               <View style={{ flexDirection: "row" }}>
                 <CheckBox checked="true" color="#3491ff" />
-                <Text style={{ marginLeft: 5 }}>
+                <Text style={{ marginLeft: 5,opacity: 0.5, }}>
                   Agree to terms and conditions
                 </Text>
               </View>
@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+    borderColor: "#CDCDCD",
   },
 
   mainText: {
@@ -322,13 +323,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
+    borderColor: "#CDCDCD",
   },
   viewinput: {
   //  marginLeft: 20,
     height: 40,
     marginRight: 5,
     padding:10,
+    
   }
 });
 

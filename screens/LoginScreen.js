@@ -18,6 +18,7 @@ import commonApi from "../api/common";
 import { CheckBox } from "react-native-btr";
 //below icon is for showing password visibility
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTogglePasswordVisibility } from "../Hooks/useTogglePasswordVisibility";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -95,6 +96,7 @@ const LoginScreen = ({ navigation, route }) => {
     return () => backHandler.remove();
   }, []);
   return (
+    <KeyboardAwareScrollView style={{backgroundColor:'#ffffff'}}>
     <View style={styles.container} {...panResponder(backPressed).panHandlers}>
       <View style={styles.header}>
         <Text style={styles.mainText}>Welcome {"\n"}back</Text>
@@ -190,6 +192,7 @@ const LoginScreen = ({ navigation, route }) => {
         )}
       </Formik>
     </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -213,20 +216,20 @@ const styles = StyleSheet.create({
     height: 167,
     width: 179,
   },
-  header: {
-    //backgroundColor: 'skyblue',
-    //flex: 1,
-    // marginTop: '10%',
-    width: "100%",
-    flexDirection: "row",
-    height: "30%",
-    //marginTop:100,
-    //padding: 20,
+  // header: {
+  //   //backgroundColor: 'skyblue',
+  //   //flex: 1,
+  //   marginTop:'10%',
+  //   width: "100%",
+  //   flexDirection: "row",
+  //   height: "30%",
+  //   //marginTop:100,
+  //   //padding: 20,
 
-    // backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
+  //   // backgroundColor: '#fff',
+  //   // alignItems: 'center',
+  //   // justifyContent: 'center',
+  // },
   logo: {
     // marginTop:20,
     // marginLeft:130,
@@ -241,8 +244,8 @@ const styles = StyleSheet.create({
     // marginTop: '10%',
     width: "100%",
     flexDirection: "row",
-    height: "30%",
-    //marginTop:100,
+    height: "40%",
+    marginTop:50,
     //padding: 20,
 
     //marginTop: 25,
@@ -257,7 +260,8 @@ const styles = StyleSheet.create({
 
     padding: 10,
     width: "100%",
-    height: "50%",
+    height: "60%",
+    marginTop:50,
   },
   rememberme: {
     flexDirection: "row",
@@ -283,11 +287,11 @@ const styles = StyleSheet.create({
     //marginTop: 85,
   },
   buttons: {
-    marginTop: 10,
+    marginTop: 20,
     //flex: 2,
     width: "100%",
     height: "20%",
-    padding: 10,
+    //padding: 10,
 
     // backgroundColor: 'red',
   },
@@ -296,7 +300,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3491ff",
     borderRadius: 10,
     padding: 10,
-    //height:40,
+    height:40,
     //alignContent:'center',
     alignItems: "center",
   },
@@ -314,10 +318,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   viewinput: {
-    marginLeft: 20,
+   // marginLeft: 20,
     height: 40,
     marginRight: 5,
-  },
+    padding:10,
+}
 });
 
 export default LoginScreen;
