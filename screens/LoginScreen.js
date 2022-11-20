@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,21 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  AsyncStorage,
-  BackHandler,  PanResponder, Pressable
+  BackHandler,
+  PanResponder,
+  Pressable,
 } from "react-native";
-// import {AsyncStorage} from "react-native-community/async-storage"
+import { Context } from "../components/context/Context";
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
 import { CheckBox } from "react-native-btr";
 //below icon is for showing password visibility
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
+import { useTogglePasswordVisibility } from "../Hooks/useTogglePasswordVisibility";
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -45,7 +48,9 @@ let panResponder = (callback) =>
     },
   });
 const LoginScreen = ({ navigation, route }) => {
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const dispatch = useDispatch();
+  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+    useTogglePasswordVisibility();
 
   const login = async (data, setFieldError, setSubmitting, actions) => {
     await commonApi({
@@ -60,13 +65,13 @@ const LoginScreen = ({ navigation, route }) => {
           });
           actions.resetForm();
         } else {
-          await AsyncStorage.setItem("User", JSON.stringify(DATA));
-          let getData = await AsyncStorage.getItem("User");
-          console.log(JSON.parse(getData).token);
+          let { token, ...data } = DATA;
+          dispatch({ type: "LOGIN_SUCCESS", payload: data, token: token });
+          await AsyncStorage.setItem("user",JSON.stringify(data))
+          await AsyncStorage.setItem("token",JSON.stringify(token))
           // Navigate to Home Screen
-
           navigation.navigate("HomeScreen", {
-            screen: "HomeScreen",
+            screen: "Home",
           });
           actions.resetForm();
         }
@@ -77,26 +82,23 @@ const LoginScreen = ({ navigation, route }) => {
       });
   };
   const backPressed = () => {
-    navigation.navigate("OnboardingScreen",{
-      screen:"OnboardingScreen"
-    })
+    navigation.navigate("OnboardingScreen", {
+      screen: "OnboardingScreen",
+    });
     return true;
   };
   useEffect(() => {
-   
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backPressed
     );
 
-   
     return () => backHandler.remove();
   }, []);
   return (
     <KeyboardAwareScrollView style={{backgroundColor:'#ffffff'}}>
     <View style={styles.container} {...panResponder(backPressed).panHandlers}>
       <View style={styles.header}>
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
         <Text style={styles.mainText}>Welcome {"\n"}back</Text>
         <Image style={styles.logo} source={require("../assets/login.png")} />
       </View>
@@ -127,9 +129,9 @@ const LoginScreen = ({ navigation, route }) => {
               <Text style={styles.errors}>{props.errors.email}</Text>
             )}
             <Text>Password</Text>
-            <View style={(styles.view)}>
+            <View style={styles.view}>
               <TextInput
-                width= '90%'
+                width="90%"
                 secureTextEntry={passwordVisibility}
                 style={styles.viewinput}
                 keyboardType="default"
@@ -137,8 +139,15 @@ const LoginScreen = ({ navigation, route }) => {
                 value={props.values.password}
                 onBlur={props.handleBlur("password")}
               />
-              <Pressable style={{ width: '10%' }} onPress={handlePasswordVisibility}>
-                <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+              <Pressable
+                style={{ width: "10%" }}
+                onPress={handlePasswordVisibility}
+              >
+                <MaterialCommunityIcons
+                  name={rightIcon}
+                  size={22}
+                  color="#232323"
+                />
               </Pressable>
             </View>
             {props.errors.password && props.touched.password && (
@@ -306,7 +315,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   viewinput: {
    // marginLeft: 20,

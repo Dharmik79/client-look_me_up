@@ -1,23 +1,42 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text } from "react-native";
 import {
   createNativeStackNavigator,
   NavigationContainer,
 } from "@react-navigation/native-stack";
-
-import HomeScreen from "../screens/HomeScreen";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import MainContainer from "./MainContainer";
 import AuthStack from "./AuthStack";
-
+import { Init } from "../components/context/Actions";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+  const dispatch = useDispatch();
+  const init = async () => {
+    await dispatch(Init());
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
-    <Stack.Navigator screenOptions={{ gestureEnabled: false, headerShown: false }}>
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator>
+      {token.length != 0 ? (
+        <Stack.Screen
+          name="HomeScreen"
+          component={MainContainer}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+      ) : (
+        <Stack.Screen
+          name="AuthScreen"
+          component={AuthStack}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+      )}
     </Stack.Navigator>
   );
 };
