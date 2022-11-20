@@ -7,13 +7,11 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  AsyncStorage,
   BackHandler,
   PanResponder,
   Pressable,
 } from "react-native";
 import { Context } from "../components/context/Context";
-// import {AsyncStorage} from "react-native-community/async-storage"
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
@@ -22,6 +20,7 @@ import { CheckBox } from "react-native-btr";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTogglePasswordVisibility } from "../Hooks/useTogglePasswordVisibility";
 import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -67,6 +66,8 @@ const LoginScreen = ({ navigation, route }) => {
         } else {
           let { token, ...data } = DATA;
           dispatch({ type: "LOGIN_SUCCESS", payload: data, token: token });
+          await AsyncStorage.setItem("user",JSON.stringify(data))
+          await AsyncStorage.setItem("token",JSON.stringify(token))
           // Navigate to Home Screen
           navigation.navigate("HomeScreen", {
             screen: "Home",

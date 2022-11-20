@@ -11,6 +11,8 @@ import { Init } from "../components/context/Actions";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
   const dispatch = useDispatch();
   const init = async () => {
     await dispatch(Init());
@@ -22,16 +24,19 @@ const AppStack = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="AuthScreen"
-        component={AuthStack}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
-        name="HomeScreen"
-        component={MainContainer}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
+      {token.length != 0 ? (
+        <Stack.Screen
+          name="HomeScreen"
+          component={MainContainer}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+      ) : (
+        <Stack.Screen
+          name="AuthScreen"
+          component={AuthStack}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+      )}
     </Stack.Navigator>
   );
 };
