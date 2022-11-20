@@ -21,6 +21,7 @@ import { CheckBox } from "react-native-btr";
 //below icon is for showing password visibility
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTogglePasswordVisibility } from "../Hooks/useTogglePasswordVisibility";
+import { useDispatch } from "react-redux";
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -47,7 +48,7 @@ let panResponder = (callback) =>
     },
   });
 const LoginScreen = ({ navigation, route }) => {
-  const { dispatch } = useContext(Context);
+  const dispatch = useDispatch();
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 

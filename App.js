@@ -18,15 +18,16 @@ import MainContainer from "./navigation/MainContainer";
 import { ContextProvider } from "./components/context/Context";
 const Stack = createNativeStackNavigator();
 import { Context } from "./components/context/Context";
-import AppStack from "./navigation/AppStack"
-
+import AppStack from "./navigation/AppStack";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { store } from "./components/context/Context";
 const App = () => {
   return (
-    <ContextProvider>
+    <Provider store={store}>
       <NavigationContainer>
-       <AppStack/>
+        <AppStack />
       </NavigationContainer>
-    </ContextProvider>
+    </Provider>
   );
 };
 export default App;

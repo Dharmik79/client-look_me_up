@@ -1,4 +1,19 @@
-const Reducer = (state, action) => {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const getUser=async()=>{
+    return await AsyncStorage.getItem("user");
+}
+const getToken=async()=>{
+    return await AsyncStorage.getItem("token");
+}
+const INITIAL_STATE = {
+  user: getUser(),
+  token:getToken(),
+  isFetching: false,
+  error: false,
+}
+
+const Reducer = (state=INITIAL_STATE, action) => {
     switch (action.type) {
       case "LOGIN_START":
         return {
