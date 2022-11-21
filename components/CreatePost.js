@@ -34,7 +34,7 @@ const CreatePost = () => {
      setPost({images:[],desc:""})
       })
       .catch((error) => {
-        console.error("Fetch Posts", error);
+        console.error("Create Post", error);
       });
     
   };

@@ -15,7 +15,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import Like from "react-native-vector-icons/AntDesign";
 import Comment from "react-native-vector-icons/MaterialIcons";
 import Share from "react-native-vector-icons/MaterialIcons";
-
+import moment from "moment";
 import Avatar from "./Avatar";
 
 import Send from "react-native-vector-icons/MaterialIcons";
@@ -32,13 +32,25 @@ const Post = () => {
     const getPosts = async () => {
       await commonApi({
         action: "findAllPost",
-        data: {},
+        data: {
+          options: {
+            pagination: false,
+            populate: [
+              {
+                path: "userId",
+                model: "user",
+                select: ["_id", "fullName"],
+              },
+            ],
+            sort: { createdAt: -1 },
+          },
+        },
         config: {
           authToken: token,
         },
       })
         .then(async ({ DATA = {} }) => {
-          setPosts(DATA.data)
+          setPosts(DATA.data);
         })
         .catch((error) => {
           console.error("Fetch Posts", error);
@@ -48,407 +60,187 @@ const Post = () => {
   }, []);
   return (
     <>
-      {/* STORY 1 */}
-
-      <View style={styles.container}>
-        <Modal visible={modalOpen} animationType="slide" transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalContent}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  textAlign: "center",
-                }}
-              >
-                You really want to delete this masterpiece?
-              </Text>
-              <View style={styles.fixButtons}>
-                {/* <Button
-                title="Delete"
-                color={'red'}
-              /> */}
-                <View style={styles.deletePost}>
+      {posts.map((postData) => {
+        return (
+          <View style={styles.container}>
+            <Modal visible={modalOpen} animationType="slide" transparent={true}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalContent}>
                   <Text
-                    style={styles.deleteYes}
-                    onPress={() => {
-                      setmodalOpen(false);
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 16,
+                      textAlign: "center",
                     }}
                   >
-                    Delete
+                    You really want to delete this masterpiece?
+                  </Text>
+                  <View style={styles.fixButtons}>
+                    {/* <Button
+              title="Delete"
+              color={'red'}
+            /> */}
+                    <View style={styles.deletePost}>
+                      <Text
+                        style={styles.deleteYes}
+                        onPress={() => {
+                          setmodalOpen(false);
+                        }}
+                      >
+                        Delete
+                      </Text>
+                    </View>
+
+                    <View style={styles.deletefix}>
+                      {/* <Button
+              title="Cancel"
+              onPress={() => {
+                setmodalOpen(false)
+              }}
+            /> */}
+                      <View style={styles.cancelPost}>
+                        <Text
+                          style={styles.deleteCancel}
+                          onPress={() => {
+                            setmodalOpen(false);
+                          }}
+                        >
+                          Cancel
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+
+            <View style={styles.header}>
+              <View style={styles.row}>
+                <Avatar source={require("../assets/a3.png")} />
+                <View style={{ paddingLeft: 10 }}>
+                  <Text style={styles.user}>{postData.userId.fullName}</Text>
+
+                  <View style={styles.row}>
+                    <Text style={styles.postTime}>
+                      {moment(postData.createdAt).fromNow()}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <TouchableOpacity onPress={() => setmodalOpen(true)}>
+                <Icon name="dots-three-vertical" size={20} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.post}>{postData.desc}</Text>
+            <Image
+              style={styles.photo}
+              source={require("../assets/story2.jpg")}
+            />
+            <View style={styles.footer}>
+              <View style={styles.footerCount}>
+                <View style={styles.row}>
+                  <View style={styles.likeCount}>
+                    <Like name="heart" size={15} color={"red"} />
+                  </View>
+                  <Text style={styles.noLikesCount}>
+                    {postData.likes.length} Likes
                   </Text>
                 </View>
+                <Text style={styles.noCommentsCount}>
+                  {postData.comments.length} Comments
+                </Text>
+              </View>
+              <View style={styles.separator} />
 
-                <View style={styles.deletefix}>
-                  {/* <Button
-                title="Cancel"
-                onPress={() => {
-                  setmodalOpen(false)
-                }}
-              /> */}
-                  <View style={styles.cancelPost}>
-                    <Text
-                      style={styles.deleteCancel}
-                      onPress={() => {
-                        setmodalOpen(false);
-                      }}
-                    >
-                      Cancel
-                    </Text>
+              <View style={styles.footerMenu}>
+                <TouchableOpacity style={styles.button}>
+                  <View style={styles.icon}>
+                    <Like name="heart" size={15} />
                   </View>
-                </View>
-              </View>
-            </View>
-          </View>
-        </Modal>
-
-        <View style={styles.header}>
-          <View style={styles.row}>
-            <Avatar source={require("../assets/a3.png")} />
-            <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.user}>Jane Sicaro</Text>
-
-              <View style={styles.row}>
-                <Text style={styles.postTime}>10 hours ago</Text>
-              </View>
-            </View>
-          </View>
-          <TouchableOpacity onPress={() => setmodalOpen(true)}>
-            <Icon name="dots-three-vertical" size={20} />
-          </TouchableOpacity>
-        </View>
-
-        <Text style={styles.post}>This look good....!</Text>
-        <Image style={styles.photo} source={require("../assets/story2.jpg")} />
-        <View style={styles.footer}>
-          <View style={styles.footerCount}>
-            <View style={styles.row}>
-              <View style={styles.likeCount}>
-                <Like name="heart" size={15} color={"red"} />
-              </View>
-              <Text style={styles.noLikesCount}>10 likes</Text>
-            </View>
-            <Text style={styles.noCommentsCount}>20 Comments</Text>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Like name="heart" size={15} />
-              </View>
-              <Text style={styles.text}>Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Comment name="comment" size={15} />
-              </View>
-              <Text style={styles.text}>Comment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Share name="share" size={15} />
-              </View>
-              <Text style={styles.text}>Share</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <View style={styles.button}>
-              <View style={styles.icon}>
-                <Avatar source={require("../assets/a3.png")} />
-              </View>
-              <View style={styles.commentBox}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Write a comment"
-                ></TextInput>
-                <TouchableOpacity>
-                  <Send name="send" size={20} color="#3491ff" />
+                  <Text style={styles.text}>Like</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                  <View style={styles.icon}>
+                    <Comment name="comment" size={15} />
+                  </View>
+                  <Text style={styles.text}>Comment</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}>
+                  <View style={styles.icon}>
+                    <Share name="share" size={15} />
+                  </View>
+                  <Text style={styles.text}>Share</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          </View>
-          <View style={styles.commentsViewFilter}>
-            <Text style={styles.commentsView}>Most Recent</Text>
-            <TouchableOpacity>
-              <DropDown name="filter" size={18} />
-            </TouchableOpacity>
-          </View>
+              <View style={styles.separator} />
 
-          <View style={styles.commentsHeader}>
-            <View style={styles.commentsRow}>
-              <Avatar source={require("../assets/a5.png")} />
-              <View style={styles.commentBoxBorder}>
-                <View style={{ paddingLeft: 5 }}>
-                  <Text style={styles.commentUser}>Jason Dark</Text>
-
-                  <View style={styles.commentsRow}>
-                    <Text style={styles.commentContent}>
-                      It looks beautiful
-                    </Text>
+              <View style={styles.footerMenu}>
+                <View style={styles.button}>
+                  <View style={styles.icon}>
+                    <Avatar source={require("../assets/a3.png")} />
+                  </View>
+                  <View style={styles.commentBox}>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder="Write a comment"
+                    ></TextInput>
+                    <TouchableOpacity>
+                      <Send name="send" size={20} color="#3491ff" />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
-            </View>
-            {/* <Icon name="dots-three-vertical" size={20} /> */}
-          </View>
-          <View style={styles.commentsHeader}>
-            <View style={styles.commentsRow}>
-              <Avatar source={require("../assets/a4.png")} />
-              <View style={styles.commentBoxBorder2}>
-                <View style={{ paddingLeft: 5 }}>
-                  <Text style={styles.commentUser}>John Doe</Text>
+              <View style={styles.commentsViewFilter}>
+                <Text style={styles.commentsView}>Most Recent</Text>
+                <TouchableOpacity>
+                  <DropDown name="filter" size={18} />
+                </TouchableOpacity>
+              </View>
 
-                  <View style={styles.commentsRow}>
-                    <Text style={styles.commentContent}>
-                      Wish I was there, sad I missed it
-                    </Text>
+              <View style={styles.commentsHeader}>
+                <View style={styles.commentsRow}>
+                  <Avatar source={require("../assets/a5.png")} />
+                  <View style={styles.commentBoxBorder}>
+                    <View style={{ paddingLeft: 5 }}>
+                      <Text style={styles.commentUser}>Jason Dark</Text>
+
+                      <View style={styles.commentsRow}>
+                        <Text style={styles.commentContent}>
+                          It looks beautiful
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
+                {/* <Icon name="dots-three-vertical" size={20} /> */}
               </View>
+              <View style={styles.commentsHeader}>
+                <View style={styles.commentsRow}>
+                  <Avatar source={require("../assets/a4.png")} />
+                  <View style={styles.commentBoxBorder2}>
+                    <View style={{ paddingLeft: 5 }}>
+                      <Text style={styles.commentUser}>John Doe</Text>
+
+                      <View style={styles.commentsRow}>
+                        <Text style={styles.commentContent}>
+                          Wish I was there, sad I missed it
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                {/* <Icon name="dots-three-vertical" size={20} /> */}
+              </View>
+              <TouchableOpacity>
+                <Text style={styles.viewMoreReplies}>View more replies</Text>
+              </TouchableOpacity>
             </View>
-            {/* <Icon name="dots-three-vertical" size={20} /> */}
           </View>
-          <TouchableOpacity>
-            <Text style={styles.viewMoreReplies}>View more replies</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        );
+      })}
+
       {/* <View style={styles.divider}/> */}
-
-      {/* STORY 2 */}
-
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.row}>
-            <Avatar source={require("../assets/a1.png")} />
-            <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.user}>Karak Tir</Text>
-
-              <View style={styles.row}>
-                <Text style={styles.postTime}>14 hours ago</Text>
-              </View>
-            </View>
-          </View>
-          <Icon name="dots-three-vertical" size={20} />
-        </View>
-
-        <Text style={styles.post}>Feeling alive...!</Text>
-        <Image style={styles.photo} source={require("../assets/story1.jpg")} />
-        <View style={styles.footer}>
-          <View style={styles.footerCount}>
-            <View style={styles.row}>
-              <View style={styles.likeCount}>
-                <Like name="heart" size={15} color={"red"} />
-              </View>
-              <Text style={styles.noLikesCount}>10 likes</Text>
-            </View>
-            <Text style={styles.noCommentsCount}>20 Comments</Text>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Like name="heart" size={15} />
-              </View>
-              <Text style={styles.text}>Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Comment name="comment" size={15} />
-              </View>
-              <Text style={styles.text}>Comment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Share name="share" size={15} />
-              </View>
-              <Text style={styles.text}>Share</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <View style={styles.button}>
-              <View style={styles.icon}>
-                <Avatar source={require("../assets/a1.png")} />
-              </View>
-              <View style={styles.commentBox}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Write a comment"
-                ></TextInput>
-                <TouchableOpacity>
-                  <Send name="send" size={20} color="#3491ff" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.commentsViewFilter}>
-            <Text style={styles.commentsView}>Most Recent</Text>
-            <TouchableOpacity>
-              <DropDown name="filter" size={18} />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.commentsHeader}>
-            <View style={styles.commentsRow}>
-              <Avatar source={require("../assets/a5.png")} />
-              <View style={styles.commentBoxBorder}>
-                <View style={{ paddingLeft: 5 }}>
-                  <Text style={styles.commentUser}>Jason Dark</Text>
-
-                  <View style={styles.commentsRow}>
-                    <Text style={styles.commentContent}>
-                      It looks beautiful
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            {/* <Icon name="dots-three-vertical" size={20} /> */}
-          </View>
-          <View style={styles.commentsHeader}>
-            <View style={styles.commentsRow}>
-              <Avatar source={require("../assets/a4.png")} />
-              <View style={styles.commentBoxBorder2}>
-                <View style={{ paddingLeft: 5 }}>
-                  <Text style={styles.commentUser}>John Doe</Text>
-
-                  <View style={styles.commentsRow}>
-                    <Text style={styles.commentContent}>
-                      Wish I was there, sad I missed it
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            {/* <Icon name="dots-three-vertical" size={20} /> */}
-          </View>
-          <TouchableOpacity>
-            <Text style={styles.viewMoreReplies}>View more replies</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* STORY 3 */}
-
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.row}>
-            <Avatar source={require("../assets/a5.png")} />
-            <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.user}>Jason Dark</Text>
-
-              <View style={styles.row}>
-                <Text style={styles.postTime}>1 day ago</Text>
-              </View>
-            </View>
-          </View>
-          <Icon name="dots-three-vertical" size={20} />
-        </View>
-
-        <Text style={styles.post}>Memories from last trip</Text>
-        <Image style={styles.photo} source={require("../assets/story3.jpg")} />
-        <View style={styles.footer}>
-          <View style={styles.footerCount}>
-            <View style={styles.row}>
-              <View style={styles.likeCount}>
-                <Like name="heart" size={15} color={"red"} />
-              </View>
-              <Text style={styles.noLikesCount}>10 likes</Text>
-            </View>
-            <Text style={styles.noCommentsCount}>20 Comments</Text>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Like name="heart" size={15} />
-              </View>
-              <Text style={styles.text}>Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Comment name="comment" size={15} />
-              </View>
-              <Text style={styles.text}>Comment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Share name="share" size={15} />
-              </View>
-              <Text style={styles.text}>Share</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <View style={styles.button}>
-              <View style={styles.icon}>
-                <Avatar source={require("../assets/a5.png")} />
-              </View>
-              <View style={styles.commentBox}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Write a comment"
-                ></TextInput>
-                <TouchableOpacity>
-                  <Send name="send" size={20} color="#3491ff" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.commentsViewFilter}>
-            <Text style={styles.commentsView}>Most Recent</Text>
-            <TouchableOpacity>
-              <DropDown name="filter" size={18} />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.commentsHeader}>
-            <View style={styles.commentsRow}>
-              <Avatar source={require("../assets/a5.png")} />
-              <View style={styles.commentBoxBorder}>
-                <View style={{ paddingLeft: 5 }}>
-                  <Text style={styles.commentUser}>Jason Dark</Text>
-
-                  <View style={styles.commentsRow}>
-                    <Text style={styles.commentContent}>
-                      It looks beautiful
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            {/* <Icon name="dots-three-vertical" size={20} /> */}
-          </View>
-          <View style={styles.commentsHeader}>
-            <View style={styles.commentsRow}>
-              <Avatar source={require("../assets/a4.png")} />
-              <View style={styles.commentBoxBorder2}>
-                <View style={{ paddingLeft: 5 }}>
-                  <Text style={styles.commentUser}>John Doe</Text>
-
-                  <View style={styles.commentsRow}>
-                    <Text style={styles.commentContent}>
-                      Wish I was there, sad I missed it
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            {/* <Icon name="dots-three-vertical" size={20} /> */}
-          </View>
-          <TouchableOpacity>
-            <Text style={styles.viewMoreReplies}>View more replies</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
     </>
   );
 };
