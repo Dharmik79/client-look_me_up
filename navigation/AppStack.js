@@ -21,7 +21,6 @@ const AppStack = () => {
   useEffect(() => {
     init();
   }, []);
-
   return (
     <Stack.Navigator>
       {token.length != 0 ? (
