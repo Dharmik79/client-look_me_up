@@ -48,7 +48,7 @@ function setHeaders({ contentType, authToken }) {
     axios.defaults.headers.post.Accept = "application/json";
   }
   if (authToken) {
-    axios.defaults.headers.common.Authorization = `JWT ${getToken()}`;
+    axios.defaults.headers.common.Authorization = `JWT ${authToken}`;
   }
 }
 

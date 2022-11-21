@@ -16,33 +16,29 @@ import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 const CreatePost = () => {
   const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
   const [post, setPost] = useState({
     images: [],
     desc: "",
   });
-  const [posts, setPosts] = useState([]);
-  const handleSubmit = () => {
-    console.log(post);
-    // TODO : clear the form when done with the post submit
-  };
-  useEffect(() => {
-    const getPosts = async () => {
-      await commonApi({
-        action: "createPost",
-        data: {},
-        config: {
-          authToken: true,
-        },
+  
+  const handleSubmit = async() => {
+    await commonApi({
+      action: "createPost",
+      data: {...post},
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+     setPost({images:[],desc:""})
       })
-        .then(async ({ DATA = {} }) => {
-          console.log("DATA", DATA);
-        })
-        .catch((error) => {
-          console.error("Fetch Posts", error);
-        });
-    };
-    getPosts();
-  }, []);
+      .catch((error) => {
+        console.error("Fetch Posts", error);
+      });
+    
+  };
+
 
   return (
     <View style={styles.container}>
