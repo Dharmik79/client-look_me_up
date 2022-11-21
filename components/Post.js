@@ -25,7 +25,7 @@ import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 const Post = ({ posts, getPosts }) => {
   const [modalOpen, setmodalOpen] = useState(false);
-
+  const user = useSelector((state) => state.Reducers.user);
   useEffect(() => {
     getPosts();
   }, []);
@@ -97,9 +97,9 @@ const Post = ({ posts, getPosts }) => {
               </View>
             </View>
           </View>
-          <TouchableOpacity onPress={() => setmodalOpen(true)}>
+          {item.userId._id===user._id && <TouchableOpacity onPress={() => setmodalOpen(true)}>
             <Icon name="dots-three-vertical" size={20} />
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
 
         <Text style={styles.post}>{item.desc}</Text>
