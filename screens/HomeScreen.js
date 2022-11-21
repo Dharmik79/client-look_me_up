@@ -22,7 +22,6 @@ const HomeScreen = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
   const getPosts = async () => {
-    console.log("Called")
     await commonApi({
       action: "findAllPost",
       data: {
@@ -49,9 +48,9 @@ const HomeScreen = ({ navigation }) => {
         console.error("Fetch Posts", error);
       });
   };
-  // useEffect(()=>{
-  //   getPosts()
-  // },[])
+  useEffect(()=>{
+    getPosts()
+  },[user])
   return (
     // <KeyboardAwareScrollView>
     // <>
@@ -61,8 +60,8 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView>
         <TopBar getPosts={getPosts}/>
         <CreatePost getPosts={getPosts} />
-        <Story />
-        <GroupsHome />
+       {/* <Story />
+        <GroupsHome />*/}
         <Post getPosts={getPosts} posts={posts} />
         {/* <SafeAreaView
           style={styles.bottomNavigation}
