@@ -36,5 +36,9 @@ const apiList = {
     url: () => "post/findAll",
     method: "post",
   },
+  deletePost:{
+    url:(id)=>`post/${id}`,
+    method:"delete"
+  }
 };
 export default apiList;

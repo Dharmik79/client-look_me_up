@@ -26,6 +26,24 @@ import { useSelector } from "react-redux";
 const Post = ({ posts, getPosts }) => {
   const [modalOpen, setmodalOpen] = useState(false);
   const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+
+  const deletePost = async (id) => {
+    await commonApi({
+      action: "deletePost",
+      parameters: [id],
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        getPosts();
+        setmodalOpen(false);
+      })
+      .catch((error) => {
+        console.error("Delete Post", error);
+      });
+  };
   useEffect(() => {
     getPosts();
   }, []);
@@ -54,7 +72,7 @@ const Post = ({ posts, getPosts }) => {
                   <Text
                     style={styles.deleteYes}
                     onPress={() => {
-                      setmodalOpen(false);
+                      deletePost(item._id);
                     }}
                   >
                     Delete
@@ -97,9 +115,11 @@ const Post = ({ posts, getPosts }) => {
               </View>
             </View>
           </View>
-          {item.userId._id===user._id && <TouchableOpacity onPress={() => setmodalOpen(true)}>
-            <Icon name="dots-three-vertical" size={20} />
-          </TouchableOpacity>}
+          {item.userId._id === user._id && (
+            <TouchableOpacity onPress={() => setmodalOpen(true)}>
+              <Icon name="dots-three-vertical" size={20} />
+            </TouchableOpacity>
+          )}
         </View>
 
         <Text style={styles.post}>{item.desc}</Text>
