@@ -27,6 +27,10 @@ const apiList = {
   resetOTPpassword:{
     url:()=>"auth/reset-otp-password",
     method:"put"
+  },
+  createPost:{
+    url:()=>"post/findAll",
+    method:"post"
   }
 };
 export default apiList;
