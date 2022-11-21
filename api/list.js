@@ -36,9 +36,13 @@ const apiList = {
     url: () => "post/findAll",
     method: "post",
   },
-  deletePost:{
-    url:(id)=>`post/${id}`,
-    method:"delete"
-  }
+  deletePost: {
+    url: (id) => `post/${id}`,
+    method: "delete",
+  },
+  updateProfile: {
+    url: () => "user/update-profile",
+    method: "put",
+  },
 };
 export default apiList;
