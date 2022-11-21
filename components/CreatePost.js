@@ -210,6 +210,7 @@ const CreatePost = ({ getPosts }) => {
           <Text style={styles.menuText}>Post</Text>
         </TouchableOpacity>
       </View>
+     
     </View>
   );
 };
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
   container: {
     //flex: 1,
     width: "100%",
-    height: 435,
+   // height: 435,
     padding: 5,
     //backgroundColor: "#3491ff",
     borderWidth: 2,
@@ -232,6 +233,7 @@ const styles = StyleSheet.create({
     width: "100%",
     //padding: 10,
     alignItems: "center",
+    //marginBottom:10,
     // borderWidth: 2,
   },
   input: {
