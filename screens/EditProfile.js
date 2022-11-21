@@ -20,6 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const profileSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
   lastName: yup.string().required("Last Name is required"),
+  phone: yup.string().required("Phone number is required"),
 });
 const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -29,18 +30,24 @@ const EditProfile = ({ navigation }) => {
   const updateProfile = async (data, setFieldError, setSubmitting) => {
     await commonApi({
       action: "updateProfile",
-      data: data,
+      data: {
+        ...data,
+        phone: {
+          countryCode: "+1",
+          phone: data.phone,
+        },
+      },
       config: {
         authToken: token,
       },
     })
       .then(async ({ DATA = {} }) => {
         dispatch({ type: "UPDATE_USER", payload: DATA });
-        await AsyncStorage.setItem("user", JSON.stringify(DATA))
+        await AsyncStorage.setItem("user", JSON.stringify(DATA));
 
         // Navigate to Home Screen
         navigation.navigate("HomeScreen", {
-          screen: "Home"
+          screen: "Home",
         });
       })
       .catch((error) => {
@@ -56,6 +63,7 @@ const EditProfile = ({ navigation }) => {
         initialValues={{
           firstName: user.firstName,
           lastName: user.lastName,
+          phone: user.phone.phone,
         }}
         validateOnBlur={true}
         validateOnChange={true}
@@ -149,7 +157,13 @@ const EditProfile = ({ navigation }) => {
                   style={styles.textInputEdit}
                   keyboardType="numeric"
                   maxLength={10}
+                  onChangeText={props.handleChange("phone")}
+                  value={props.values.phone}
+                  onBlur={props.handleBlur("phone")}
                 />
+                {props.errors.phone && props.touched.phone && (
+                  <Text style={styles.errors}>{props.errors.phone}</Text>
+                )}
               </View>
               <View>
                 <Text
