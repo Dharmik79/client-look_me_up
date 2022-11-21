@@ -22,47 +22,17 @@ import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
-const Post = () => {
-  const [posts, setPosts] = useState([]);
-  const user = useSelector((state) => state.Reducers.user);
-  const token = useSelector((state) => state.Reducers.token);
+const Post = ({ posts, getPosts }) => {
   const [modalOpen, setmodalOpen] = useState(false);
 
   useEffect(() => {
-    const getPosts = async () => {
-      await commonApi({
-        action: "findAllPost",
-        data: {
-          options: {
-            pagination: false,
-            populate: [
-              {
-                path: "userId",
-                model: "user",
-                select: ["_id", "fullName"],
-              },
-            ],
-            sort: { createdAt: -1 },
-          },
-        },
-        config: {
-          authToken: token,
-        },
-      })
-        .then(async ({ DATA = {} }) => {
-          setPosts(DATA.data);
-        })
-        .catch((error) => {
-          console.error("Fetch Posts", error);
-        });
-    };
     getPosts();
   }, []);
   return (
     <>
       {posts.map((postData) => {
         return (
-          <View style={styles.container}>
+          <View style={styles.container} key={postData._id}>
             <Modal visible={modalOpen} animationType="slide" transparent={true}>
               <View style={styles.centeredView}>
                 <View style={styles.modalContent}>

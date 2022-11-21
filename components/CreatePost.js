@@ -14,31 +14,30 @@ import Icon2 from "react-native-vector-icons/Feather";
 import Avatar from "./Avatar";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
-const CreatePost = () => {
+const CreatePost = ({ getPosts }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
   const [post, setPost] = useState({
     images: [],
     desc: "",
   });
-  
-  const handleSubmit = async() => {
+
+  const handleSubmit = async () => {
     await commonApi({
       action: "createPost",
-      data: {...post},
+      data: { ...post },
       config: {
         authToken: token,
       },
     })
       .then(async ({ DATA = {} }) => {
-     setPost({images:[],desc:""})
+        getPosts();
+        setPost({ images: [], desc: "" });
       })
       .catch((error) => {
         console.error("Create Post", error);
       });
-    
   };
-
 
   return (
     <View style={styles.container}>

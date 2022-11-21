@@ -8,13 +8,14 @@ import {
   Button,
   TextInput,
   KeyboardAvoidingView,
+  TouchableHighlight,
 } from "react-native";
 //   import { CheckBox } from "react-native-btr";
 import Icon from "react-native-vector-icons/Feather";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Logout } from "./context/Actions";
-const TopBar = () => {
+const TopBar = ({ getPosts }) => {
   const dispatch = useDispatch();
 
   const logout = async () => {
@@ -27,7 +28,12 @@ const TopBar = () => {
   return (
     <View style={styles.container}>
       {/* <Text style={styles.textLogo}>Look Me Up</Text> */}
-      <Image style={styles.textLogo2} source={require("../assets/logo.png")} />
+
+        <Image
+          style={styles.textLogo2}
+          source={require("../assets/logo.png")}
+        />
+ 
       <View style={styles.topBarRow}>
         <TouchableOpacity style={styles.searchButton}>
           <TextInput style={styles.searchText} placeholder="Search"></TextInput>
