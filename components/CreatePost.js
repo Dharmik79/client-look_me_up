@@ -1,4 +1,4 @@
-import React  from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,46 +12,73 @@ import {
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Icon2 from "react-native-vector-icons/Feather";
 import Avatar from "./Avatar";
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
+const CreatePost = ({ getPosts }) => {
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+  const [post, setPost] = useState({
+    images: [],
+    desc: "",
+  });
 
-const CreatePost = () => {
+  const handleSubmit = async () => {
+    await commonApi({
+      action: "createPost",
+      data: { ...post },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        getPosts();
+        setPost({ images: [], desc: "" });
+      })
+      .catch((error) => {
+        console.error("Create Post", error);
+      });
+  };
+
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <Avatar source={require("../assets/a4.png")} />
-          <TextInput
-            style={styles.input}
-            placeholder="Whats on your mind?"
-          ></TextInput>
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <Avatar source={require("../assets/a4.png")} />
+        <TextInput
+          style={styles.input}
+          placeholder="Whats on your mind?"
+          onChangeText={(text) => setPost({ ...post, desc: text })}
+          value={post.desc}
+        ></TextInput>
+      </View>
+      <View style={styles.divider} />
+
+      {/* Only show when image is selected */}
+      <Image style={styles.photo} source={require("../assets/story3.jpg")} />
+
+      <View style={styles.row}>
+        <TouchableOpacity style={styles.menuPhoto}>
+          <Icon name="picture" size={20} color="#ffffff" />
+          <Text style={styles.menuText}>Photo</Text>
+        </TouchableOpacity>
+        {/* <View style={styles.separator}/> */}
+        <View style={styles.menuCamera}>
+          <Icon name="camera" size={20} color="#ffffff" />
+          <Text style={styles.menuText}>Camera</Text>
         </View>
-        <View style={styles.divider} />
-
-        {/* Only show when image is selected */}
-        <Image style={styles.photo} source={require("../assets/story3.jpg")} />
-
-        <View style={styles.row}>
-          <TouchableOpacity style={styles.menuPhoto}>
-            <Icon name="picture" size={20} color="#ffffff" />
-            <Text style={styles.menuText}>Photo</Text>
-          </TouchableOpacity>
-          {/* <View style={styles.separator}/> */}
-          <View style={styles.menuCamera}>
-            <Icon name="camera" size={20} color="#ffffff" />
-            <Text style={styles.menuText}>Camera</Text>
-          </View>
-          {/* <View style={styles.separator}/> */}
-          <View style={styles.menuVideo}>
-            <Icon2 name="video" size={20} color="#ffffff" />
-            <Text style={styles.menuText}>Video</Text>
-          </View>
-          {/* <View style={styles.separator}/> */}
+        {/* <View style={styles.separator}/> */}
+        <View style={styles.menuVideo}>
+          <Icon2 name="video" size={20} color="#ffffff" />
+          <Text style={styles.menuText}>Video</Text>
+        </View>
+        {/* <View style={styles.separator}/> */}
+        <TouchableOpacity onPress={handleSubmit}>
           <View style={styles.menuPost}>
             <Icon2 name="send" size={20} color="#ffffff" />
             <Text style={styles.menuText}>Post</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -65,7 +92,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#f0f0f0",
     // borderRadius: 10,
-    marginBottom:10,
+    marginBottom: 10,
   },
   row: {
     flexDirection: "row",

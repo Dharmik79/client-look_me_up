@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
   View,
   Text,
@@ -15,8 +15,43 @@ import GroupsHome from "./GroupsHome";
 import Story from "../components/Story";
 import Post from "../components/Post";
 import BottomTabNavigator from "../components/BottomTabNavigator";
-
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
 const HomeScreen = ({ navigation }) => {
+  const [posts,setPosts]=useState([])
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+  const getPosts = async () => {
+    console.log("Called")
+    await commonApi({
+      action: "findAllPost",
+      data: {
+        options: {
+          pagination: false,
+          populate: [
+            {
+              path: "userId",
+              model: "user",
+              select: ["_id", "fullName"],
+            },
+          ],
+          sort: { createdAt: -1 },
+        },
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        setPosts(DATA.data);
+      })
+      .catch((error) => {
+        console.error("Fetch Posts", error);
+      });
+  };
+  // useEffect(()=>{
+  //   getPosts()
+  // },[])
   return (
     // <KeyboardAwareScrollView>
     // <>
@@ -24,11 +59,11 @@ const HomeScreen = ({ navigation }) => {
     // barStyle="dark-content">
     <View style={styles.container}>
       <ScrollView>
-        <TopBar />
-        <CreatePost />
+        <TopBar getPosts={getPosts}/>
+        <CreatePost getPosts={getPosts} />
         <Story />
         <GroupsHome />
-        <Post />
+        <Post getPosts={getPosts} posts={posts} />
         {/* <SafeAreaView
           style={styles.bottomNavigation}
         >

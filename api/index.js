@@ -1,5 +1,6 @@
 import axios from "axios";
 import qs from "qs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const baseUrl = "https://look-me-up-server.herokuapp.com/";
 const GET = "GET";
@@ -7,16 +8,9 @@ const DELETE = "DELETE";
 const POST = "POST";
 const PUT = "PUT";
 
-const getToken = () => {
-  if (typeof localStorage !== "undefined") {
-    let token = JSON.parse(localStorage.getItem("token"));
-
-    if (token) {
-      return token;
-    }
-  }
-
-  return "";
+const getToken = async () => {
+  let token = await AsyncStorage.getItem("token");
+  return token;
 };
 const ACTION_HANDLERS = {
   [GET]: (url, data, headers) => {
@@ -29,7 +23,7 @@ const ACTION_HANDLERS = {
     }
 
     return axios.get(baseUrl + queryUrl, {
-      headers
+      headers,
     });
   },
 
@@ -38,14 +32,13 @@ const ACTION_HANDLERS = {
 
   [POST]: (url, data, headers) =>
     axios.post(baseUrl + url, data, {
-      headers
+      headers,
     }),
 
-  
   [PUT]: (url, data, headers) =>
     axios.put(baseUrl + url, data, {
-      headers
-    })
+      headers,
+    }),
 };
 
 function setHeaders({ contentType, authToken }) {
@@ -55,15 +48,14 @@ function setHeaders({ contentType, authToken }) {
     axios.defaults.headers.post.Accept = "application/json";
   }
   if (authToken) {
-    axios.defaults.headers.common.Authorization = `JWT ${getToken()}`;
+    axios.defaults.headers.common.Authorization = `JWT ${authToken}`;
   }
 }
 
 function handleError(error) {
   const { response = {} } = error || {};
 
-
-  return Promise.reject(response.data?response.data:{});
+  return Promise.reject(response.data ? response.data : {});
 }
 const fetchUrl = ({ type, url, data = {}, config = {} }) => {
   setHeaders(config);

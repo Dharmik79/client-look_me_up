@@ -7,8 +7,8 @@ const getToken=async()=>{
     return await AsyncStorage.getItem("token");
 }
 const INITIAL_STATE = {
-  user: getUser(),
-  token:getToken(),
+  user:{},
+  token:"",
   isFetching: false,
   error: false,
 }
@@ -38,8 +38,8 @@ const Reducer = (state=INITIAL_STATE, action) => {
         };
       case "LOGOUT": {
         return {
-          user: null,
-          token: null,
+          user: {},
+          token: "",
           isFetching: false,
           error: false
         };

@@ -22,14 +22,14 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView>
         <CoverAndProfile />
         <ProfileDetails />
-       <UserFriends/>
-       <UserGroups/>
+        <UserFriends />
+        <UserGroups />
 
         {/* Show only if the profile is users profile */}
-        <CreatePost />
+        {/*<CreatePost /> */}
 
         {/* Show only users posts */}
-        <Post />
+        {/*<Post />*/}
       </ScrollView>
     </View>
   );

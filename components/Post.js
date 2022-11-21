@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,80 +10,119 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import Like from "react-native-vector-icons/AntDesign";
 import Comment from "react-native-vector-icons/MaterialIcons";
 import Share from "react-native-vector-icons/MaterialIcons";
-
+import moment from "moment";
 import Avatar from "./Avatar";
 
 import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
-
-const Post = () => {
-
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
+const Post = ({ posts, getPosts }) => {
   const [modalOpen, setmodalOpen] = useState(false);
-  
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
 
-  return (
-    <>
-      {/* STORY 1 */}
+  const deletePost = async (id) => {
+    await commonApi({
+      action: "deletePost",
+      parameters: [id],
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        getPosts();
+        setmodalOpen(false);
+      })
+      .catch((error) => {
+        console.error("Delete Post", error);
+      });
+  };
+  useEffect(() => {
+    getPosts();
+  }, []);
 
-      <View style={styles.container}>
-
-      <Modal visible={modalOpen}
-        animationType="slide"
-        transparent={true}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalContent}>
-            <Text style={{fontWeight:'bold',fontSize:16,textAlign:'center'}}>You really want to delete this masterpiece?</Text>
-            <View style={styles.fixButtons}>
-            {/* <Button
-                title="Delete"
-                color={'red'}
-              /> */}
-              <View style={styles.deletePost}>
-           
-           <Text style={styles.deleteYes} onPress={() => {setmodalOpen(false)}}>Delete</Text>
-         </View>
-              
-
-<View style={styles.deletefix}>
-{/* <Button
-                title="Cancel"
-                onPress={() => {
-                  setmodalOpen(false)
+  const renderPost = ({ item }) => {
+    return (
+      <View style={styles.container} key={item._id}>
+        <Modal visible={modalOpen} animationType="slide" transparent={true}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalContent}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  textAlign: "center",
                 }}
-              /> */}
-              <View style={styles.cancelPost}>
-           
-            <Text style={styles.deleteCancel} onPress={() => {setmodalOpen(false)}}>Cancel</Text>
-          </View>
+              >
+                You really want to delete this masterpiece?
+              </Text>
+              <View style={styles.fixButtons}>
+                {/* <Button
+          title="Delete"
+          color={'red'}
+        /> */}
+                <View style={styles.deletePost}>
+                  <Text
+                    style={styles.deleteYes}
+                    onPress={() => {
+                      deletePost(item._id);
+                    }}
+                  >
+                    Delete
+                  </Text>
+                </View>
+
+                <View style={styles.deletefix}>
+                  {/* <Button
+          title="Cancel"
+          onPress={() => {
+            setmodalOpen(false)
+          }}
+        /> */}
+                  <View style={styles.cancelPost}>
+                    <Text
+                      style={styles.deleteCancel}
+                      onPress={() => {
+                        setmodalOpen(false);
+                      }}
+                    >
+                      Cancel
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
         <View style={styles.header}>
           <View style={styles.row}>
             <Avatar source={require("../assets/a3.png")} />
             <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.user}>Jane Sicaro</Text>
+              <Text style={styles.user}>{item.userId.fullName}</Text>
 
               <View style={styles.row}>
-                <Text style={styles.postTime}>10 hours ago</Text>
+                <Text style={styles.postTime}>
+                  {moment(item.createdAt).fromNow()}
+                </Text>
               </View>
             </View>
           </View>
-          <TouchableOpacity onPress={() => setmodalOpen(true)}>
-          <Icon name="dots-three-vertical" size={20} />
-          </TouchableOpacity>
+          {item.userId._id === user._id && (
+            <TouchableOpacity onPress={() => setmodalOpen(true)}>
+              <Icon name="dots-three-vertical" size={20} />
+            </TouchableOpacity>
+          )}
         </View>
 
-        <Text style={styles.post}>This look good....!</Text>
+        <Text style={styles.post}>{item.desc}</Text>
         <Image style={styles.photo} source={require("../assets/story2.jpg")} />
         <View style={styles.footer}>
           <View style={styles.footerCount}>
@@ -91,9 +130,11 @@ const Post = () => {
               <View style={styles.likeCount}>
                 <Like name="heart" size={15} color={"red"} />
               </View>
-              <Text style={styles.noLikesCount}>10 likes</Text>
+              <Text style={styles.noLikesCount}>{item.likes.length} Likes</Text>
             </View>
-            <Text style={styles.noCommentsCount}>20 Comments</Text>
+            <Text style={styles.noCommentsCount}>
+              {item.comments.length} Comments
+            </Text>
           </View>
           <View style={styles.separator} />
 
@@ -136,281 +177,62 @@ const Post = () => {
             </View>
           </View>
           <View style={styles.commentsViewFilter}>
-          <Text style={styles.commentsView}>Most Recent</Text>
-          <TouchableOpacity>
-          <DropDown name="filter" size={18}/>
-          </TouchableOpacity>
+            <Text style={styles.commentsView}>Most Recent</Text>
+            <TouchableOpacity>
+              <DropDown name="filter" size={18} />
+            </TouchableOpacity>
           </View>
-          
+
           <View style={styles.commentsHeader}>
-          <View style={styles.commentsRow}>
-            <Avatar source={require("../assets/a5.png")} />
-            <View style={styles.commentBoxBorder}>
-            <View style={{ paddingLeft: 5 }}>
-              <Text style={styles.commentUser}>Jason Dark</Text>
+            <View style={styles.commentsRow}>
+              <Avatar source={require("../assets/a5.png")} />
+              <View style={styles.commentBoxBorder}>
+                <View style={{ paddingLeft: 5 }}>
+                  <Text style={styles.commentUser}>Jason Dark</Text>
 
-              <View style={styles.commentsRow}>
-                <Text style={styles.commentContent}>It looks beautiful</Text>
+                  <View style={styles.commentsRow}>
+                    <Text style={styles.commentContent}>
+                      It looks beautiful
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
-            </View>
+            {/* <Icon name="dots-three-vertical" size={20} /> */}
           </View>
-          {/* <Icon name="dots-three-vertical" size={20} /> */}
-        </View>
-        <View style={styles.commentsHeader}>
-          <View style={styles.commentsRow}>
-            <Avatar source={require("../assets/a4.png")} />
-            <View style={styles.commentBoxBorder2}>
-            <View style={{ paddingLeft: 5 }}>
-              <Text style={styles.commentUser}>John Doe</Text>
+          <View style={styles.commentsHeader}>
+            <View style={styles.commentsRow}>
+              <Avatar source={require("../assets/a4.png")} />
+              <View style={styles.commentBoxBorder2}>
+                <View style={{ paddingLeft: 5 }}>
+                  <Text style={styles.commentUser}>John Doe</Text>
 
-              <View style={styles.commentsRow}>
-                <Text style={styles.commentContent}>Wish I was there, sad I missed it</Text>
+                  <View style={styles.commentsRow}>
+                    <Text style={styles.commentContent}>
+                      Wish I was there, sad I missed it
+                    </Text>
+                  </View>
+                </View>
               </View>
             </View>
-            </View>
+            {/* <Icon name="dots-three-vertical" size={20} /> */}
           </View>
-          {/* <Icon name="dots-three-vertical" size={20} /> */}
-        </View>
-        <TouchableOpacity>
-        <Text style={styles.viewMoreReplies}>View more replies</Text>
-        </TouchableOpacity>
-
-
-
+          <TouchableOpacity>
+            <Text style={styles.viewMoreReplies}>View more replies</Text>
+          </TouchableOpacity>
         </View>
       </View>
+    );
+  };
+  return (
+    <>
+      <FlatList
+        data={posts}
+        renderItem={renderPost}
+        keyExtractor={(item) => item._id}
+      />
+
       {/* <View style={styles.divider}/> */}
-
-      {/* STORY 2 */}
-
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.row}>
-            <Avatar source={require("../assets/a1.png")} />
-            <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.user}>Karak Tir</Text>
-
-              <View style={styles.row}>
-                <Text style={styles.postTime}>14 hours ago</Text>
-              </View>
-            </View>
-          </View>
-          <Icon name="dots-three-vertical" size={20} />
-        </View>
-
-        <Text style={styles.post}>Feeling alive...!</Text>
-        <Image style={styles.photo} source={require("../assets/story1.jpg")} />
-        <View style={styles.footer}>
-          <View style={styles.footerCount}>
-            <View style={styles.row}>
-              <View style={styles.likeCount}>
-                <Like name="heart" size={15} color={"red"} />
-              </View>
-              <Text style={styles.noLikesCount}>10 likes</Text>
-            </View>
-            <Text style={styles.noCommentsCount}>20 Comments</Text>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Like name="heart" size={15} />
-              </View>
-              <Text style={styles.text}>Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Comment name="comment" size={15} />
-              </View>
-              <Text style={styles.text}>Comment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Share name="share" size={15} />
-              </View>
-              <Text style={styles.text}>Share</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <View style={styles.button}>
-              <View style={styles.icon}>
-                <Avatar source={require("../assets/a1.png")} />
-              </View>
-              <View style={styles.commentBox}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Write a comment"
-                ></TextInput>
-                <TouchableOpacity>
-                  <Send name="send" size={20} color="#3491ff" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.commentsViewFilter}>
-          <Text style={styles.commentsView}>Most Recent</Text>
-          <TouchableOpacity>
-          <DropDown name="filter" size={18}/>
-          </TouchableOpacity>
-          </View>
-          
-          <View style={styles.commentsHeader}>
-          <View style={styles.commentsRow}>
-            <Avatar source={require("../assets/a5.png")} />
-            <View style={styles.commentBoxBorder}>
-            <View style={{ paddingLeft: 5 }}>
-              <Text style={styles.commentUser}>Jason Dark</Text>
-
-              <View style={styles.commentsRow}>
-                <Text style={styles.commentContent}>It looks beautiful</Text>
-              </View>
-            </View>
-            </View>
-          </View>
-          {/* <Icon name="dots-three-vertical" size={20} /> */}
-        </View>
-        <View style={styles.commentsHeader}>
-          <View style={styles.commentsRow}>
-            <Avatar source={require("../assets/a4.png")} />
-            <View style={styles.commentBoxBorder2}>
-            <View style={{ paddingLeft: 5 }}>
-              <Text style={styles.commentUser}>John Doe</Text>
-
-              <View style={styles.commentsRow}>
-                <Text style={styles.commentContent}>Wish I was there, sad I missed it</Text>
-              </View>
-            </View>
-            </View>
-          </View>
-          {/* <Icon name="dots-three-vertical" size={20} /> */}
-        </View>
-        <TouchableOpacity>
-        <Text style={styles.viewMoreReplies}>View more replies</Text>
-        </TouchableOpacity>
-
-
-
-        </View>
-      </View>
-
-      {/* STORY 3 */}
-
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.row}>
-            <Avatar source={require("../assets/a5.png")} />
-            <View style={{ paddingLeft: 10 }}>
-              <Text style={styles.user}>Jason Dark</Text>
-
-              <View style={styles.row}>
-                <Text style={styles.postTime}>1 day ago</Text>
-              </View>
-            </View>
-          </View>
-          <Icon name="dots-three-vertical" size={20} />
-        </View>
-
-        <Text style={styles.post}>Memories from last trip</Text>
-        <Image style={styles.photo} source={require("../assets/story3.jpg")} />
-        <View style={styles.footer}>
-          <View style={styles.footerCount}>
-            <View style={styles.row}>
-              <View style={styles.likeCount}>
-                <Like name="heart" size={15} color={"red"} />
-              </View>
-              <Text style={styles.noLikesCount}>10 likes</Text>
-            </View>
-            <Text style={styles.noCommentsCount}>20 Comments</Text>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Like name="heart" size={15} />
-              </View>
-              <Text style={styles.text}>Like</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Comment name="comment" size={15} />
-              </View>
-              <Text style={styles.text}>Comment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <View style={styles.icon}>
-                <Share name="share" size={15} />
-              </View>
-              <Text style={styles.text}>Share</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.separator} />
-
-          <View style={styles.footerMenu}>
-            <View style={styles.button}>
-              <View style={styles.icon}>
-                <Avatar source={require("../assets/a5.png")} />
-              </View>
-              <View style={styles.commentBox}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Write a comment"
-                ></TextInput>
-                <TouchableOpacity>
-                  <Send name="send" size={20} color="#3491ff" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.commentsViewFilter}>
-          <Text style={styles.commentsView}>Most Recent</Text>
-          <TouchableOpacity>
-          <DropDown name="filter" size={18}/>
-          </TouchableOpacity>
-          </View>
-          
-          <View style={styles.commentsHeader}>
-          <View style={styles.commentsRow}>
-            <Avatar source={require("../assets/a5.png")} />
-            <View style={styles.commentBoxBorder}>
-            <View style={{ paddingLeft: 5 }}>
-              <Text style={styles.commentUser}>Jason Dark</Text>
-
-              <View style={styles.commentsRow}>
-                <Text style={styles.commentContent}>It looks beautiful</Text>
-              </View>
-            </View>
-            </View>
-          </View>
-          {/* <Icon name="dots-three-vertical" size={20} /> */}
-        </View>
-        <View style={styles.commentsHeader}>
-          <View style={styles.commentsRow}>
-            <Avatar source={require("../assets/a4.png")} />
-            <View style={styles.commentBoxBorder2}>
-            <View style={{ paddingLeft: 5 }}>
-              <Text style={styles.commentUser}>John Doe</Text>
-
-              <View style={styles.commentsRow}>
-                <Text style={styles.commentContent}>Wish I was there, sad I missed it</Text>
-              </View>
-            </View>
-            </View>
-          </View>
-          {/* <Icon name="dots-three-vertical" size={20} /> */}
-        </View>
-        <TouchableOpacity>
-        <Text style={styles.viewMoreReplies}>View more replies</Text>
-        </TouchableOpacity>
-
-
-
-        </View>
-      </View>
     </>
   );
 };
@@ -422,8 +244,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: "#f0f0f0",
-   // marginTop: 10,
-   marginBottom:10,
+    // marginTop: 10,
+    marginBottom: 10,
     marginLeft: 5,
     marginRight: 5,
   },
@@ -530,16 +352,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 40,
   },
- commentsViewFilter: {
+  commentsViewFilter: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 5,
   },
   commentsView: {
-    
     fontSize: 14,
     fontWeight: "bold",
-    marginRight:5,
+    marginRight: 5,
   },
   commentsHeader: {
     height: 50,
@@ -547,7 +368,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     //marginTop:10,
-   // marginLeft: 5,
+    // marginLeft: 5,
   },
 
   commentsRow: {
@@ -563,26 +384,26 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "grey",
   },
-  commentBoxBorder:{
-borderWidth:2,
-width:'60%',
-borderRadius:10,
-borderColor:'#f0f0f0',
-marginLeft:6,
+  commentBoxBorder: {
+    borderWidth: 2,
+    width: "60%",
+    borderRadius: 10,
+    borderColor: "#f0f0f0",
+    marginLeft: 6,
   },
-  commentBoxBorder2:{
-    borderWidth:2,
-    width:'75%',
-    borderRadius:10,
-    borderColor:'#f0f0f0',
-    marginLeft:6,
-      },
-      viewMoreReplies:{
-fontSize:14,
-fontWeight:'bold',
-textDecorationLine:'underline',
-textAlign:'center',
-      },
+  commentBoxBorder2: {
+    borderWidth: 2,
+    width: "75%",
+    borderRadius: 10,
+    borderColor: "#f0f0f0",
+    marginLeft: 6,
+  },
+  viewMoreReplies: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+    textAlign: "center",
+  },
   divider: {
     marginBottom: 10,
   },
@@ -594,81 +415,78 @@ textAlign:'center',
 
   modalContent: {
     //height:250,
-    width: '70%',
+    width: "70%",
     backgroundColor: "#f0f0f0",
     borderRadius: 20,
     padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
- 
-  fixButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop:20,
 
+  fixButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
   },
-  deletefix:{
+  deletefix: {
     //marginLeft: 60,
   },
   deletePost: {
-   // flex: 1,
+    // flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
     marginLeft: 2,
     marginRight: 2,
     height: 40,
-    width:80,
+    width: 80,
     //width:50,
     backgroundColor: "red",
     // opacity:0.2,
     borderRadius: 10,
-    marginBottom:10,
- 
+    marginBottom: 10,
   },
   deleteYes: {
     //paddingLeft:10,
     fontSize: 13,
     fontWeight: "500",
     color: "#ffffff",
-    backgroundColor:'red',
+    backgroundColor: "red",
     borderRadius: 10,
-    
   },
   cancelPost: {
     // flex: 1,
-     flexDirection: "row",
-     alignItems: "center",
-     justifyContent: "space-evenly",
-     marginLeft: 15,
-     marginRight: 2,
-     height: 40,
-     width:80,
-     //width:50,
-     //color:'black',
-     backgroundColor: "#3491ff",
-     //borderColor:'#3491ff',
-     // opacity:0.2,
-     borderRadius: 10,
-     //borderWidth:2,
-   },
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginLeft: 15,
+    marginRight: 2,
+    height: 40,
+    width: 80,
+    //width:50,
+    //color:'black',
+    backgroundColor: "#3491ff",
+    //borderColor:'#3491ff',
+    // opacity:0.2,
+    borderRadius: 10,
+    //borderWidth:2,
+  },
   deleteCancel: {
     //paddingLeft:10,
     fontSize: 13,
     fontWeight: "500",
     color: "#ffffff",
-    backgroundColor:'#3491ff',
+    backgroundColor: "#3491ff",
     borderRadius: 10,
-  }
+  },
 });
 
 export default Post;
