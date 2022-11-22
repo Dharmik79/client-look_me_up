@@ -83,7 +83,7 @@ const EditProfile = ({ navigation }) => {
                 Edit Profile
               </Text>
               <TouchableOpacity onPress={props.handleSubmit}>
-                <Text>Write</Text>
+                
                 <Ionic
                   name="checkmark"
                   style={{ fontSize: 35, color: "#3491ff" }}
@@ -102,6 +102,7 @@ const EditProfile = ({ navigation }) => {
               >
                 Change profile photo
               </Text>
+              
             </TouchableOpacity>
             <View style={{ padding: 10 }}>
               <View>
@@ -250,6 +251,10 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#EFEFEF",
+  },
+  errors:{
+color:'red',
+marginBottom:5,
   },
 });
 
