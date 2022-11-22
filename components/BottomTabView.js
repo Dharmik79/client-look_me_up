@@ -26,49 +26,166 @@ const BottomTabView = ({}) => {
         style={{
           width: "100%",
           height: "100%",
-          backgroundColor:'#ffffff',
+          backgroundColor: "#ffffff",
         }}
       >
-        <View style={{width: "100%",
-    height: 1,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: "#f0f0f0",}} />
+
+
+
+
+        
+        <View
+          style={{
+            width: "100%",
+            height: 1,
+            marginTop: 8,
+            marginBottom: 8,
+            backgroundColor: "#f0f0f0",
+          }}
+        />
         <View
           style={{
             // height: 50,
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: 'space-between',
-           // marginTop:5,
+            justifyContent: "space-between",
+            // marginTop:5,
             //marginLeft: 5,
           }}
         >
-          <View style={{ alignItems: "center", flexDirection: "row", }}>
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
             <Image
               source={require("../assets/a4.png")}
               style={{ width: 80, height: 80, borderRadius: 100 }}
             />
             <View style={{ paddingLeft: 10 }}>
-              <Text style={{ fontSize: 18, fontWeight: "bold",marginBottom:5, }}>John Doe</Text>
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", marginBottom: 5 }}
+              >
+                John Doe
+              </Text>
 
-              <View style={{ alignItems: "center", flexDirection: "row",marginBottom:5, }}>
-                <Text style={{ fontSize: 14, color: "grey",fontWeight:'300' }}>
-                  27 Posts  37 Followers 137 Friends
+              <View
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginBottom: 5,
+                }}
+              >
+                <Text
+                  style={{ fontSize: 14, color: "grey", fontWeight: "300" }}
+                >
+                  27 Posts {"\t"} 37 {"\t"} Followers {"\t"} 137 Friends
                 </Text>
               </View>
 
-              <View style={{ alignItems: "center", flexDirection: "row" ,justifyContent:'space-evenly',}}>
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
                 <TouchableOpacity
                   style={{
-                    flex: 1,
+                    flex: 0.5,
                     flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: 'center',
+                    justifyContent: "center",
                     marginLeft: 2,
                     marginRight: 2,
                     height: 35,
                     //width:50,
+                    backgroundColor: "#a3a3a3",
+                    // opacity:0.2,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Icon2 name="close-circle-sharp" size={20} color="#ffffff" />
+                  <Text
+                    style={{
+                      //paddingLeft:10,
+                      fontSize: 13,
+                      fontWeight: "500",
+                      color: "#ffffff",
+                      //backgroundColor:'grey',
+                      borderRadius: 10,
+                    }}
+                  >
+                    Remove Friend
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          {/* <TouchableOpacity >
+              <Icon name="dots-three-vertical" size={20} />
+            </TouchableOpacity> */}
+        </View>
+        <View
+          style={{
+            width: "100%",
+            height: 1,
+            marginTop: 8,
+            marginBottom: 8,
+            backgroundColor: "#f0f0f0",
+          }}
+        />
+      </ScrollView>
+    );
+  };
+  const Suggestions = () => {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#ffffff",
+        }}
+      >
+        <View
+          style={{
+            width: "100%",
+            height: 1,
+            marginTop: 8,
+            marginBottom: 8,
+            backgroundColor: "#f0f0f0",
+          }}
+        />
+        <View
+          style={{
+            // height: 50,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            // marginTop:5,
+            //marginLeft: 5,
+          }}
+        >
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Image
+              source={require("../assets/a4.png")}
+              style={{ width: 80, height: 80, borderRadius: 100 }}
+            />
+            <View style={{ paddingLeft: 10 }}>
+              <Text
+                style={{ fontSize: 18, fontWeight: "bold", marginBottom: 5 }}
+              >
+                John Doe
+              </Text>
+
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <Text style={{ fontSize: 14, color: "grey", marginBottom: 5, fontWeight: "300" }}>
+                  27 Posts {"\t"} 37 Followers {"\t"} 137 Friends
+                </Text>
+              </View>
+
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <TouchableOpacity
+                  style={{
+                    //flex: 0.5,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: 2,
+                    marginRight: 2,
+                    height: 35,
+                    width: 120,
                     backgroundColor: "#3491ff",
                     // opacity:0.2,
                     borderRadius: 10,
@@ -88,106 +205,19 @@ const BottomTabView = ({}) => {
                     Add Friend
                   </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={{
-                    flex: 1,
+                    //flex: 0.5,
+                    width: "70%",
                     flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: 'center',
+                    justifyContent: "center",
                     marginLeft: 2,
                     marginRight: 2,
                     height: 35,
-                    //width:50,
-                    backgroundColor: "grey",
-                    // opacity:0.2,
-                    borderRadius: 10,
-                  }}
-                >
-                  <Icon2 name="close-circle-sharp" size={20} color="#ffffff" />
-                  <Text
-                    style={{
-                      //paddingLeft:10,
-                      fontSize: 13,
-                      fontWeight: "500",
-                      color: "#ffffff",
-                      //backgroundColor:'grey',
-                      borderRadius: 10,
-                    }}
-                  >
-                    Remove
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          {/* <TouchableOpacity >
-              <Icon name="dots-three-vertical" size={20} />
-            </TouchableOpacity> */}
-        </View>
-        <View style={{width: "100%",
-    height: 1,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: "#f0f0f0",}} />
-       
-      
-      </ScrollView>
-    );
-  };
-  const Suggestions = () => {
-    return (
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          width: "100%",
-          height: "100%",
-          backgroundColor:'#ffffff',
-        }}
-      >
-    
-        <View style={{width: "100%",
-    height: 1,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: "#f0f0f0",}} />
-       <View
-          style={{
-            // height: 50,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            // marginTop:5,
-            //marginLeft: 5,
-          }}
-        >
-          <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <Image
-              source={require("../assets/a4.png")}
-              style={{ width: 80, height: 80, borderRadius: 100 }}
-            />
-            <View style={{ paddingLeft: 10 }}>
-              <Text style={{ fontSize: 18, fontWeight: "bold",marginBottom:5, }}>John Doe</Text>
-
-              <View style={{ alignItems: "center", flexDirection: "row" }}>
-                <Text style={{ fontSize: 14, color: "grey",marginBottom:5, }}>
-                  27 Posts 37 Followers 137 Friends
-                </Text>
-              </View>
-
-              <View style={{ alignItems: "center", flexDirection: "row" }}>
-          
-                <TouchableOpacity
-                  style={{
-                    //flex: 1,
-                    width:'70%',
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: 'center',
-                    marginLeft: 2,
-                    marginRight: 2,
-                    height: 35,
-                    //width:50,
-                    backgroundColor: "#3491ff",
+                    width: 120,
+                    backgroundColor: "#a3a3a3",
                     // opacity:0.2,
                     borderRadius: 10,
                   }}
@@ -213,11 +243,15 @@ const BottomTabView = ({}) => {
               <Icon name="dots-three-vertical" size={20} />
             </TouchableOpacity> */}
         </View>
-        <View style={{width: "100%",
-    height: 1,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: "#f0f0f0",}} />
+        <View
+          style={{
+            width: "100%",
+            height: 1,
+            marginTop: 8,
+            marginBottom: 8,
+            backgroundColor: "#f0f0f0",
+          }}
+        />
       </ScrollView>
     );
   };
@@ -227,18 +261,27 @@ const BottomTabView = ({}) => {
       screenOptions={{
         // tabBarShowLabel: false,
         tabBarLabelStyle: {
-          color: "black",
+          color: "#ffffff",
           fontSize: 16,
+          textTransform:'none',
+          // backgroundColor:'grey',
         },
-        
+        tabBarStyle: {
+          backgroundColor: "#a3a3a3",
+          borderRadius: 10,
+        },
 
         tabBarIndicatorStyle: {
           backgroundColor: "#3491ff",
           //color:'grey',
           borderRadius: 10,
           height: "100%",
-          borderColor: "#F0F0F0",
-          borderWidth: 4,
+          //borderColor: "#F0F0F0",
+          //borderWidth: 4,
+        },
+        tabBarInactiveTintColor: {
+          // color:"grey",
+          backgroundColor: "grey",
         },
       }}
     >
