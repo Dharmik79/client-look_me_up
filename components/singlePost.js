@@ -48,6 +48,44 @@ const singlePost = ({ item, getPosts }) => {
   };
 
   const { likes } = item;
+  const dislikeHandler = async () => {
+    await commonApi({
+      action: "likeDisLike",
+      data: {
+        action: 1,
+        postId: item._id,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        getPosts();
+        setIsLiked(!isLiked);
+      })
+      .catch((error) => {
+        console.error("Like -Dislike", error);
+      });
+  };
+  const likeHandler = async () => {
+    await commonApi({
+      action: "likeDisLike",
+      data: {
+        action: 0,
+        postId: item._id,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        getPosts();
+        setIsLiked(!isLiked);
+      })
+      .catch((error) => {
+        console.error("Like -Dislike", error);
+      });
+  };
   useEffect(() => {
     setIsLiked(likes.includes(user._id));
   }, [likes, user._id]);
@@ -142,12 +180,22 @@ const singlePost = ({ item, getPosts }) => {
         <View style={styles.separator} />
 
         <View style={styles.footerMenu}>
-          <TouchableOpacity style={styles.button}>
-            <View style={styles.icon}>
-              <Like name="heart" size={15} />
-            </View>
-            <Text style={styles.text}>Like</Text>
-          </TouchableOpacity>
+          {isLiked && (
+            <TouchableOpacity style={styles.button} onPress={dislikeHandler}>
+              <View style={styles.icon}>
+                <Like name="heart" size={15} />
+              </View>
+              <Text style={styles.text}>DisLike</Text>
+            </TouchableOpacity>
+          )}
+          {!isLiked && (
+            <TouchableOpacity style={styles.button} onPress={likeHandler}>
+              <View style={styles.icon}>
+                <Like name="heart" size={15} />
+              </View>
+              <Text style={styles.text}>Like</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={styles.button}>
             <View style={styles.icon}>
               <Comment name="comment" size={15} />
