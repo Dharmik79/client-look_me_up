@@ -16,6 +16,7 @@ import * as yup from "yup";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Switch } from "react-native-gesture-handler";
 
 const profileSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
@@ -57,6 +58,8 @@ const EditProfile = ({ navigation }) => {
       });
   };
 
+  const [privateaccount, setPrivateaccount] = useState(false);
+
   return (
     <KeyboardAwareScrollView style={{ backgroundColor: "#ffffff" }}>
       <Formik
@@ -83,7 +86,6 @@ const EditProfile = ({ navigation }) => {
                 Edit Profile
               </Text>
               <TouchableOpacity onPress={props.handleSubmit}>
-                
                 <Ionic
                   name="checkmark"
                   style={{ fontSize: 35, color: "#3491ff" }}
@@ -102,7 +104,6 @@ const EditProfile = ({ navigation }) => {
               >
                 Change profile photo
               </Text>
-              
             </TouchableOpacity>
             <View style={{ padding: 10 }}>
               <View>
@@ -200,10 +201,23 @@ const EditProfile = ({ navigation }) => {
           />
         </View> */}
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingLeft: 10,
+                paddingRight: 10,
+              }}
+            >
               <Text style={styles.accountChange}>
                 Switch to Private account
               </Text>
+              <Switch
+                value={privateaccount}
+                onChange={() => setPrivateaccount(!privateaccount)}
+              />
             </TouchableOpacity>
           </View>
         )}
@@ -246,15 +260,16 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   accountChange: {
-    paddingLeft: 10,
+    //paddingLeft: 10,
     color: "#3491ff",
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#EFEFEF",
+    marginRight: 10,
   },
-  errors:{
-color:'red',
-marginBottom:5,
+  errors: {
+    color: "red",
+    marginBottom: 5,
   },
 });
 

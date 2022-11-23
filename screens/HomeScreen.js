@@ -57,8 +57,9 @@ const HomeScreen = ({ navigation }) => {
     // <StatusBar backgroundColor="#ffffff"
     // barStyle="dark-content">
     <View style={styles.container}>
+      <TopBar getPosts={getPosts}/>
       <ScrollView>
-        <TopBar getPosts={getPosts}/>
+        
         <CreatePost getPosts={getPosts} />
        {/* <Story />
         <GroupsHome />*/}

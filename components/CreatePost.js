@@ -11,6 +11,11 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+
+
+
+
+
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Icon2 from "react-native-vector-icons/Feather";
 import Avatar from "./Avatar";
