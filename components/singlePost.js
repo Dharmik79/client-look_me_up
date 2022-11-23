@@ -26,10 +26,12 @@ import { useSelector } from "react-redux";
 
 const singlePost = ({ item, getPosts }) => {
   item = item.item;
+  const { likes } = item;
   const [modalOpen, setmodalOpen] = useState(false);
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
   const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(likes.length);
   const deletePost = async (id) => {
     await commonApi({
       action: "deletePost",
@@ -47,7 +49,6 @@ const singlePost = ({ item, getPosts }) => {
       });
   };
 
-  const { likes } = item;
   const dislikeHandler = async () => {
     await commonApi({
       action: "likeDisLike",
@@ -61,6 +62,7 @@ const singlePost = ({ item, getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
+        setLikeCount(likeCount - 1);
         setIsLiked(!isLiked);
       })
       .catch((error) => {
@@ -80,6 +82,7 @@ const singlePost = ({ item, getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
+        setLikeCount(likeCount + 1);
         setIsLiked(!isLiked);
       })
       .catch((error) => {
@@ -171,7 +174,7 @@ const singlePost = ({ item, getPosts }) => {
             <View style={styles.likeCount}>
               <Like name="heart" size={15} color={"red"} />
             </View>
-            <Text style={styles.noLikesCount}>{item.likes.length} Likes</Text>
+            <Text style={styles.noLikesCount}>{likeCount} Likes</Text>
           </View>
           <Text style={styles.noCommentsCount}>
             {item.comments.length} Comments
