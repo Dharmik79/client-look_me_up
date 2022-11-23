@@ -17,7 +17,7 @@ import commonApi from "../api/common";
 import { CheckBox } from "react-native-btr";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTogglePasswordVisibility } from '../Hooks/useTogglePasswordVisibility';
+import { useTogglePasswordVisibility, useTogglePasswordVisibility1 } from '../Hooks/useTogglePasswordVisibility';
 
 const registrationValidationSchema = yup.object().shape({
   firstName: yup.string().required("FirstName is required"),
@@ -44,6 +44,7 @@ const registrationValidationSchema = yup.object().shape({
 
 const RegisterScreen = ({ navigation }) => {
   const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const { passwordVisibility1, rightIcon1, handlePasswordVisibility1 } = useTogglePasswordVisibility1();
 
   const register = async (data, setFieldError, setSubmitting, actions) => {
     await commonApi({
@@ -187,10 +188,10 @@ const RegisterScreen = ({ navigation }) => {
                   onChangeText={props.handleChange("confirmPassword")}
                   value={props.values.confirmPassword}
                   onBlur={props.handleBlur("confirmPassword")}
-                  secureTextEntry={passwordVisibility}
+                  secureTextEntry={passwordVisibility1}
                 />
-                <Pressable style={{ width: '10%' }} onPress={handlePasswordVisibility}>
-                  <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                <Pressable style={{ width: '10%' }} onPress={handlePasswordVisibility1}>
+                  <MaterialCommunityIcons name={rightIcon1} size={22} color="#232323" />
                 </Pressable>
             </View>
               {props.errors.confirmPassword &&
