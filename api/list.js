@@ -48,5 +48,9 @@ const apiList = {
     url: () => "post/",
     method: "post",
   },
+  upload:{
+    url:()=>"upload",
+    method:"post"
+  }
 };
 export default apiList;
