@@ -18,7 +18,7 @@ import Comment from "react-native-vector-icons/MaterialIcons";
 import Share from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import Avatar from "./Avatar";
-import {baseUrl} from "../api/index"
+import { baseUrl } from "../api/index";
 import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 import commonApi from "../api/common";
@@ -32,6 +32,8 @@ const singlePost = ({ item, getPosts }) => {
   const token = useSelector((state) => state.Reducers.token);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
+  const [com, setCom] = useState("");
+
   const deletePost = async (id) => {
     await commonApi({
       action: "deletePost",
@@ -71,7 +73,7 @@ const singlePost = ({ item, getPosts }) => {
   };
   const likeHandler = async () => {
     await commonApi({
-      action: "likeDisLike",
+      action: "createComment",
       data: {
         action: 0,
         postId: item._id,
@@ -82,11 +84,29 @@ const singlePost = ({ item, getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
-        setLikeCount(likeCount + 1);
-        setIsLiked(!isLiked);
       })
       .catch((error) => {
         console.error("Like -Dislike", error);
+      });
+  };
+
+  const createComment = async () => {
+    await commonApi({
+      action: "createComment",
+      data: {
+        postId: item._id,
+        comment: com,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        setCom("");
+        getPosts();
+      })
+      .catch((error) => {
+        console.error("Create Comment : ", error);
       });
   };
   useEffect(() => {
@@ -167,7 +187,12 @@ const singlePost = ({ item, getPosts }) => {
       </View>
 
       <Text style={styles.post}>{item.desc}</Text>
-     {item.images[0] && <Image style={styles.photo} source={{uri:baseUrl+"assets/"+item.images[0]}} />}
+      {item.images[0] && (
+        <Image
+          style={styles.photo}
+          source={{ uri: baseUrl + "assets/" + item.images[0] }}
+        />
+      )}
       <View style={styles.footer}>
         <View style={styles.footerCount}>
           <View style={styles.row}>
@@ -223,9 +248,17 @@ const singlePost = ({ item, getPosts }) => {
               <TextInput
                 style={styles.textInput}
                 placeholder="Write a comment"
+                value={com}
+                onChangeText={(e) => setCom(e)}
               ></TextInput>
               <TouchableOpacity>
-                <Send name="send" size={20} color="#3491ff" />
+                <Send
+                  name="send"
+                  size={20}
+                  color="#3491ff"
+                  disabled={com == ""}
+                  onPress={createComment}
+                />
               </TouchableOpacity>
             </View>
           </View>
