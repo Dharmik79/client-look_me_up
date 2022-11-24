@@ -1,4 +1,4 @@
-import React , { useRef ,useState} from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -26,97 +26,100 @@ import { Logout } from "./context/Actions";
 import { presentPermissionsPickerAsync } from "expo-media-library";
 import ActionSheet from "react-native-actionsheet";
 
-
 const TopBar = ({ getPosts }) => {
-
-let actionSheet = useRef();
-let optionArray = [
-  'View Profile','Change Password',
-  'Log Out',
-  'Cancel'
-]
-const showActionSheet =() => {
-  actionSheet.current.show();
-}
-const [modalOpen, setmodalOpen] = useState(false);
+  let actionSheet = useRef();
+  let optionArray = ["View Profile", "Change Password", "Log Out", "Cancel"];
+  const showActionSheet = () => {
+    actionSheet.current.show();
+  };
+  const [modalOpen, setmodalOpen] = useState(false);
   const BottomSheetModalRef = useRef(null);
 
-  const snapPoints = ["48",];
-  
+  const snapPoints = ["48"];
+
   function handlePresentModal() {
     BottomSheetModalRef.current?.present();
   }
-  
 
   const dispatch = useDispatch();
 
   const logout = async () => {
     try {
       await dispatch(Logout());
+      setmodalOpen(false);
     } catch (e) {
       console.error(e);
     }
   };
+
+  const selectAction = async (index) => {
+    if (index == 0) {
+      // Navigate to Profile screen
+      console.log("Profile");
+    }
+    if (index == 1) {
+      // Navigate to change password screen
+      console.log("Chnage Password");
+    }
+    if (index == 2) {
+      setmodalOpen(true);
+    }
+    if(index==4)
+    {
+      setmodalOpen(false)
+    }
+  };
   return (
     // <BottomSheetModalProvider>
-        
+
     <View style={styles.container}>
-
-
-<Modal visible={modalOpen} animationType="slide" transparent={true} >
-          <View style={styles.centeredView}>
-            <View style={styles.modalContent}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  textAlign: "center",
-                }}
-              >
-                You really want to logout?
-              </Text>
-              <View style={styles.fixButtons}>
-                {/* <Button
+      <Modal visible={modalOpen} animationType="slide" transparent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalContent}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 16,
+                textAlign: "center",
+              }}
+            >
+              You really want to logout?
+            </Text>
+            <View style={styles.fixButtons}>
+              {/* <Button
           title="Delete"
           color={'red'}
         /> */}
-                <View style={styles.deletePost}>
-                  <TouchableOpacity onPress={logout}>
-                  <Text
-                    style={styles.deleteYes}
-                    
-                    
-                  >
-                    Logout
-                  </Text>
-                  </TouchableOpacity>
-                </View>
+              <View style={styles.deletePost}>
+                <TouchableOpacity onPress={logout}>
+                  <Text style={styles.deleteYes}>Logout</Text>
+                </TouchableOpacity>
+              </View>
 
-                <View style={styles.deletefix}>
-                  {/* <Button
+              <View style={styles.deletefix}>
+                {/* <Button
           title="Cancel"
           onPress={() => {
             setmodalOpen(false)
           }}
         /> */}
-                  <View style={styles.cancelPost}>
-                    <Text
-                      style={styles.deleteCancel}
-                      onPress={() => {
-                        setmodalOpen(false);
-                      }}
-                    >
-                      Cancel
-                    </Text>
-                  </View>
+                <View style={styles.cancelPost}>
+                  <Text
+                    style={styles.deleteCancel}
+                    onPress={() => {
+                      setmodalOpen(false);
+                    }}
+                  >
+                    Cancel
+                  </Text>
                 </View>
               </View>
             </View>
           </View>
-        </Modal>
+        </View>
+      </Modal>
 
       {/* <Text style={styles.textLogo}>Look Me Up</Text> */}
-      
 
       <Image style={styles.textLogo2} source={require("../assets/logo.png")} />
 
@@ -125,9 +128,11 @@ const [modalOpen, setmodalOpen] = useState(false);
           <TextInput style={styles.searchText} placeholder="Search"></TextInput>
           <Icon name="search" size={25} color="#3491ff" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingsButton} onPress={showActionSheet}>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={showActionSheet}
+        >
           <Icon name="settings" size={22} color="grey" />
-        
         </TouchableOpacity>
         {/* <BottomSheetModal ref={BottomSheetModalRef}
       index={0}
@@ -139,19 +144,17 @@ const [modalOpen, setmodalOpen] = useState(false);
         </View>
       </BottomSheetModal> */}
       </View>
-      <ActionSheet styles={styles}
-      ref={actionSheet}
-        title={'Settings'}
+      <ActionSheet
+        styles={styles}
+        ref={actionSheet}
+        title={"Settings"}
         options={optionArray}
         cancelButtonIndex={3}
         destructiveButtonIndex={3}
-        
-        onPress={() => setmodalOpen(true)}
-   
-        >
-      </ActionSheet>
-      </View>
-   
+        onPress={selectAction}
+      ></ActionSheet>
+    </View>
+
     // </BottomSheetModalProvider>
   );
 };
@@ -288,7 +291,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#3491ff",
     borderRadius: 10,
   },
- 
-  
 });
 export default TopBar;
