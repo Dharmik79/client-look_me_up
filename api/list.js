@@ -44,5 +44,9 @@ const apiList = {
     url: () => "user/update-profile",
     method: "put",
   },
+  likeDisLike: {
+    url: () => "post/",
+    method: "post",
+  },
 };
 export default apiList;

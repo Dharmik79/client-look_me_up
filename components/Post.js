@@ -24,52 +24,30 @@ import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
+import SinglePost from "./singlePost";
 const Post = ({ posts, getPosts }) => {
-  const [modalOpen, setmodalOpen] = useState(false);
-  const user = useSelector((state) => state.Reducers.user);
-  const token = useSelector((state) => state.Reducers.token);
-
-  const deletePost = async (id) => {
-    await commonApi({
-      action: "deletePost",
-      parameters: [id],
-      config: {
-        authToken: token,
-      },
-    })
-      .then(async ({ DATA = {} }) => {
-        getPosts();
-        setmodalOpen(false);
-      })
-      .catch((error) => {
-        console.error("Delete Post", error);
-      });
-  };
   useEffect(() => {
     getPosts();
   }, []);
 
-
-  
-    const onShare = async () => {
-      try {
-        const result = await Share.share({
-          message:
-            'Show post description',
-        });
-        if (result.action === Share.sharedAction) {
-          if (result.activityType) {
-            // shared with activity type of result.activityType
-          } else {
-            // shared
-          }
-        } else if (result.action === Share.dismissedAction) {
-          // dismissed
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "Show post description",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
         }
-      } catch (error) {
-        alert(error.message);
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
-    };
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const renderPost = ({ item }) => {
     return (
@@ -251,11 +229,9 @@ const Post = ({ posts, getPosts }) => {
     <>
       <FlatList
         data={posts}
-        renderItem={renderPost}
+        renderItem={(item) => <SinglePost item={item} getPosts={getPosts} />}
         keyExtractor={(item) => item._id}
       />
-
-      {/* <View style={styles.divider}/> */}
     </>
   );
 };
