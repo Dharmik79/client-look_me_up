@@ -37,6 +37,11 @@ const HomeScreen = ({ navigation }) => {
               model: "user",
               select: ["_id", "fullName"],
             },
+            {
+              path: "comments.userId",
+              model: "user",
+              select: ["_id", "fullName", "profilePicture"],
+            },
           ],
           sort: { createdAt: -1 },
         },
