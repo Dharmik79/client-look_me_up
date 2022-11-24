@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -19,19 +19,13 @@ import BottomTabNavigator from "../components/BottomTabNavigator";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 const HomeScreen = ({ navigation }) => {
-  const[refresh, setRefresh] = useState(false)
-  const pullMe = () => {
-    setRefresh(true)
+  const [refresh, setRefresh] = useState(false);
 
-    setTimeout(()=>{
-      setRefresh(false)
-    },500)
-  }
-
-  const [posts,setPosts]=useState([])
+  const [posts, setPosts] = useState([]);
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
   const getPosts = async () => {
+    setRefresh(true);
     await commonApi({
       action: "findAllPost",
       data: {
@@ -53,29 +47,32 @@ const HomeScreen = ({ navigation }) => {
     })
       .then(async ({ DATA = {} }) => {
         setPosts(DATA.data);
+        setRefresh(false);
       })
       .catch((error) => {
         console.error("Fetch Posts", error);
       });
   };
-  useEffect(()=>{
-    getPosts()
-  },[user])
+  const pullMe = () => {
+    getPosts();
+  };
+  useEffect(() => {
+    getPosts();
+  }, [user]);
   return (
     // <KeyboardAwareScrollView>
     // <>
     // <StatusBar backgroundColor="#ffffff"
     // barStyle="dark-content">
     <View style={styles.container}>
-      <TopBar getPosts={getPosts}/>
-      <ScrollView refreshControl={
-        <RefreshControl
-        refreshing={refresh}
-        onRefresh={()=>pullMe()}/>
-      }>
-        
+      <TopBar getPosts={getPosts} />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={() => pullMe()} />
+        }
+      >
         <CreatePost getPosts={getPosts} />
-       {/* <Story />
+        {/* <Story />
         <GroupsHome />*/}
         <Post getPosts={getPosts} posts={posts} />
         {/* <SafeAreaView
