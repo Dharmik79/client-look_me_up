@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -18,6 +19,15 @@ import BottomTabNavigator from "../components/BottomTabNavigator";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 const HomeScreen = ({ navigation }) => {
+  const[refresh, setRefresh] = useState(false)
+  const pullMe = () => {
+    setRefresh(true)
+
+    setTimeout(()=>{
+      setRefresh(false)
+    },500)
+  }
+
   const [posts,setPosts]=useState([])
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
@@ -58,7 +68,11 @@ const HomeScreen = ({ navigation }) => {
     // barStyle="dark-content">
     <View style={styles.container}>
       <TopBar getPosts={getPosts}/>
-      <ScrollView>
+      <ScrollView refreshControl={
+        <RefreshControl
+        refreshing={refresh}
+        onRefresh={()=>pullMe()}/>
+      }>
         
         <CreatePost getPosts={getPosts} />
        {/* <Story />
