@@ -5,6 +5,7 @@ import {
   Modal,
   StyleSheet,
   Image,
+  Share,
   TouchableOpacity,
   Button,
   TextInput,
@@ -15,7 +16,7 @@ import {
 import Icon from "react-native-vector-icons/Entypo";
 import Like from "react-native-vector-icons/AntDesign";
 import Comment from "react-native-vector-icons/MaterialIcons";
-import Share from "react-native-vector-icons/MaterialIcons";
+import Shares from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import Avatar from "./Avatar";
 
@@ -28,11 +29,207 @@ const Post = ({ posts, getPosts }) => {
   useEffect(() => {
     getPosts();
   }, []);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "Show post description",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const renderPost = ({ item }) => {
+    return (
+      <View style={styles.container} key={item._id}>
+        <Modal visible={modalOpen} animationType="slide" transparent={true}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalContent}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  textAlign: "center",
+                }}
+              >
+                You really want to delete this masterpiece?
+              </Text>
+              <View style={styles.fixButtons}>
+                {/* <Button
+          title="Delete"
+          color={'red'}
+        /> */}
+                <View style={styles.deletePost}>
+                  <Text
+                    style={styles.deleteYes}
+                    onPress={() => {
+                      deletePost(item._id);
+                    }}
+                  >
+                    Delete
+                  </Text>
+                </View>
+
+                <View style={styles.deletefix}>
+                  {/* <Button
+          title="Cancel"
+          onPress={() => {
+            setmodalOpen(false)
+          }}
+        /> */}
+                  <View style={styles.cancelPost}>
+                    <Text
+                      style={styles.deleteCancel}
+                      onPress={() => {
+                        setmodalOpen(false);
+                      }}
+                    >
+                      Cancel
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <View style={styles.header}>
+          <View style={styles.row}>
+            <Avatar source={require("../assets/a3.png")} />
+            <View style={{ paddingLeft: 10 }}>
+              <Text style={styles.user}>{item.userId.fullName}</Text>
+
+              <View style={styles.row}>
+                <Text style={styles.postTime}>
+                  {moment(item.createdAt).fromNow()}
+                </Text>
+              </View>
+            </View>
+          </View>
+          {item.userId._id === user._id && (
+            <TouchableOpacity onPress={() => setmodalOpen(true)}>
+              <Icon name="dots-three-vertical" size={20} />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <Text style={styles.post}>{item.desc}</Text>
+        <Image style={styles.photo} source={require("../assets/story2.jpg")} />
+        <View style={styles.footer}>
+          <View style={styles.footerCount}>
+            <View style={styles.row}>
+              <View style={styles.likeCount}>
+                <Like name="heart" size={15} color={"red"} />
+              </View>
+              <Text style={styles.noLikesCount}>{item.likes.length} Likes</Text>
+            </View>
+            <Text style={styles.noCommentsCount}>
+              {item.comments.length} Comments
+            </Text>
+          </View>
+          <View style={styles.separator} />
+
+          <View style={styles.footerMenu}>
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.icon}>
+                <Like name="heart" size={15} />
+              </View>
+              <Text style={styles.text}>Like</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <View style={styles.icon}>
+                <Comment name="comment" size={15} />
+              </View>
+              <Text style={styles.text}>Comment</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={onShare}>
+              <View style={styles.icon}>
+                <Shares name="share" size={15} />
+              </View>
+              <Text style={styles.text}>Share</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.separator} />
+
+          <View style={styles.footerMenu}>
+            <View style={styles.button}>
+              <View style={styles.icon}>
+                <Avatar source={require("../assets/a3.png")} />
+              </View>
+              <View style={styles.commentBox}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Write a comment"
+                ></TextInput>
+                <TouchableOpacity>
+                  <Send name="send" size={20} color="#3491ff" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={styles.commentsViewFilter}>
+            <Text style={styles.commentsView}>Most Recent</Text>
+            <TouchableOpacity>
+              <DropDown name="filter" size={18} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.commentsHeader}>
+            <View style={styles.commentsRow}>
+              <Avatar source={require("../assets/a5.png")} />
+              <View style={styles.commentBoxBorder}>
+                <View style={{ paddingLeft: 5 }}>
+                  <Text style={styles.commentUser}>Jason Dark</Text>
+
+                  <View style={styles.commentsRow}>
+                    <Text style={styles.commentContent}>
+                      It looks beautiful
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            {/* <Icon name="dots-three-vertical" size={20} /> */}
+          </View>
+          <View style={styles.commentsHeader}>
+            <View style={styles.commentsRow}>
+              <Avatar source={require("../assets/a4.png")} />
+              <View style={styles.commentBoxBorder2}>
+                <View style={{ paddingLeft: 5 }}>
+                  <Text style={styles.commentUser}>John Doe</Text>
+
+                  <View style={styles.commentsRow}>
+                    <Text style={styles.commentContent}>
+                      Wish I was there, sad I missed it
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            {/* <Icon name="dots-three-vertical" size={20} /> */}
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.viewMoreReplies}>View more replies</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
   return (
     <>
       <FlatList
         data={posts}
-        renderItem={(item)=><SinglePost item={item} getPosts={getPosts}/>}
+        renderItem={(item) => <SinglePost item={item} getPosts={getPosts} />}
         keyExtractor={(item) => item._id}
       />
     </>

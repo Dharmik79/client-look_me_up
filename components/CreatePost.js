@@ -26,7 +26,8 @@ import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { CAMERA, MEDIA_LIBRARY } from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
-import { Camera } from "expo-camera";
+// import { Camera } from "expo-camera";
+import { Camera, CameraType } from 'expo-camera';
 
 const CreatePost = ({ getPosts }) => {
   const user = useSelector((state) => state.Reducers.user);
@@ -102,56 +103,145 @@ const CreatePost = ({ getPosts }) => {
   //     }
   //  }
 
-  const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
-  const [image, setImage] = useState(null);
-  const [video, setVideo] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const galleryStatus =
-        await ImagePicker.requireMediaLibraryPermissionsAsync();
-      setHasGalleryPermission(galleryStatus.status === "granted");
-    })();
-  }, []);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+
+
+
+
+  // const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+  // const [image, setImage] = useState(null);
+  // const [video, setVideo] = useState(null);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const galleryStatus =
+  //       await ImagePicker.requireMediaLibraryPermissionsAsync();
+  //     setHasGalleryPermission(galleryStatus.status === "granted");
+  //   })();
+  // }, []);
+
+  // const pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
+  //   console.log(result);
+
+  //   if (!result.cancelled) {
+  //     setImage(result.uri);
+  //   } else {
+  //     alert("You did not select any image");
+  //   }
+  // };
+  // if (hasGalleryPermission === false) {
+  //   return;
+  //   <Text>No access</Text>;
+  // }
+
+  // const pickVideo = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
+  //   console.log(result);
+
+  //   if (!result.cancelled) {
+  //     setVideo(result.uri);
+  //   }
+  // };
+  // if (hasGalleryPermission === false) {
+  //   return;
+  //   <Text>No access</Text>;
+  // }
+
+//   const [hasPermission, setHasPermission] = useState(null);
+//   const [camera, setCamera] = useState(null);
+//   const [image1, setImage1] = useState(null);
+//   const [type, setType] = useState(Camera.Constants.Type.back);
+// useEffect(() => {
+//     (async () => {
+//       const { status } = await Camera.requestPermissionsAsync();
+//       setHasPermission(status === 'granted');
+//     })();
+//   }, []);
+// const takePicture = async () => {
+//     if(camera){
+//       const data = await camera.takePictureAsync(null);
+//       //console.log(data.uri)
+//       setImage(data.uri)
+//     }
+//   }
+// if (hasPermission === null) {
+//     return <View />;
+//   }
+//   if (hasPermission === false) {
+//     return <Text>No access to camera</Text>;
+//   }
+
+ // The path of the picked image
+ const [pickedImagePath, setPickedImagePath] = useState('');
+
+ // This function is triggered when the "Select an image" button pressed
+ const showImagePicker = async () => {
+   // Ask the user for the permission to access the media library 
+   const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+   if (permissionResult.granted === false) {
+     alert("You've refused to allow this appp to access your photos!");
+     return;
+   }
+
+   const result = await ImagePicker.launchImageLibraryAsync({
+   mediaTypes : ImagePicker.MediaTypeOptions.Images,
+   allowsEditing: true,
+   aspect: [4, 3],
+  quality: 1,
+  });
+
+   // Explore the result
+   console.log(result);
+
+   if (!result.cancelled) {
+     setPickedImagePath(result.uri);
+     console.log(result.uri);
+   }
+ }
+
+
+  const openCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    // Explore the result
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
-    } else {
-      alert("You did not select any image");
+      setPickedImagePath(result.uri);
+      console.log(result.uri);
     }
-  };
-  if (hasGalleryPermission === false) {
-    return;
-    <Text>No access</Text>;
-  }
+}
 
-  const pickVideo = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    console.log(result);
+  // const [type, setType] = useState(CameraType.back);
+  // const [permission, requestPermission] = Camera.useCameraPermissions();
 
-    if (!result.cancelled) {
-      setVideo(result.uri);
-    }
-  };
-  if (hasGalleryPermission === false) {
-    return;
-    <Text>No access</Text>;
-  }
+ 
 
+  // function toggleCameraType() {
+  //   setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+  // }
   // const [image, setImage] = useState(null);
 
   // useEffect(()=>{
@@ -190,22 +280,31 @@ const CreatePost = ({ getPosts }) => {
       <View style={styles.divider} />
 
       {/* Only show when image is selected */}
-      <Image style={styles.photo} source={{ uri: image }} />
+      <Image style={styles.photo} source={{ uri: pickedImagePath }} />
 
       <View style={styles.row}>
-        <TouchableOpacity style={styles.menuPhoto} onPress={() => pickImage()}>
-          {image && <Image source={{ uri: image }} />}
+        <TouchableOpacity style={styles.menuPhoto} onPress={showImagePicker}>
+        {
+          pickedImagePath !== '' && <Image
+            source={{ uri: pickedImagePath }} />}
           <Icon name="picture" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Photo</Text>
         </TouchableOpacity>
         {/* <View style={styles.separator}/> */}
-        <TouchableOpacity style={styles.menuCamera}>
+        {/* <Camera 
+          ref={ref => setCamera(ref)} 
+          style={styles.camera} 
+          type={type} 
+          ratio={'1:1'} 
+       /> */}
+        <TouchableOpacity style={styles.menuCamera} onPress={openCamera}>
           <Icon name="camera" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Camera</Text>
         </TouchableOpacity>
+        
         {/* <View style={styles.separator}/> */}
         <TouchableOpacity style={styles.menuVideo} onPress={() => pickVideo()}>
-          {video && <Image source={{ uri: video }} />}
+          {/* {video && <Image source={{ uri: video }} />} */}
           <Icon2 name="video" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Video</Text>
         </TouchableOpacity>
