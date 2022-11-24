@@ -48,9 +48,13 @@ const apiList = {
     url: () => "post/",
     method: "post",
   },
-  upload:{
-    url:()=>"upload",
-    method:"post"
-  }
+  upload: {
+    url: () => "upload",
+    method: "post",
+  },
+  createComment: {
+    url: () => "comment/add",
+    method: "post",
+  },
 };
 export default apiList;
