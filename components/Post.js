@@ -5,6 +5,7 @@ import {
   Modal,
   StyleSheet,
   Image,
+  Share,
   TouchableOpacity,
   Button,
   TextInput,
@@ -15,7 +16,7 @@ import {
 import Icon from "react-native-vector-icons/Entypo";
 import Like from "react-native-vector-icons/AntDesign";
 import Comment from "react-native-vector-icons/MaterialIcons";
-import Share from "react-native-vector-icons/MaterialIcons";
+import Shares from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import Avatar from "./Avatar";
 
@@ -47,6 +48,28 @@ const Post = ({ posts, getPosts }) => {
   useEffect(() => {
     getPosts();
   }, []);
+
+
+  
+    const onShare = async () => {
+      try {
+        const result = await Share.share({
+          message:
+            'Show post description',
+        });
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    };
 
   const renderPost = ({ item }) => {
     return (
@@ -151,9 +174,9 @@ const Post = ({ posts, getPosts }) => {
               </View>
               <Text style={styles.text}>Comment</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={onShare}>
               <View style={styles.icon}>
-                <Share name="share" size={15} />
+                <Shares name="share" size={15} />
               </View>
               <Text style={styles.text}>Share</Text>
             </TouchableOpacity>
