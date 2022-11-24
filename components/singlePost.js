@@ -33,7 +33,6 @@ const singlePost = ({ item, getPosts }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
   const [com, setCom] = useState("");
-
   const deletePost = async (id) => {
     await commonApi({
       action: "deletePost",
@@ -73,7 +72,7 @@ const singlePost = ({ item, getPosts }) => {
   };
   const likeHandler = async () => {
     await commonApi({
-      action: "createComment",
+      action: "likeDisLike",
       data: {
         action: 0,
         postId: item._id,
@@ -84,6 +83,8 @@ const singlePost = ({ item, getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
+        setLikeCount(likeCount + 1);
+        setIsLiked(!isLiked);
       })
       .catch((error) => {
         console.error("Like -Dislike", error);

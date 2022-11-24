@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
   const getPosts = async () => {
-    setRefresh(true);
+   
     await commonApi({
       action: "findAllPost",
       data: {
@@ -54,6 +54,7 @@ const HomeScreen = ({ navigation }) => {
       });
   };
   const pullMe = () => {
+    setRefresh(true);
     getPosts();
   };
   useEffect(() => {
