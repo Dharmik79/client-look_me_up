@@ -35,6 +35,11 @@ const CreatePost = ({ getPosts }) => {
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
   const handleSubmit = async () => {
+    let data={}
+    if(post.desc!="")
+    {
+      data.desc=post.desc
+    }
     let images = [];
     if (pickedImagePath) {
       let formData = new FormData();
@@ -61,7 +66,7 @@ const CreatePost = ({ getPosts }) => {
     }
     await commonApi({
       action: "createPost",
-      data: { ...post, images: images },
+      data: { ...data, images: images },
       config: {
         authToken: token,
       },
@@ -311,7 +316,7 @@ const CreatePost = ({ getPosts }) => {
           <Text style={styles.menuText}>Video</Text>
         </TouchableOpacity>
         {/* <View style={styles.separator}/> */}
-        <TouchableOpacity onPress={handleSubmit} style={styles.menuPost}>
+        <TouchableOpacity onPress={handleSubmit} style={styles.menuPost} disabled={post.desc=="" && post.images.length==0}>
           <Icon2 name="send" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Post</Text>
         </TouchableOpacity>
