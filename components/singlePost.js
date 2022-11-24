@@ -32,7 +32,6 @@ const singlePost = ({ item, getPosts }) => {
   const token = useSelector((state) => state.Reducers.token);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
-  console.log("Item : ",baseUrl+"assets/"+item.images[0])
   const deletePost = async (id) => {
     await commonApi({
       action: "deletePost",

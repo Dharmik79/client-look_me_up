@@ -35,6 +35,7 @@ const CreatePost = ({ getPosts }) => {
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
   const handleSubmit = async () => {
+    let images = [];
     if (pickedImagePath) {
       let formData = new FormData();
       let name = Date.now() + ".PNG";
@@ -51,7 +52,7 @@ const CreatePost = ({ getPosts }) => {
         },
       })
         .then((response) => {
-          setPost({ ...post, images: [name] });
+          images = [name];
           console.log("success", response);
         })
         .catch((error) => {
@@ -60,7 +61,7 @@ const CreatePost = ({ getPosts }) => {
     }
     await commonApi({
       action: "createPost",
-      data: post,
+      data: { ...post, images: images },
       config: {
         authToken: token,
       },
@@ -216,12 +217,8 @@ const CreatePost = ({ getPosts }) => {
       quality: 1,
     });
 
-    // Explore the result
-    console.log(result);
-
     if (!result.cancelled) {
       setPickedImagePath(result);
-      console.log(result.uri);
     }
   };
 
@@ -236,12 +233,8 @@ const CreatePost = ({ getPosts }) => {
 
     const result = await ImagePicker.launchCameraAsync();
 
-    // Explore the result
-    console.log(result);
-
     if (!result.cancelled) {
       setPickedImagePath(result);
-      console.log(result);
     }
   };
 
