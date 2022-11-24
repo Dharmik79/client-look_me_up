@@ -192,11 +192,16 @@ const CreatePost = ({ getPosts }) => {
    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
    if (permissionResult.granted === false) {
-     alert("You've refused to allow this app to access your photos!");
+     alert("You've refused to allow this appp to access your photos!");
      return;
    }
 
-   const result = await ImagePicker.launchImageLibraryAsync();
+   const result = await ImagePicker.launchImageLibraryAsync({
+   mediaTypes : ImagePicker.MediaTypeOptions.Images,
+   allowsEditing: true,
+   aspect: [4, 3],
+  quality: 1,
+  });
 
    // Explore the result
    console.log(result);
@@ -211,6 +216,7 @@ const CreatePost = ({ getPosts }) => {
   const openCamera = async () => {
     // Ask the user for the permission to access the camera
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    
 
     if (permissionResult.granted === false) {
       alert("You've refused to allow this appp to access your camera!");
