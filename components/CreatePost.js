@@ -12,10 +12,6 @@ import {
   Platform,
 } from "react-native";
 
-
-
-
-
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import Icon2 from "react-native-vector-icons/Feather";
 import Avatar from "./Avatar";
@@ -27,7 +23,7 @@ import * as Permissions from "expo-permissions";
 import { CAMERA, MEDIA_LIBRARY } from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 // import { Camera } from "expo-camera";
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraType } from "expo-camera";
 
 const CreatePost = ({ getPosts }) => {
   const user = useSelector((state) => state.Reducers.user);
@@ -36,11 +32,35 @@ const CreatePost = ({ getPosts }) => {
     images: [],
     desc: "",
   });
-
+  // The path of the picked image
+  const [pickedImagePath, setPickedImagePath] = useState("");
   const handleSubmit = async () => {
+    if (pickedImagePath) {
+      let formData = new FormData();
+      let name = Date.now() + ".PNG";
+      formData.append("photo", {
+        name: name,
+        type: pickedImagePath.type,
+        uri: pickedImagePath.uri,
+      });
+      await commonApi({
+        action: "upload",
+        data: formData,
+        config: {
+          contentType: "multipart/form-data",
+        },
+      })
+        .then((response) => {
+          setPost({ ...post, images: [name] });
+          console.log("success", response);
+        })
+        .catch((error) => {
+          console.error("Error in Upload File ", error);
+        });
+    }
     await commonApi({
       action: "createPost",
-      data: { ...post },
+      data: post,
       config: {
         authToken: token,
       },
@@ -48,6 +68,7 @@ const CreatePost = ({ getPosts }) => {
       .then(async ({ DATA = {} }) => {
         getPosts();
         setPost({ images: [], desc: "" });
+        setPickedImagePath(null);
       })
       .catch((error) => {
         console.error("Create Post", error);
@@ -103,12 +124,6 @@ const CreatePost = ({ getPosts }) => {
   //     }
   //  }
 
-
-
-
-
-
-
   // const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   // const [image, setImage] = useState(null);
   // const [video, setVideo] = useState(null);
@@ -159,67 +174,63 @@ const CreatePost = ({ getPosts }) => {
   //   <Text>No access</Text>;
   // }
 
-//   const [hasPermission, setHasPermission] = useState(null);
-//   const [camera, setCamera] = useState(null);
-//   const [image1, setImage1] = useState(null);
-//   const [type, setType] = useState(Camera.Constants.Type.back);
-// useEffect(() => {
-//     (async () => {
-//       const { status } = await Camera.requestPermissionsAsync();
-//       setHasPermission(status === 'granted');
-//     })();
-//   }, []);
-// const takePicture = async () => {
-//     if(camera){
-//       const data = await camera.takePictureAsync(null);
-//       //console.log(data.uri)
-//       setImage(data.uri)
-//     }
-//   }
-// if (hasPermission === null) {
-//     return <View />;
-//   }
-//   if (hasPermission === false) {
-//     return <Text>No access to camera</Text>;
-//   }
+  //   const [hasPermission, setHasPermission] = useState(null);
+  //   const [camera, setCamera] = useState(null);
+  //   const [image1, setImage1] = useState(null);
+  //   const [type, setType] = useState(Camera.Constants.Type.back);
+  // useEffect(() => {
+  //     (async () => {
+  //       const { status } = await Camera.requestPermissionsAsync();
+  //       setHasPermission(status === 'granted');
+  //     })();
+  //   }, []);
+  // const takePicture = async () => {
+  //     if(camera){
+  //       const data = await camera.takePictureAsync(null);
+  //       //console.log(data.uri)
+  //       setImage(data.uri)
+  //     }
+  //   }
+  // if (hasPermission === null) {
+  //     return <View />;
+  //   }
+  //   if (hasPermission === false) {
+  //     return <Text>No access to camera</Text>;
+  //   }
 
- // The path of the picked image
- const [pickedImagePath, setPickedImagePath] = useState('');
+  // This function is triggered when the "Select an image" button pressed
+  const showImagePicker = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
- // This function is triggered when the "Select an image" button pressed
- const showImagePicker = async () => {
-   // Ask the user for the permission to access the media library 
-   const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
 
-   if (permissionResult.granted === false) {
-     alert("You've refused to allow this appp to access your photos!");
-     return;
-   }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-   const result = await ImagePicker.launchImageLibraryAsync({
-   mediaTypes : ImagePicker.MediaTypeOptions.Images,
-   allowsEditing: true,
-   aspect: [4, 3],
-  quality: 1,
-  });
+    // Explore the result
+    console.log(result);
 
-   // Explore the result
-   console.log(result);
-
-   if (!result.cancelled) {
-     setPickedImagePath(result.uri);
-     console.log(result.uri);
-   }
- }
-
+    if (!result.cancelled) {
+      setPickedImagePath(result);
+      console.log(result.uri);
+    }
+  };
 
   const openCamera = async () => {
     // Ask the user for the permission to access the camera
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    
 
     if (permissionResult.granted === false) {
-      alert("You've refused to allow this appp to access your camera!");
+      alert("You've refused to allow this app to access your camera!");
       return;
     }
 
@@ -229,15 +240,13 @@ const CreatePost = ({ getPosts }) => {
     console.log(result);
 
     if (!result.cancelled) {
-      setPickedImagePath(result.uri);
-      console.log(result.uri);
+      setPickedImagePath(result);
+      console.log(result);
     }
-}
+  };
 
   // const [type, setType] = useState(CameraType.back);
   // const [permission, requestPermission] = Camera.useCameraPermissions();
-
- 
 
   // function toggleCameraType() {
   //   setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
@@ -280,13 +289,13 @@ const CreatePost = ({ getPosts }) => {
       <View style={styles.divider} />
 
       {/* Only show when image is selected */}
-      <Image style={styles.photo} source={{ uri: pickedImagePath }} />
+      {pickedImagePath && (
+        <Image style={styles.photo} source={{ uri: pickedImagePath.uri }} />
+      )}
 
       <View style={styles.row}>
         <TouchableOpacity style={styles.menuPhoto} onPress={showImagePicker}>
-        {
-          pickedImagePath !== '' && <Image
-            source={{ uri: pickedImagePath }} />}
+          {pickedImagePath && <Image source={{ uri: pickedImagePath.uri }} />}
           <Icon name="picture" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Photo</Text>
         </TouchableOpacity>
@@ -301,7 +310,7 @@ const CreatePost = ({ getPosts }) => {
           <Icon name="camera" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Camera</Text>
         </TouchableOpacity>
-        
+
         {/* <View style={styles.separator}/> */}
         <TouchableOpacity style={styles.menuVideo} onPress={() => pickVideo()}>
           {/* {video && <Image source={{ uri: video }} />} */}
@@ -314,7 +323,6 @@ const CreatePost = ({ getPosts }) => {
           <Text style={styles.menuText}>Post</Text>
         </TouchableOpacity>
       </View>
-     
     </View>
   );
 };
@@ -323,7 +331,7 @@ const styles = StyleSheet.create({
   container: {
     //flex: 1,
     width: "100%",
-   // height: 435,
+    // height: 435,
     padding: 5,
     //backgroundColor: "#3491ff",
     borderWidth: 2,
