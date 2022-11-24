@@ -18,7 +18,7 @@ import Comment from "react-native-vector-icons/MaterialIcons";
 import Share from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import Avatar from "./Avatar";
-
+import {baseUrl} from "../api/index"
 import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 import commonApi from "../api/common";
@@ -32,6 +32,7 @@ const singlePost = ({ item, getPosts }) => {
   const token = useSelector((state) => state.Reducers.token);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
+  console.log("Item : ",baseUrl+"assets/"+item.images[0])
   const deletePost = async (id) => {
     await commonApi({
       action: "deletePost",
@@ -167,7 +168,7 @@ const singlePost = ({ item, getPosts }) => {
       </View>
 
       <Text style={styles.post}>{item.desc}</Text>
-      <Image style={styles.photo} source={require("../assets/story2.jpg")} />
+     {item.images[0] && <Image style={styles.photo} source={{uri:baseUrl+"assets/"+item.images[0]}} />}
       <View style={styles.footer}>
         <View style={styles.footerCount}>
           <View style={styles.row}>
