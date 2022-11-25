@@ -59,6 +59,10 @@ const apiList = {
   suggestions:{
     url:()=>"user/suggestions",
     method:"post"
+  },
+  addFriend:{
+    url:()=>"user/followFriend",
+    method:"post"
   }
 };
 export default apiList;

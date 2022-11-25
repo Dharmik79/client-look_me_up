@@ -42,6 +42,24 @@ const Suggestions = () => {
   useEffect(() => {
     getSuggestions();
   }, []);
+
+  const addFriend = async (id) => {
+    await commonApi({
+      action: "addFriend",
+      data: {
+        followingId: id,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(() => {
+        getSuggestions();
+      })
+      .catch((error) => {
+        console.error("Error - Add Friend", error);
+      });
+  };
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -118,7 +136,9 @@ const Suggestions = () => {
                         // opacity:0.2,
                         borderRadius: 10,
                       }}
-           
+                      onPress={() => {
+                        addFriend(suggestion._id);
+                      }}
                     >
                       <Icon2 name="person-add" size={20} color="#ffffff" />
                       <Text
@@ -135,7 +155,7 @@ const Suggestions = () => {
                       </Text>
                     </TouchableOpacity>
 
-                  { /* <TouchableOpacity
+                    {/* <TouchableOpacity
                       style={{
                         //flex: 0.5,
                         width: "70%",
