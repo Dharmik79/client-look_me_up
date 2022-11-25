@@ -15,11 +15,9 @@ import Ionic from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/Entypo";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import { Avatar } from "react-native-paper";
-import Suggestions from "./Suggestions";
-const BottomTabView = ({}) => {
-  const Tab = createMaterialTopTabNavigator();
 
-  const YourFriends = () => {
+
+const Suggestions = () => {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -29,11 +27,6 @@ const BottomTabView = ({}) => {
           backgroundColor: "#ffffff",
         }}
       >
-
-
-
-
-        
         <View
           style={{
             width: "100%",
@@ -65,31 +58,54 @@ const BottomTabView = ({}) => {
                 John Doe
               </Text>
 
-              <View
-                style={{
-                  alignItems: "center",
-                  flexDirection: "row",
-                  marginBottom: 5,
-                }}
-              >
-                <Text
-                  style={{ fontSize: 14, color: "grey", fontWeight: "300" }}
-                >
-                  27 Posts {"\t"} 37 {"\t"} Followers {"\t"} 137 Friends
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <Text style={{ fontSize: 14, color: "grey", marginBottom: 5, fontWeight: "300" }}>
+                  27 Posts {"\t"} 37 Followers {"\t"} 137 Friends
                 </Text>
               </View>
 
               <View style={{ alignItems: "center", flexDirection: "row" }}>
                 <TouchableOpacity
                   style={{
-                    flex: 0.5,
+                    //flex: 0.5,
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "center",
                     marginLeft: 2,
                     marginRight: 2,
                     height: 35,
-                    //width:50,
+                    width: 120,
+                    backgroundColor: "#3491ff",
+                    // opacity:0.2,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Icon2 name="person-add" size={20} color="#ffffff" />
+                  <Text
+                    style={{
+                      //paddingLeft:10,
+                      fontSize: 13,
+                      fontWeight: "500",
+                      color: "#ffffff",
+                      //backgroundColor:'grey',
+                      borderRadius: 10,
+                    }}
+                  >
+                    Add Friend
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    //flex: 0.5,
+                    width: "70%",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: 2,
+                    marginRight: 2,
+                    height: 35,
+                    width: 120,
                     backgroundColor: "#a3a3a3",
                     // opacity:0.2,
                     borderRadius: 10,
@@ -106,7 +122,7 @@ const BottomTabView = ({}) => {
                       borderRadius: 10,
                     }}
                   >
-                    Remove Friend
+                    Not Interested
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -129,39 +145,4 @@ const BottomTabView = ({}) => {
     );
   };
 
-
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        // tabBarShowLabel: false,
-        tabBarLabelStyle: {
-          color: "#ffffff",
-          fontSize: 16,
-          textTransform:'none',
-          // backgroundColor:'grey',
-        },
-        tabBarStyle: {
-          backgroundColor: "#a3a3a3",
-          borderRadius: 10,
-        },
-
-        tabBarIndicatorStyle: {
-          backgroundColor: "#3491ff",
-          //color:'grey',
-          borderRadius: 10,
-          height: "100%",
-          //borderColor: "#F0F0F0",
-          //borderWidth: 4,
-        },
-        tabBarInactiveTintColor: {
-          // color:"grey",
-          backgroundColor: "grey",
-        },
-      }}
-    >
-      <Tab.Screen name="Friends" component={YourFriends} />
-      <Tab.Screen name="Suggestions" component={Suggestions} />
-    </Tab.Navigator>
-  );
-};
-export default BottomTabView;
+  export default Suggestions;
