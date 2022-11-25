@@ -27,7 +27,30 @@ const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
-
+  const [privateAccount, setPrivateAccount] = useState(
+    user.accountType == "private" ? true : false
+  );
+  const updateAccountType = async () => {
+    let data = {
+      accountType: privateAccount ? "public" : "private",
+    };
+    setPrivateAccount(!privateAccount);
+    await commonApi({
+      action: "updateProfile",
+      data: data,
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        dispatch({ type: "UPDATE_USER", payload: DATA });
+        await AsyncStorage.setItem("user", JSON.stringify(DATA));
+        
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const updateProfile = async (data, setFieldError, setSubmitting) => {
     await commonApi({
       action: "updateProfile",
@@ -57,8 +80,6 @@ const EditProfile = ({ navigation }) => {
         setSubmitting(true);
       });
   };
-
-  const [privateaccount, setPrivateaccount] = useState(false);
 
   return (
     <KeyboardAwareScrollView style={{ backgroundColor: "#ffffff" }}>
@@ -214,10 +235,7 @@ const EditProfile = ({ navigation }) => {
               <Text style={styles.accountChange}>
                 Switch to Private account
               </Text>
-              <Switch
-                value={privateaccount}
-                onChange={() => setPrivateaccount(!privateaccount)}
-              />
+              <Switch value={privateAccount} onChange={updateAccountType} />
             </TouchableOpacity>
           </View>
         )}
