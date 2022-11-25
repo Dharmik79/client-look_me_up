@@ -56,5 +56,9 @@ const apiList = {
     url: () => "comment/add",
     method: "post",
   },
+  suggestions:{
+    url:()=>"user/suggestions",
+    method:"post"
+  }
 };
 export default apiList;
