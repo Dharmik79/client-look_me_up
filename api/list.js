@@ -67,6 +67,10 @@ const apiList = {
   friends:{
     url:()=>"user/friends",
     method:"post"
+  },
+  removeFriend:{
+    url:()=>"user/unFollowFriend",
+    method:"post"
   }
 };
 export default apiList;

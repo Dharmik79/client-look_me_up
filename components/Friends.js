@@ -38,6 +38,23 @@ const Friends = () => {
       setFriends(DATA.data);
     });
   };
+  const unFollowFriend = async (id) => {
+    await commonApi({
+      action: "removeFriend",
+      data: {
+        followingId: id,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(() => {
+        fetchFriends();
+      })
+      .catch((error) => {
+        console.error("Error - Add Friend", error);
+      });
+  };
   useEffect(() => {
     fetchFriends();
   }, []);
@@ -118,6 +135,7 @@ const Friends = () => {
                         // opacity:0.2,
                         borderRadius: 10,
                       }}
+                      onPress={()=>{unFollowFriend(friend._id)}}
                     >
                       <Icon2
                         name="close-circle-sharp"
