@@ -22,8 +22,8 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView>
         <CoverAndProfile />
         <ProfileDetails navigation={navigation}/>
-        <UserFriends />
-        <UserGroups />
+        <UserFriends navigation={navigation}/>
+        {/*<UserGroups />*/}
 
         {/* Show only if the profile is users profile */}
         {/*<CreatePost /> */}

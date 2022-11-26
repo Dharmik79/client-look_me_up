@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,41 +12,62 @@ import {
 } from "react-native";
 import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
-
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
 const UserFriends = ({ navigation }) => {
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+  const [friends, setFriends] = useState([]);
+  const [count, setCount] = useState(0);
+  const fetchFriends = async () => {
+    await commonApi({
+      action: "friends",
+      data: {
+        options: {
+          select: ["fullName", "following", "followers"],
+        },
+      },
+      config: {
+        authToken: token,
+      },
+    }).then(({ DATA }) => {
+      setFriends(DATA.data);
+      setCount(DATA.data.length);
+      if (friends.length > 5) {
+        setFriends(friends.slice(0, 4));
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
   return (
     <View style={styles.container}>
-        <View style={styles.friendsContainerBox}>
-          <View style={styles.friendsContainerOutline}>
-            <View style={styles.totalFriends}>
-              <Text>Friends (240) </Text>
-              <TouchableOpacity>
-                <Text style={{ textDecorationLine: "underline" }}>
-                  View All
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.friendsContainer}>
-              <Image
-                style={styles.friendImage}
-                source={require("../assets/1.jpg")}
-              />
-              <Image
-                style={styles.friendImage}
-                source={require("../assets/5.jpg")}
-              />
-              <Image
-                style={styles.friendImage}
-                source={require("../assets/4.jpg")}
-              />
-              <Image
-                style={styles.friendImage}
-                source={require("../assets/6.jpg")}
-              />
-            </View>
+      <View style={styles.friendsContainerBox}>
+        <View style={styles.friendsContainerOutline}>
+          <View style={styles.totalFriends}>
+            <Text>Friends ({count}) </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Friends");
+              }}
+            >
+              <Text style={{ textDecorationLine: "underline" }}>View All</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.friendsContainer}>
+            {friends.map((friend) => {
+              return (
+                <Image
+                  style={styles.friendImage}
+                  source={require("../assets/1.jpg")}
+                />
+              );
+            })}
           </View>
         </View>
-     
+      </View>
     </View>
   );
 };
@@ -54,7 +75,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-   // marginTop: 35,
+    // marginTop: 35,
     //padding:10,
     //paddingLeft:10,
     //paddingRight:10,
@@ -98,6 +119,5 @@ const styles = StyleSheet.create({
     height: 20,
     width: "100%",
   },
-  
 });
 export default UserFriends;
