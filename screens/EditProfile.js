@@ -35,7 +35,6 @@ const EditProfile = ({ navigation }) => {
   const [path, setPath] = useState(
     user.profilePicture ? user.profilePicture : ""
   );
-
   const updateAccountType = async () => {
     let data = {
       accountType: privateAccount ? "public" : "private",
@@ -104,17 +103,17 @@ const EditProfile = ({ navigation }) => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    });
+    }); 
 
-    if (!result.cancelled) {
+    if (result) {
       setPickedImagePath(result);
-      if (pickedImagePath) {
+      if (result) {
         let formData = new FormData();
         let name = Date.now() + ".PNG";
         formData.append("photo", {
           name: name,
-          type: pickedImagePath.type,
-          uri: pickedImagePath.uri,
+          type: result.type,
+          uri: result.uri,
         });
         await commonApi({
           action: "upload",
@@ -124,7 +123,6 @@ const EditProfile = ({ navigation }) => {
           },
         })
           .then(async (response) => {
-            setPath(name);
             await commonApi({
               action: "updateProfile",
               data: {
