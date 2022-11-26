@@ -65,6 +65,7 @@ const Suggestions = ({ suggestions, getSuggestions, fetchFriends,getProfile }) =
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
+              key={index}
             />
             <View
               style={{

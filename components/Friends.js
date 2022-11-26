@@ -18,7 +18,7 @@ import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 
-const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
+const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
@@ -35,7 +35,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
       .then(() => {
         fetchFriends();
         getSuggestions();
-        getProfile()
+        getProfile();
       })
       .catch((error) => {
         console.error("Error - Add Friend", error);
@@ -53,7 +53,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
         backgroundColor: "#ffffff",
       }}
     >
-      {friends.map((friend) => {
+      {friends.map((friend, index) => {
         return (
           <>
             <View
@@ -64,6 +64,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
+              key={index}
             />
             <View
               style={{
@@ -116,7 +117,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
                         marginLeft: 2,
                         marginRight: 2,
                         height: 35,
-                       // width:70,
+                        // width:70,
                         backgroundColor: "#a3a3a3",
                         // opacity:0.2,
                         borderRadius: 10,
