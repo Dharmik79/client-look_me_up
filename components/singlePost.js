@@ -24,6 +24,7 @@ import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 import SingleComment from "./singleComment";
+
 const singlePost = ({ item, getPosts }) => {
   item = item.item;
   const { likes, comments } = item;
@@ -58,7 +59,8 @@ const singlePost = ({ item, getPosts }) => {
         console.error("Delete Post", error);
       });
   };
-
+  let url = baseUrl + "assets/" + item.userId.profilePicture;
+  console.log("url", url);
   const dislikeHandler = async () => {
     await commonApi({
       action: "likeDisLike",
@@ -178,7 +180,17 @@ const singlePost = ({ item, getPosts }) => {
 
       <View style={styles.header}>
         <View style={styles.row}>
-          <Avatar source={require("../assets/a3.png")} />
+          {item.userId.profilePicture && (
+            <Image
+              source={{
+                uri: url,
+              }}
+              style={{ width: 40, height: 40, borderRadius: 100 }}
+            />
+          )}
+          {!item.userId.profilePicture && (
+            <Avatar source={require("../assets/a3.png")} />
+          )}
           <View style={{ paddingLeft: 10 }}>
             <Text style={styles.user}>{item.userId.fullName}</Text>
 
@@ -259,7 +271,17 @@ const singlePost = ({ item, getPosts }) => {
         <View style={styles.footerMenu}>
           <View style={styles.button}>
             <View style={styles.icon}>
+            {item.userId.profilePicture && (
+              <Image
+                source={{
+                  uri: url,
+                }}
+                style={{ width: 40, height: 40, borderRadius: 100 }}
+              />
+            )}
+            {!item.userId.profilePicture && (
               <Avatar source={require("../assets/a3.png")} />
+            )}
             </View>
             <View style={styles.commentBox}>
               <TextInput
