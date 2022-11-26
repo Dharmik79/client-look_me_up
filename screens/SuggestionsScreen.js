@@ -14,6 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import BottomTabView from "../components/BottomTabView";
+import NoPost from "react-native-vector-icons/FontAwesome";
 
 
 const SuggestionsScreen = ({ navigation }) => {
@@ -206,7 +207,10 @@ const SuggestionsScreen = ({ navigation }) => {
                 backgroundColor: "#f0f0f0",
               }}
             />
-      
+       <View style={styles.noPostsFound}>
+          <NoPost name="slideshare" size={50} color="grey"/>
+          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No suggestions found</Text>
+        </View>
     </ScrollView>
     </View>
   );
@@ -242,6 +246,10 @@ const styles = StyleSheet.create({
     //padding: 5,
     height: '100%',
     //flexDirection: "row",
+  },
+  noPostsFound:{
+    alignItems:'center',
+    marginTop:20,
   },
 
 });

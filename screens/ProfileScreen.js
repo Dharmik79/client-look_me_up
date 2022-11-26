@@ -16,6 +16,7 @@ import CoverAndProfile from "../components/CoverAndProfile";
 import ProfileDetails from "../components/ProfileDetails";
 import UserFriends from "../components/UserFriends";
 import UserGroups from "../components/UserGroups";
+import NoPost from "react-native-vector-icons/Entypo";
 const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
@@ -30,6 +31,10 @@ const ProfileScreen = ({ navigation }) => {
 
         {/* Show only users posts */}
         {/*<Post />*/}
+        <View style={styles.noPostsFound}>
+          <NoPost name="camera" size={50} color="grey"/>
+          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No Post Found</Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -81,6 +86,10 @@ const styles = StyleSheet.create({
     //backgroundColor:'#f0f0f0',
     height: 20,
     width: "100%",
+  },
+  noPostsFound:{
+    alignItems:'center',
+    marginTop:20,
   },
 });
 export default ProfileScreen;

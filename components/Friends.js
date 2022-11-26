@@ -14,6 +14,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import Ionic from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/Entypo";
 import Icon2 from "react-native-vector-icons/Ionicons";
+import NoPost from "react-native-vector-icons/FontAwesome5";
 import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
@@ -162,6 +163,11 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
           </>
         );
       })}
+      <View style={{alignItems:'center',
+    marginTop:20,}}>
+          <NoPost name="user-friends" size={40} color="grey"/>
+          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No friends found</Text>
+        </View>
     </ScrollView>
   );
 };
