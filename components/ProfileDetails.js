@@ -12,13 +12,15 @@ import {
 } from "react-native";
 import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
-
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
 const ProfileDetails = ({ navigation }) => {
-  console.log("Navigation",navigation)
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
   return (
     <View style={styles.container}>
        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          John Doe
+          {user.fullName}
         </Text>
         <View style={styles.separator} />
         <View style={styles.userInfoWrapper}>
@@ -28,11 +30,11 @@ const ProfileDetails = ({ navigation }) => {
           </View>
 
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>80K</Text>
+            <Text style={styles.userInfoTitle}>{user.followers.length}</Text>
             <Text style={styles.userInfoSubTitle}>Followers</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>45</Text>
+            <Text style={styles.userInfoTitle}>{user.following.length}</Text>
             <Text style={styles.userInfoSubTitle}>Friends</Text>
           </View>
         </View>
