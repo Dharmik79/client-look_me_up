@@ -11,13 +11,14 @@ import HomeScreen from '../screens/HomeScreen';
 import FriendsScreen from "../screens/FriendsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfile from "../screens/EditProfile";
+import SuggestionsScreen from "../screens/SuggestionsScreen";
 
 //Screen Names
 
 const homeName='Home';
 const friendsName='Friends';
 const profileName='Profile';
-const editProfile ='Settings';
+const suggestionsName ='Suggestions';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,8 +42,8 @@ const MainContainer = () => {
             } else if (rn === profileName) {
               iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
             }
-           else if (rn === editProfile) {
-            iconName = focused ? 'settings' : 'settings-outline';
+           else if (rn === suggestionsName) {
+            iconName = focused ? 'md-globe' : 'md-globe-outline';
           }
           
             // You can return any component that you like here!
@@ -60,6 +61,7 @@ const MainContainer = () => {
         <Tab.Screen name={homeName} component={HomeScreen} options={{headerShown:false}}/>
         <Tab.Screen name={friendsName} component={FriendsScreen} options={{headerShown:false}} />
         <Tab.Screen name={profileName} component={ProfileScreen} options={{headerShown:false}}/>
+        <Tab.Screen name={suggestionsName} component={SuggestionsScreen} options={{headerShown:false}}/>
 
       </Tab.Navigator>
      

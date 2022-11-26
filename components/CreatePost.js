@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginLeft: 2,
     marginRight: 2,
-    height: 35,
+    height: 40,
     //width:50,
     backgroundColor: "#3491ff",
     // opacity:0.2,

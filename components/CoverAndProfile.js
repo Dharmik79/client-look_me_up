@@ -25,9 +25,9 @@ const CoverAndProfile = ({ navigation }) => {
             style={styles.profilePhoto}
             source={require("../assets/a4.png")}
           />
-          <TouchableOpacity style={styles.changeCoverPhoto}>
+          {/* <TouchableOpacity style={styles.changeCoverPhoto}>
             <Image source={require("../assets/changecover.png")} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
        
      
