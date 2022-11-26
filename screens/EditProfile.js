@@ -100,7 +100,7 @@ const EditProfile = ({ navigation }) => {
         {(props) => (
           <View style={styles.container}>
             <View style={styles.topBar}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>{navigation.goBack()}}>
                 <Ionic name="close-outline" style={{ fontSize: 35 }} />
               </TouchableOpacity>
               <Text style={{ fontSize: 16, fontWeight: "bold" }}>
