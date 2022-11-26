@@ -98,14 +98,6 @@ const SuggestionsScreen = ({ navigation }) => {
           backgroundColor: "#ffffff",
         }}
       >
-      {suggestions.length=0 && 
-        <View style={styles.noPostsFound}>
-             <NoPost name="slideshare" size={50} color="grey" />
-             <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
-               No suggestions found
-             </Text>
-           </View>
-         }
         {suggestions.map((suggestion, index) => {
           return (
             <View key={index}>
@@ -260,7 +252,6 @@ const SuggestionsScreen = ({ navigation }) => {
             </View>
           );
         })}
-        
       </ScrollView>
     </View>
   );
