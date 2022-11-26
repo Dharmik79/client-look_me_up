@@ -55,7 +55,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
     >
       {friends.map((friend, index) => {
         return (
-          <>
+          <View key={index}>
             <View
               style={{
                 width: "100%",
@@ -64,7 +64,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
-              key={index}
+         
             />
             <View
               style={{
@@ -75,6 +75,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
                 // marginTop:5,
                 //marginLeft: 5,
               }}
+          
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
                 <Image
@@ -159,8 +160,9 @@ const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
+        
             />
-          </>
+          </View>
         );
       })}
     </ScrollView>

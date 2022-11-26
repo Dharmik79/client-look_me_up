@@ -56,7 +56,7 @@ const Suggestions = ({ suggestions, getSuggestions, fetchFriends,getProfile }) =
     >
       {suggestions.map((suggestion, index) => {
         return (
-          <>
+          <View key={index}>
             <View
               style={{
                 width: "100%",
@@ -65,7 +65,7 @@ const Suggestions = ({ suggestions, getSuggestions, fetchFriends,getProfile }) =
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
-              key={index}
+              
             />
             <View
               style={{
@@ -191,7 +191,7 @@ const Suggestions = ({ suggestions, getSuggestions, fetchFriends,getProfile }) =
                 backgroundColor: "#f0f0f0",
               }}
             />
-          </>
+          </View>
         );
       })}
     </ScrollView>
