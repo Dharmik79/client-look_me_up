@@ -18,6 +18,7 @@ import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseUrl } from "../api";
 
 const SuggestionsScreen = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
@@ -29,7 +30,7 @@ const SuggestionsScreen = ({ navigation }) => {
       action: "suggestions",
       data: {
         options: {
-          select: ["fullName", "following", "followers"],
+          select: ["fullName", "following", "followers","profilePicture"],
         },
       },
       config: {
@@ -120,10 +121,21 @@ const SuggestionsScreen = ({ navigation }) => {
               }}
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
+              {suggestion.profilePicture && (
+                <Image
+                  source={{
+                    uri: baseUrl+"assets/"+suggestion.profilePicture,
+                  }}
+                  style={{ width: 80, height: 80, borderRadius: 100 }}
+                />
+              )}
+             
+              {!suggestion.profilePicture && (
                 <Image
                   source={require("../assets/a4.png")}
                   style={{ width: 80, height: 80, borderRadius: 100 }}
                 />
+              )}
                 <View style={{ paddingLeft: 10 }}>
                   <Text
                     style={{

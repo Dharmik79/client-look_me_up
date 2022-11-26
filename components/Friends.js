@@ -17,6 +17,7 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
+import { baseUrl } from "../api";
 
 const Friends = ({ friends, fetchFriends, getProfile }) => {
   const user = useSelector((state) => state.Reducers.user);
@@ -77,10 +78,21 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
           
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
+              {friend.profilePicture && (
+                <Image
+                  source={{
+                    uri: baseUrl+"assets/"+friend.profilePicture,
+                  }}
+                  style={{ width: 80, height: 80, borderRadius: 100 }}
+                />
+              )}
+             
+              {!friend.profilePicture && (
                 <Image
                   source={require("../assets/a4.png")}
                   style={{ width: 80, height: 80, borderRadius: 100 }}
                 />
+              )}
                 <View style={{ paddingLeft: 10 }}>
                   <Text
                     style={{
