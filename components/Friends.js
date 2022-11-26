@@ -18,7 +18,7 @@ import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 
-const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
+const Friends = ({ friends, fetchFriends, getProfile }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
@@ -34,7 +34,6 @@ const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
     })
       .then(() => {
         fetchFriends();
-        getSuggestions();
         getProfile();
       })
       .catch((error) => {
