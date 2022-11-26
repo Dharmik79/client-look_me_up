@@ -20,11 +20,7 @@ import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 import { baseUrl } from "../api";
 
-const Suggestions = ({
-  followers,
-  getFollowers,
-  getProfile,
-}) => {
+const Suggestions = ({ followers, getFollowers, getProfile }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
@@ -43,7 +39,7 @@ const Suggestions = ({
       },
     })
       .then(() => {
-        getFollowers()
+        getFollowers();
         getProfile();
       })
       .catch((error) => {
@@ -76,6 +72,14 @@ const Suggestions = ({
         backgroundColor: "#ffffff",
       }}
     >
+      {followers.length == 0 && (
+        <View style={{ alignItems: "center", marginTop: 20 }}>
+          <NoPost name="user-friends" size={40} color="grey" />
+          <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
+            No followers found
+          </Text>
+        </View>
+      )}
       {followers.map((follower, index) => {
         return (
           <View key={index}>
@@ -99,22 +103,22 @@ const Suggestions = ({
               }}
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
-              {follower.profilePicture && (
-                <Image
-                  source={{
-                    uri: baseUrl+"assets/"+follower.profilePicture,
-                  }}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
-              )}
-             
-              {!follower.profilePicture && (
-                <Image
-                  source={require("../assets/a4.png")}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
-              )}
-              
+                {follower.profilePicture && (
+                  <Image
+                    source={{
+                      uri: baseUrl + "assets/" + follower.profilePicture,
+                    }}
+                    style={{ width: 80, height: 80, borderRadius: 100 }}
+                  />
+                )}
+
+                {!follower.profilePicture && (
+                  <Image
+                    source={require("../assets/a4.png")}
+                    style={{ width: 80, height: 80, borderRadius: 100 }}
+                  />
+                )}
+
                 <View style={{ paddingLeft: 10 }}>
                   <Text
                     style={{
@@ -140,41 +144,44 @@ const Suggestions = ({
                     </Text>
                   </View>
 
-                 {user.following.includes(follower._id) && <View style={{ alignItems: "center", flexDirection: "row" }}>
-                    <TouchableOpacity
-                      style={{
-                        //flex: 0.5,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 2,
-                        marginRight: 2,
-                        height: 35,
-                        width: 120,
-                        backgroundColor: "#3491ff",
-                        // opacity:0.2,
-                        borderRadius: 10,
-                      }}
-                      onPress={() => {
-                        unFollowFriend(follower._id);
-                      }}
+                  {user.following.includes(follower._id) && (
+                    <View
+                      style={{ alignItems: "center", flexDirection: "row" }}
                     >
-                      <Icon2 name="person-add" size={20} color="#ffffff" />
-                      <Text
+                      <TouchableOpacity
                         style={{
-                          //paddingLeft:10,
-                          fontSize: 13,
-                          fontWeight: "500",
-                          color: "#ffffff",
-                          //backgroundColor:'grey',
+                          //flex: 0.5,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginLeft: 2,
+                          marginRight: 2,
+                          height: 35,
+                          width: 120,
+                          backgroundColor: "#3491ff",
+                          // opacity:0.2,
                           borderRadius: 10,
                         }}
+                        onPress={() => {
+                          unFollowFriend(follower._id);
+                        }}
                       >
-                        Remove Friend
-                      </Text>
-                    </TouchableOpacity>
+                        <Icon2 name="person-add" size={20} color="#ffffff" />
+                        <Text
+                          style={{
+                            //paddingLeft:10,
+                            fontSize: 13,
+                            fontWeight: "500",
+                            color: "#ffffff",
+                            //backgroundColor:'grey',
+                            borderRadius: 10,
+                          }}
+                        >
+                          Remove Friend
+                        </Text>
+                      </TouchableOpacity>
 
-                    {/* <TouchableOpacity
+                      {/* <TouchableOpacity
                       style={{
                         //flex: 0.5,
                         width: "70%",
@@ -208,42 +215,46 @@ const Suggestions = ({
                         Not Interested
                       </Text>
                     </TouchableOpacity> */}
-                  </View>}
-                  {!user.following.includes(follower._id) && <View style={{ alignItems: "center", flexDirection: "row" }}>
-                  <TouchableOpacity
-                    style={{
-                      //flex: 0.5,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginLeft: 2,
-                      marginRight: 2,
-                      height: 35,
-                      width: 120,
-                      backgroundColor: "#3491ff",
-                      // opacity:0.2,
-                      borderRadius: 10,
-                    }}
-                    onPress={() => {
-                      addFriend(follower._id);
-                    }}
-                  >
-                    <Icon2 name="person-add" size={20} color="#ffffff" />
-                    <Text
-                      style={{
-                        //paddingLeft:10,
-                        fontSize: 13,
-                        fontWeight: "500",
-                        color: "#ffffff",
-                        //backgroundColor:'grey',
-                        borderRadius: 10,
-                      }}
+                    </View>
+                  )}
+                  {!user.following.includes(follower._id) && (
+                    <View
+                      style={{ alignItems: "center", flexDirection: "row" }}
                     >
-                      Add Friend
-                    </Text>
-                  </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          //flex: 0.5,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginLeft: 2,
+                          marginRight: 2,
+                          height: 35,
+                          width: 120,
+                          backgroundColor: "#3491ff",
+                          // opacity:0.2,
+                          borderRadius: 10,
+                        }}
+                        onPress={() => {
+                          addFriend(follower._id);
+                        }}
+                      >
+                        <Icon2 name="person-add" size={20} color="#ffffff" />
+                        <Text
+                          style={{
+                            //paddingLeft:10,
+                            fontSize: 13,
+                            fontWeight: "500",
+                            color: "#ffffff",
+                            //backgroundColor:'grey',
+                            borderRadius: 10,
+                          }}
+                        >
+                          Add Friend
+                        </Text>
+                      </TouchableOpacity>
 
-                  {/* <TouchableOpacity
+                      {/* <TouchableOpacity
                     style={{
                       //flex: 0.5,
                       width: "70%",
@@ -277,7 +288,8 @@ const Suggestions = ({
                       Not Interested
                     </Text>
                   </TouchableOpacity> */}
-                </View>}
+                    </View>
+                  )}
                 </View>
               </View>
               {/* <TouchableOpacity >
@@ -296,11 +308,6 @@ const Suggestions = ({
           </View>
         );
       })}
-       <View style={{alignItems:'center',
-    marginTop:20,}}>
-          <NoPost name="user-friends" size={40} color="grey"/>
-          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No followers found</Text>
-        </View>
     </ScrollView>
   );
 };

@@ -54,6 +54,14 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
         backgroundColor: "#ffffff",
       }}
     >
+      {friends.length == 0 && (
+        <View style={{ alignItems: "center", marginTop: 20 }}>
+          <NoPost name="user-friends" size={40} color="grey" />
+          <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
+            No friends found
+          </Text>
+        </View>
+      )}
       {friends.map((friend, index) => {
         return (
           <View key={index}>
@@ -65,7 +73,6 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
-         
             />
             <View
               style={{
@@ -76,24 +83,23 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
                 // marginTop:5,
                 //marginLeft: 5,
               }}
-          
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
-              {friend.profilePicture && (
-                <Image
-                  source={{
-                    uri: baseUrl+"assets/"+friend.profilePicture,
-                  }}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
-              )}
-             
-              {!friend.profilePicture && (
-                <Image
-                  source={require("../assets/a4.png")}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
-              )}
+                {friend.profilePicture && (
+                  <Image
+                    source={{
+                      uri: baseUrl + "assets/" + friend.profilePicture,
+                    }}
+                    style={{ width: 80, height: 80, borderRadius: 100 }}
+                  />
+                )}
+
+                {!friend.profilePicture && (
+                  <Image
+                    source={require("../assets/a4.png")}
+                    style={{ width: 80, height: 80, borderRadius: 100 }}
+                  />
+                )}
                 <View style={{ paddingLeft: 10 }}>
                   <Text
                     style={{
@@ -172,16 +178,10 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
-        
             />
           </View>
         );
       })}
-      <View style={{alignItems:'center',
-    marginTop:20,}}>
-          <NoPost name="user-friends" size={40} color="grey"/>
-          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No friends found</Text>
-        </View>
     </ScrollView>
   );
 };
