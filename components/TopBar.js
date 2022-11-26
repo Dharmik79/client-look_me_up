@@ -28,7 +28,7 @@ import ActionSheet from "react-native-actionsheet";
 import EditProfile from "../screens/EditProfile";
 const TopBar = ({ navigation }) => {
   let actionSheet = useRef();
-  let optionArray = ["View Profile", "Change Password", "Log Out", "Cancel"];
+  let optionArray = ["Edit Profile", "Change Password", "Log Out", "Cancel"];
   const showActionSheet = () => {
     actionSheet.current.show();
   };

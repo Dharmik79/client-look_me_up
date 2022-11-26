@@ -60,8 +60,6 @@ const MainContainer = () => {
         <Tab.Screen name={homeName} component={HomeScreen} options={{headerShown:false}}/>
         <Tab.Screen name={friendsName} component={FriendsScreen} options={{headerShown:false}} />
         <Tab.Screen name={profileName} component={ProfileScreen} options={{headerShown:false}}/>
-        <Tab.Screen name={editProfile} component={EditProfile} options={{headerShown : false}}/>
-        
 
       </Tab.Navigator>
      
