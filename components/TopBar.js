@@ -25,8 +25,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Logout } from "./context/Actions";
 import { presentPermissionsPickerAsync } from "expo-media-library";
 import ActionSheet from "react-native-actionsheet";
-
-const TopBar = ({ getPosts }) => {
+import EditProfile from "../screens/EditProfile";
+const TopBar = ({ navigation }) => {
   let actionSheet = useRef();
   let optionArray = ["View Profile", "Change Password", "Log Out", "Cancel"];
   const showActionSheet = () => {
@@ -55,7 +55,10 @@ const TopBar = ({ getPosts }) => {
   const selectAction = async (index) => {
     if (index == 0) {
       // Navigate to Profile screen
-      console.log("Profile");
+
+      navigation.navigate('EditProfile',{
+        screen:"EditProfile"
+      })
     }
     if (index == 1) {
       // Navigate to change password screen
@@ -64,9 +67,8 @@ const TopBar = ({ getPosts }) => {
     if (index == 2) {
       setmodalOpen(true);
     }
-    if(index==4)
-    {
-      setmodalOpen(false)
+    if (index == 4) {
+      setmodalOpen(false);
     }
   };
   return (
