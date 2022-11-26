@@ -33,13 +33,12 @@ const singlePost = ({ item, getPosts }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
   const [com, setCom] = useState("");
-
+  const [showComment, setShowComment] = useState(false);
   const [estado, setEstado] = useState(false);
 
   const agregarFavoritos = () => {
     setEstado(!estado);
   };
-
 
   const deletePost = async (id) => {
     await commonApi({
@@ -206,7 +205,7 @@ const singlePost = ({ item, getPosts }) => {
         <View style={styles.footerCount}>
           <View style={styles.row}>
             <View style={styles.likeCount}>
-            <Image
+              <Image
                 source={require("../assets/nooflikes.png")}
                 // style={{ width: 80, height: 80, borderRadius: 100 }}
               />
@@ -229,12 +228,17 @@ const singlePost = ({ item, getPosts }) => {
           {!isLiked && (
             <TouchableOpacity style={styles.button} onPress={likeHandler}>
               <View style={styles.icon}>
-                <Like name="heart" size={15} onPress={{color:"#3491ff"}}/>
+                <Like name="heart" size={15} onPress={{ color: "#3491ff" }} />
               </View>
               <Text style={styles.text}>Like</Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              setShowComment(!showComment);
+            }}
+          >
             <View style={styles.icon}>
               <Comment name="comment" size={15} />
             </View>
@@ -279,15 +283,13 @@ const singlePost = ({ item, getPosts }) => {
             <DropDown name="filter" size={18} />
           </TouchableOpacity>
         </View> */}
-        <FlatList
-          data={comments}
-          renderItem={(item) => <SingleComment item={item}/>}
-          keyExtractor={(item) => item._id}
-        />
-
-        <TouchableOpacity>
-          <Text style={styles.viewMoreReplies}>View more replies</Text>
-        </TouchableOpacity>
+        {showComment && (
+          <FlatList
+            data={comments}
+            renderItem={(item) => <SingleComment item={item} />}
+            keyExtractor={(item) => item._id}
+          />
+        )}
       </View>
     </View>
   );
