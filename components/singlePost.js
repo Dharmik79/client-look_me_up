@@ -33,6 +33,14 @@ const singlePost = ({ item, getPosts }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes.length);
   const [com, setCom] = useState("");
+
+  const [estado, setEstado] = useState(false);
+
+  const agregarFavoritos = () => {
+    setEstado(!estado);
+  };
+
+
   const deletePost = async (id) => {
     await commonApi({
       action: "deletePost",
@@ -198,7 +206,10 @@ const singlePost = ({ item, getPosts }) => {
         <View style={styles.footerCount}>
           <View style={styles.row}>
             <View style={styles.likeCount}>
-              <Like name="heart" size={15} color={"red"} />
+            <Image
+                source={require("../assets/nooflikes.png")}
+                // style={{ width: 80, height: 80, borderRadius: 100 }}
+              />
             </View>
             <Text style={styles.noLikesCount}>{likeCount} Likes</Text>
           </View>
@@ -210,15 +221,15 @@ const singlePost = ({ item, getPosts }) => {
           {isLiked && (
             <TouchableOpacity style={styles.button} onPress={dislikeHandler}>
               <View style={styles.icon}>
-                <Like name="heart" size={15} />
+                <Like name="heart" size={15} color="red" />
               </View>
-              <Text style={styles.text}>DisLike</Text>
+              <Text style={styles.text}>Like</Text>
             </TouchableOpacity>
           )}
           {!isLiked && (
             <TouchableOpacity style={styles.button} onPress={likeHandler}>
               <View style={styles.icon}>
-                <Like name="heart" size={15} />
+                <Like name="heart" size={15} onPress={{color:"#3491ff"}}/>
               </View>
               <Text style={styles.text}>Like</Text>
             </TouchableOpacity>
@@ -262,12 +273,12 @@ const singlePost = ({ item, getPosts }) => {
             </View>
           </View>
         </View>
-        <View style={styles.commentsViewFilter}>
+        {/* <View style={styles.commentsViewFilter}>
           <Text style={styles.commentsView}>Most Recent</Text>
           <TouchableOpacity>
             <DropDown name="filter" size={18} />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <FlatList
           data={comments}
           renderItem={(item) => <SingleComment item={item}/>}
