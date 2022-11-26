@@ -12,25 +12,30 @@ import {
 } from "react-native";
 import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
+import { useSelector } from "react-redux";
+import { baseUrl } from "../api/index";
 
 const CoverAndProfile = ({ navigation }) => {
+  const user = useSelector((state) => state.Reducers.user);
   return (
     <View style={styles.container}>
-        <View style={styles.coverPhotoConatiner}>
-          <Image
-            style={styles.coverPhoto}
-            source={require("../assets/story5.jpg")}
-          />
-          <Image
-            style={styles.profilePhoto}
-            source={require("../assets/a4.png")}
-          />
-          <TouchableOpacity style={styles.changeCoverPhoto}>
-            <Image source={require("../assets/changecover.png")} />
-          </TouchableOpacity>
-        </View>
-       
-     
+      <View style={styles.coverPhotoConatiner}>
+        <Image
+          style={styles.coverPhoto}
+          source={require("../assets/story5.jpg")}
+        />
+        <Image
+          style={styles.profilePhoto}
+          source={{
+            uri: user.profilePicture
+              ? baseUrl + "assets/" + user.profilePicture
+              : require("../assets/a4.png"),
+          }}
+        />
+        <TouchableOpacity style={styles.changeCoverPhoto}>
+          <Image source={require("../assets/changecover.png")} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-   // marginTop: 35,
+    // marginTop: 35,
     //padding:10,
     //paddingLeft:10,
     //paddingRight:10,
@@ -73,6 +78,5 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginTop: 130,
   },
-  
 });
 export default CoverAndProfile;
