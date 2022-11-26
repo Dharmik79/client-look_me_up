@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseUrl } from "../api";
+import NoPost from "react-native-vector-icons/FontAwesome";
 
 const SuggestionsScreen = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
@@ -30,7 +31,7 @@ const SuggestionsScreen = ({ navigation }) => {
       action: "suggestions",
       data: {
         options: {
-          select: ["fullName", "following", "followers","profilePicture"],
+          select: ["fullName", "following", "followers", "profilePicture"],
         },
       },
       config: {
@@ -97,105 +98,116 @@ const SuggestionsScreen = ({ navigation }) => {
           backgroundColor: "#ffffff",
         }}
       >
-      {suggestions.map((suggestion, index) => {
-        return (
-          <View key={index}>
-            <View
-              style={{
-                width: "100%",
-                height: 1,
-                marginTop: 8,
-                marginBottom: 8,
-                backgroundColor: "#f0f0f0",
-              }}
-              
-            />
-            <View
-              style={{
-                // height: 50,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                // marginTop:5,
-                //marginLeft: 5,
-              }}
-            >
-              <View style={{ alignItems: "center", flexDirection: "row" }}>
-              {suggestion.profilePicture && (
-                <Image
-                  source={{
-                    uri: baseUrl+"assets/"+suggestion.profilePicture,
-                  }}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
-              )}
-             
-              {!suggestion.profilePicture && (
-                <Image
-                  source={require("../assets/a4.png")}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
-              )}
-                <View style={{ paddingLeft: 10 }}>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      marginBottom: 5,
-                    }}
-                  >
-                    {suggestion.fullName}
-                  </Text>
+      {suggestions.length=0 && 
+        <View style={styles.noPostsFound}>
+             <NoPost name="slideshare" size={50} color="grey" />
+             <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
+               No suggestions found
+             </Text>
+           </View>
+         }
+        {suggestions.map((suggestion, index) => {
+          return (
+            <View key={index}>
+              <View
+                style={{
+                  width: "100%",
+                  height: 1,
+                  marginTop: 8,
+                  marginBottom: 8,
+                  backgroundColor: "#f0f0f0",
+                }}
+              />
+              <View
+                style={{
+                  // height: 50,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  // marginTop:5,
+                  //marginLeft: 5,
+                }}
+              >
+                <View style={{ alignItems: "center", flexDirection: "row" }}>
+                  {suggestion.profilePicture && (
+                    <Image
+                      source={{
+                        uri: baseUrl + "assets/" + suggestion.profilePicture,
+                      }}
+                      style={{ width: 80, height: 80, borderRadius: 100 }}
+                    />
+                  )}
 
-                  <View style={{ alignItems: "center", flexDirection: "row" }}>
+                  {!suggestion.profilePicture && (
+                    <Image
+                      source={require("../assets/a4.png")}
+                      style={{ width: 80, height: 80, borderRadius: 100 }}
+                    />
+                  )}
+                  <View style={{ paddingLeft: 10 }}>
                     <Text
                       style={{
-                        fontSize: 14,
-                        color: "grey",
+                        fontSize: 18,
+                        fontWeight: "bold",
                         marginBottom: 5,
-                        fontWeight: "300",
                       }}
                     >
-                      {suggestion.followers.length} Followers {"\t"}{" "}
-                      {suggestion.following.length} Friends
+                      {suggestion.fullName}
                     </Text>
-                  </View>
 
-                  <View style={{ alignItems: "center", flexDirection: "row" }}>
-                    <TouchableOpacity
-                      style={{
-                        //flex: 0.5,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginLeft: 2,
-                        marginRight: 2,
-                        height: 35,
-                        width: 120,
-                        backgroundColor: "#3491ff",
-                        // opacity:0.2,
-                        borderRadius: 10,
-                      }}
-                      onPress={() => {
-                        addFriend(suggestion._id);
-                      }}
+                    <View
+                      style={{ alignItems: "center", flexDirection: "row" }}
                     >
-                      <Icon2 name="person-add" size={20} color="#ffffff" />
                       <Text
                         style={{
-                          //paddingLeft:10,
-                          fontSize: 13,
-                          fontWeight: "500",
-                          color: "#ffffff",
-                          //backgroundColor:'grey',
-                          borderRadius: 10,
+                          fontSize: 14,
+                          color: "grey",
+                          marginBottom: 5,
+                          fontWeight: "300",
                         }}
                       >
-                        Add Friend
+                        {suggestion.followers.length} Followers {"\t"}{" "}
+                        {suggestion.following.length} Friends
                       </Text>
-                    </TouchableOpacity>
+                    </View>
 
-                    {/* <TouchableOpacity
+                    <View
+                      style={{ alignItems: "center", flexDirection: "row" }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          //flex: 0.5,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginLeft: 2,
+                          marginRight: 2,
+                          height: 35,
+                          width: 120,
+                          backgroundColor: "#3491ff",
+                          // opacity:0.2,
+                          borderRadius: 10,
+                        }}
+                        onPress={() => {
+                          addFriend(suggestion._id);
+                        }}
+                      >
+                        <Icon2 name="person-add" size={20} color="#ffffff" />
+                        <Text
+                          style={{
+                            //paddingLeft:10,
+                            fontSize: 13,
+                            fontWeight: "500",
+                            color: "#ffffff",
+                            //backgroundColor:'grey',
+                            borderRadius: 10,
+                          }}
+                        >
+                          Add Friend
+                        </Text>
+                      </TouchableOpacity>
+
+                      {/* <TouchableOpacity
                       style={{
                         //flex: 0.5,
                         width: "70%",
@@ -229,25 +241,26 @@ const SuggestionsScreen = ({ navigation }) => {
                         Not Interested
                       </Text>
                     </TouchableOpacity> */}
+                    </View>
                   </View>
                 </View>
-              </View>
-              {/* <TouchableOpacity >
+                {/* <TouchableOpacity >
               <Icon name="dots-three-vertical" size={20} />
             </TouchableOpacity> */}
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  height: 1,
+                  marginTop: 8,
+                  marginBottom: 8,
+                  backgroundColor: "#f0f0f0",
+                }}
+              />
             </View>
-            <View
-              style={{
-                width: "100%",
-                height: 1,
-                marginTop: 8,
-                marginBottom: 8,
-                backgroundColor: "#f0f0f0",
-              }}
-            />
-          </View>
-        );
-      })}
+          );
+        })}
+        
       </ScrollView>
     </View>
   );
@@ -283,6 +296,10 @@ const styles = StyleSheet.create({
     //padding: 5,
     height: "100%",
     //flexDirection: "row",
+  },
+  noPostsFound: {
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 

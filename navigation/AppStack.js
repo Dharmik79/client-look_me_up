@@ -11,6 +11,8 @@ import { Init } from "../components/context/Actions";
 import EditProfile from "../screens/EditProfile";
 import TopBar from "../components/TopBar";
 import ProfileDetails from "../components/ProfileDetails";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen";
+
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
@@ -42,6 +44,11 @@ const AppStack = () => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+       <Stack.Screen
+        name="ChangePasswordScreen"
+        component={ChangePasswordScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>
