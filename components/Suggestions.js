@@ -24,7 +24,7 @@ const Suggestions = ({ suggestions, getSuggestions, fetchFriends,getProfile }) =
 
   useEffect(() => {
     getSuggestions();
-  }, []);
+  }, [user]);
 
   const addFriend = async (id) => {
     await commonApi({

@@ -43,7 +43,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions, getProfile }) => {
   };
   useEffect(() => {
     fetchFriends();
-  }, []);
+  }, [user]);
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

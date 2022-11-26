@@ -14,10 +14,63 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Icon2 from "react-native-vector-icons/Ionicons";
 import BottomTabView from "../components/BottomTabView";
-
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SuggestionsScreen = ({ navigation }) => {
-  
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+  const dispatch = useDispatch();
+  const [suggestions, setSuggestions] = useState([]);
+  const getSuggestions = async () => {
+    await commonApi({
+      action: "suggestions",
+      data: {
+        options: {
+          select: ["fullName", "following", "followers"],
+        },
+      },
+      config: {
+        authToken: token,
+      },
+    }).then(({ DATA }) => {
+      setSuggestions(DATA.data);
+    });
+  };
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    }).then(async ({ DATA }) => {
+      dispatch({ type: "UPDATE_USER", payload: DATA });
+      await AsyncStorage.setItem("user", JSON.stringify(DATA));
+    });
+  };
+  const addFriend = async (id) => {
+    await commonApi({
+      action: "addFriend",
+      data: {
+        followingId: id,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(() => {
+        getSuggestions();
+        getProfile();
+      })
+      .catch((error) => {
+        console.error("Error - Add Friend", error);
+      });
+  };
+  useEffect(() => {
+    getSuggestions();
+  }, [user]);
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
@@ -34,17 +87,18 @@ const SuggestionsScreen = ({ navigation }) => {
           Suggestions
         </Text>
       </View>
-      
-      <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#ffffff",
-      }}
-    >
 
-       
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#ffffff",
+        }}
+      >
+      {suggestions.map((suggestion, index) => {
+        return (
+          <View key={index}>
             <View
               style={{
                 width: "100%",
@@ -53,6 +107,7 @@ const SuggestionsScreen = ({ navigation }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
+              
             />
             <View
               style={{
@@ -77,48 +132,43 @@ const SuggestionsScreen = ({ navigation }) => {
                       marginBottom: 5,
                     }}
                   >
-                  JOHN DOE
+                    {suggestion.fullName}
                   </Text>
 
-                  <View
-                    style={{
-                      alignItems: "center",
-                      flexDirection: "row",
-                      marginBottom: 5,
-                    }}
-                  >
+                  <View style={{ alignItems: "center", flexDirection: "row" }}>
                     <Text
-                      style={{ fontSize: 14, color: "grey", fontWeight: "300" }}
+                      style={{
+                        fontSize: 14,
+                        color: "grey",
+                        marginBottom: 5,
+                        fontWeight: "300",
+                      }}
                     >
-                      Followers {"\t"}{" "}
-                      Friends
+                      {suggestion.followers.length} Followers {"\t"}{" "}
+                      {suggestion.following.length} Friends
                     </Text>
                   </View>
 
                   <View style={{ alignItems: "center", flexDirection: "row" }}>
                     <TouchableOpacity
                       style={{
-                        //flex: 1.0,
+                        //flex: 0.5,
                         flexDirection: "row",
                         alignItems: "center",
-                        justifyContent: 'space-evenly',
+                        justifyContent: "center",
                         marginLeft: 2,
                         marginRight: 2,
                         height: 35,
-                        width:'40%',
+                        width: 120,
                         backgroundColor: "#3491ff",
                         // opacity:0.2,
                         borderRadius: 10,
                       }}
-                      // onPress={() => {
-                      //   unFollowFriend(friend._id);
-                      // }}
+                      onPress={() => {
+                        addFriend(suggestion._id);
+                      }}
                     >
-                      <Icon2
-                        name="person-add"
-                        size={20}
-                        color="#ffffff"
-                      />
+                      <Icon2 name="person-add" size={20} color="#ffffff" />
                       <Text
                         style={{
                           //paddingLeft:10,
@@ -132,10 +182,11 @@ const SuggestionsScreen = ({ navigation }) => {
                         Add Friend
                       </Text>
                     </TouchableOpacity>
-                                <TouchableOpacity
+
+                    {/* <TouchableOpacity
                       style={{
-                        //flex: 1.0,
-                        width: '40%',
+                        //flex: 0.5,
+                        width: "70%",
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "center",
@@ -165,7 +216,7 @@ const SuggestionsScreen = ({ navigation }) => {
                       >
                         Not Interested
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
                 </View>
               </View>
@@ -182,8 +233,10 @@ const SuggestionsScreen = ({ navigation }) => {
                 backgroundColor: "#f0f0f0",
               }}
             />
-      
-    </ScrollView>
+          </View>
+        );
+      })}
+      </ScrollView>
     </View>
   );
 };
@@ -213,13 +266,12 @@ const styles = StyleSheet.create({
   },
   category: {
     marginBottom: 10,
-   // backgroundColor: "grey",
+    // backgroundColor: "grey",
     borderRadius: 10,
     //padding: 5,
-    height: '100%',
+    height: "100%",
     //flexDirection: "row",
   },
-
 });
 
 export default SuggestionsScreen;
