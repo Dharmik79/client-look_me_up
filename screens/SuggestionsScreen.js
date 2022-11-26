@@ -18,30 +18,6 @@ import BottomTabView from "../components/BottomTabView";
 
 const SuggestionsScreen = ({ navigation }) => {
   
-
-   // The path of the picked image
-   const [pickedImagePath, setPickedImagePath] = useState("");
-  const showImagePicker = async () => {
-    // Ask the user for the permission to access the media library
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your photos!");
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setPickedImagePath(result);
-    }
-  };
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
