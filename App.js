@@ -21,6 +21,7 @@ import { Context } from "./components/context/Context";
 import AppStack from "./navigation/AppStack";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./components/context/Context";
+
 const App = () => {
   return (
     <Provider store={store}>

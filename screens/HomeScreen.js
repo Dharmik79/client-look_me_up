@@ -17,6 +17,8 @@ import Story from "../components/Story";
 import Post from "../components/Post";
 import BottomTabNavigator from "../components/BottomTabNavigator";
 import commonApi from "../api/common";
+import NoPost from "react-native-vector-icons/Entypo";
+
 import { useSelector } from "react-redux";
 const HomeScreen = ({ navigation }) => {
   const [refresh, setRefresh] = useState(false);
@@ -81,6 +83,10 @@ const HomeScreen = ({ navigation }) => {
         {/* <Story />
         <GroupsHome />*/}
         <Post getPosts={getPosts} posts={posts} />
+        <View style={styles.noPostsFound}>
+          <NoPost name="camera" size={50} color="grey"/>
+          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No Post Found</Text>
+        </View>
         {/* <SafeAreaView
           style={styles.bottomNavigation}
         >
@@ -108,6 +114,10 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "flex-end",
     backgroundColor: "#3491ff",
+  },
+  noPostsFound:{
+    alignItems:'center',
+    marginTop:20,
   },
 });
 
