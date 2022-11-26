@@ -24,6 +24,7 @@ import { CAMERA, MEDIA_LIBRARY } from "expo-permissions";
 import * as MediaLibrary from "expo-media-library";
 // import { Camera } from "expo-camera";
 import { Camera, CameraType } from "expo-camera";
+import { baseUrl } from "../api";
 
 const CreatePost = ({ getPosts }) => {
   const user = useSelector((state) => state.Reducers.user);
@@ -275,7 +276,17 @@ const CreatePost = ({ getPosts }) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Avatar source={require("../assets/a4.png")} />
+        {user.profilePicture && (
+          <Image
+            source={{
+              uri: baseUrl + "assets/" + user.profilePicture,
+            }}
+            style={{ width: 40, height: 40, borderRadius: 100 }}
+          />
+        )}
+        {!user.profilePicture && (
+          <Avatar source={require("../assets/a4.png")} />
+        )}
         <TextInput
           style={styles.input}
           placeholder="Whats on your mind?"
