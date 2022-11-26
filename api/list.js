@@ -75,6 +75,10 @@ const apiList = {
   getProfile:{
     url:()=>"user/profile",
     method:"get"
-  }
+  },
+  followers:{
+    url:()=>"user/followers",
+    method:"post"
+  },
 };
 export default apiList;
