@@ -14,6 +14,7 @@ import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
 
 const ProfileDetails = ({ navigation }) => {
+  console.log("Navigation",navigation)
   return (
     <View style={styles.container}>
        <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
@@ -37,7 +38,9 @@ const ProfileDetails = ({ navigation }) => {
         </View>
         <View style={styles.separator} />
         <View style={styles.buttons}>
-          <TouchableOpacity style={styles.login} onPress={()=>navigation.navigate('EditProfile')}>
+          <TouchableOpacity style={styles.login} onPress={()=>navigation.navigate('EditProfile',{
+            screen:"EditProfile"
+          })}>
             <Text style={styles.loginText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>

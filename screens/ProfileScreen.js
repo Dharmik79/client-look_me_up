@@ -21,7 +21,7 @@ const ProfileScreen = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView>
         <CoverAndProfile />
-        <ProfileDetails />
+        <ProfileDetails navigation={navigation}/>
         <UserFriends />
         <UserGroups />
 
