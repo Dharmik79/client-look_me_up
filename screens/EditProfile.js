@@ -17,6 +17,7 @@ import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Switch } from "react-native-gesture-handler";
+import * as ImagePicker from "expo-image-picker";
 
 const profileSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
@@ -81,6 +82,29 @@ const EditProfile = ({ navigation }) => {
       });
   };
 
+   // The path of the picked image
+   const [pickedImagePath, setPickedImagePath] = useState("");
+  const showImagePicker = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setPickedImagePath(result);
+    }
+  };
   return (
     <KeyboardAwareScrollView style={{ backgroundColor: "#ffffff" }}>
       <Formik
@@ -113,7 +137,8 @@ const EditProfile = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={{ padding: 20, alignItems: "center" }}>
+            <TouchableOpacity style={{ padding: 20, alignItems: "center" }} onPress={showImagePicker}>
+            {pickedImagePath && <Image source={{ uri: pickedImagePath.uri }} />}
               <Image
                 source={require("../assets/a4.png")}
                 style={{ width: 80, height: 80, borderRadius: 100 }}

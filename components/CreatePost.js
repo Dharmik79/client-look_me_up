@@ -309,11 +309,11 @@ const CreatePost = ({ getPosts }) => {
         </TouchableOpacity>
 
         {/* <View style={styles.separator}/> */}
-        <TouchableOpacity style={styles.menuVideo} onPress={() => pickVideo()}>
-          {/* {video && <Image source={{ uri: video }} />} */}
+        {/* <TouchableOpacity style={styles.menuVideo} onPress={() => pickVideo()}>
+          {video && <Image source={{ uri: video }} />}
           <Icon2 name="video" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Video</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* <View style={styles.separator}/> */}
         <TouchableOpacity
           onPress={handleSubmit}
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginLeft: 2,
     marginRight: 2,
-    height: 35,
+    height: 40,
     //width:50,
     backgroundColor: "#44c041",
     // opacity:0.2,
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginLeft: 2,
     marginRight: 2,
-    height: 35,
+    height: 40,
     //width:50,
     backgroundColor: "#4183c0",
     // opacity:0.2,
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginLeft: 2,
     marginRight: 2,
-    height: 35,
+    height: 40,
     //width:50,
     backgroundColor: "#c0ac41",
     // opacity:0.2,
@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
   },
   menuText: {
     //paddingLeft:10,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: "500",
     color: "#ffffff",
     //backgroundColor:'grey',
