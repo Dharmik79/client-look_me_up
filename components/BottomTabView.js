@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -17,10 +17,48 @@ import Icon2 from "react-native-vector-icons/Ionicons";
 import { Avatar } from "react-native-paper";
 import Suggestions from "./Suggestions";
 import Friends from "./Friends";
+import commonApi from "../api/common";
+import { useSelector } from "react-redux";
+
 const BottomTabView = ({}) => {
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+
   const Tab = createMaterialTopTabNavigator();
 
+  const [suggestions, setSuggestions] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const getSuggestions = async () => {
+    await commonApi({
+      action: "suggestions",
+      data: {
+        options: {
+          select: ["fullName", "following", "followers"],
+        },
+      },
+      config: {
+        authToken: token,
+      },
+    }).then(({ DATA }) => {
+      setSuggestions(DATA.data);
+    });
+  };
 
+  const fetchFriends = async () => {
+    await commonApi({
+      action: "friends",
+      data: {
+        options: {
+          select: ["fullName", "following", "followers"],
+        },
+      },
+      config: {
+        authToken: token,
+      },
+    }).then(({ DATA }) => {
+      setFriends(DATA.data);
+    });
+  };
 
   return (
     <Tab.Navigator
@@ -29,7 +67,7 @@ const BottomTabView = ({}) => {
         tabBarLabelStyle: {
           color: "#ffffff",
           fontSize: 16,
-          textTransform:'none',
+          textTransform: "none",
           // backgroundColor:'grey',
         },
         tabBarStyle: {
@@ -51,8 +89,26 @@ const BottomTabView = ({}) => {
         },
       }}
     >
-      <Tab.Screen name="Friends" component={Friends} />
-      <Tab.Screen name="Suggestions" component={Suggestions} />
+      <Tab.Screen
+        name="Friends"
+        children={() => (
+          <Friends
+            friends={friends}
+            fetchFriends={fetchFriends}
+            getSuggestions={getSuggestions}
+          />
+        )}
+      />
+      <Tab.Screen
+        name="Suggestions"
+        children={() => (
+          <Suggestions
+            suggestions={suggestions}
+            getSuggestions={getSuggestions}
+            fetchFriends={fetchFriends}
+          />
+        )}
+      />
     </Tab.Navigator>
   );
 };
