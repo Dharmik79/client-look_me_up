@@ -19,13 +19,15 @@ import Suggestions from "./Suggestions";
 import Friends from "./Friends";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BottomTabView = ({}) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
   const Tab = createMaterialTopTabNavigator();
-
+  const dispatch = useDispatch();
   const [suggestions, setSuggestions] = useState([]);
   const [friends, setFriends] = useState([]);
   const getSuggestions = async () => {
@@ -59,7 +61,17 @@ const BottomTabView = ({}) => {
       setFriends(DATA.data);
     });
   };
-
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    }).then(async({ DATA }) => {
+      dispatch({ type: "UPDATE_USER", payload: DATA });
+      await AsyncStorage.setItem("user",JSON.stringify(DATA))
+    });
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -96,6 +108,7 @@ const BottomTabView = ({}) => {
             friends={friends}
             fetchFriends={fetchFriends}
             getSuggestions={getSuggestions}
+            getProfile={getProfile}
           />
         )}
       />
@@ -106,6 +119,7 @@ const BottomTabView = ({}) => {
             suggestions={suggestions}
             getSuggestions={getSuggestions}
             fetchFriends={fetchFriends}
+            getProfile={getProfile}
           />
         )}
       />
