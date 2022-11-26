@@ -26,10 +26,20 @@ import { useSelector } from "react-redux";
 
 const SingleComment = ({ item }) => {
   item = item.item;
+  let url = baseUrl + "assets/" + item.userId.profilePicture;
   return (
     <View style={styles.commentsHeader}>
       <View style={styles.commentsRow}>
-        <Avatar source={require("../assets/a4.png")} />
+        {item.userId.profilePicture && (
+          <Image
+            source={{ uri: url }}
+            style={{ width: 40, height: 40, borderRadius: 100 }}
+          />
+        )}
+        {!item.userId.profilePicture && (
+          <Avatar source={require("../assets/a4.png")} />
+        )}
+
         <View style={styles.commentBoxBorder2}>
           <View style={{ paddingLeft: 5 }}>
             <Text style={styles.commentUser}>{item.userId.fullName}</Text>

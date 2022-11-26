@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
             {
               path: "userId",
               model: "user",
-              select: ["_id", "fullName"],
+              select: ["_id", "fullName","profilePicture"],
             },
             {
               path: "comments.userId",
