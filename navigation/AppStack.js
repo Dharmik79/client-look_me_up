@@ -10,6 +10,7 @@ import AuthStack from "./AuthStack";
 import { Init } from "../components/context/Actions";
 import EditProfile from "../screens/EditProfile";
 import TopBar from "../components/TopBar";
+import ProfileDetails from "../components/ProfileDetails";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {

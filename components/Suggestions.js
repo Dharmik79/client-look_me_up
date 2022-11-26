@@ -18,7 +18,7 @@ import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 
-const Suggestions = ({ suggestions, getSuggestions, fetchFriends }) => {
+const Suggestions = ({ suggestions, getSuggestions, fetchFriends,getProfile }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
@@ -39,6 +39,7 @@ const Suggestions = ({ suggestions, getSuggestions, fetchFriends }) => {
       .then(() => {
         getSuggestions();
         fetchFriends();
+        getProfile();
       })
       .catch((error) => {
         console.error("Error - Add Friend", error);
