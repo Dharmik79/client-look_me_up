@@ -8,6 +8,8 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import MainContainer from "./MainContainer";
 import AuthStack from "./AuthStack";
 import { Init } from "../components/context/Actions";
+import EditProfile from "../screens/EditProfile";
+import TopBar from "../components/TopBar";
 const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
@@ -36,6 +38,11 @@ const AppStack = () => {
           options={{ headerShown: false, gestureEnabled: false }}
         />
       )}
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
     </Stack.Navigator>
   );
 };

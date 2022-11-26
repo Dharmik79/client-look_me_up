@@ -18,26 +18,10 @@ import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 
-const Friends = () => {
+const Friends = ({ friends, fetchFriends, getSuggestions }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
-  const [friends, setFriends] = useState([]);
-  const fetchFriends = async () => {
-    await commonApi({
-      action: "friends",
-      data: {
-        options: {
-          select: ["fullName", "following", "followers"],
-        },
-      },
-      config: {
-        authToken: token,
-      },
-    }).then(({ DATA }) => {
-      setFriends(DATA.data);
-    });
-  };
   const unFollowFriend = async (id) => {
     await commonApi({
       action: "removeFriend",
@@ -50,6 +34,7 @@ const Friends = () => {
     })
       .then(() => {
         fetchFriends();
+        getSuggestions();
       })
       .catch((error) => {
         console.error("Error - Add Friend", error);
@@ -135,7 +120,9 @@ const Friends = () => {
                         // opacity:0.2,
                         borderRadius: 10,
                       }}
-                      onPress={()=>{unFollowFriend(friend._id)}}
+                      onPress={() => {
+                        unFollowFriend(friend._id);
+                      }}
                     >
                       <Icon2
                         name="close-circle-sharp"

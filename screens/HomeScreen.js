@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation }) => {
     // <StatusBar backgroundColor="#ffffff"
     // barStyle="dark-content">
     <View style={styles.container}>
-      <TopBar getPosts={getPosts} />
+      <TopBar getPosts={getPosts} navigation={navigation}/>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={() => pullMe()} />

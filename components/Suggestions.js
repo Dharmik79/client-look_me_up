@@ -18,27 +18,10 @@ import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
 
-const Suggestions = () => {
+const Suggestions = ({ suggestions, getSuggestions, fetchFriends }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
-  const [suggestions, setSuggestions] = useState([]);
-
-  const getSuggestions = async () => {
-    await commonApi({
-      action: "suggestions",
-      data: {
-        options: {
-          select: ["fullName", "following", "followers"],
-        },
-      },
-      config: {
-        authToken: token,
-      },
-    }).then(({ DATA }) => {
-      setSuggestions(DATA.data);
-    });
-  };
   useEffect(() => {
     getSuggestions();
   }, []);
@@ -55,6 +38,7 @@ const Suggestions = () => {
     })
       .then(() => {
         getSuggestions();
+        fetchFriends();
       })
       .catch((error) => {
         console.error("Error - Add Friend", error);
