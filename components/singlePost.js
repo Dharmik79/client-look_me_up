@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import Like from "react-native-vector-icons/AntDesign";
-import Comment from "react-native-vector-icons/MaterialIcons";
+import Comment from "react-native-vector-icons/MaterialCommunityIcons";
 import Share from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import Avatar from "./Avatar";
@@ -35,11 +35,13 @@ const singlePost = ({ item, getPosts }) => {
   const [likeCount, setLikeCount] = useState(likes.length);
   const [com, setCom] = useState("");
   const [showComment, setShowComment] = useState(false);
-  const [estado, setEstado] = useState(false);
+  
 
-  const agregarFavoritos = () => {
-    setEstado(!estado);
-  };
+  // const [isActive, setIsActive] = useState(false);
+
+  //   const onPressComment = () =>{
+  //     setIsActive(true);
+  //   }
 
   const deletePost = async (id) => {
     await commonApi({
@@ -240,7 +242,7 @@ const singlePost = ({ item, getPosts }) => {
           {!isLiked && (
             <TouchableOpacity style={styles.button} onPress={likeHandler}>
               <View style={styles.icon}>
-                <Like name="heart" size={15} onPress={{ color: "#3491ff" }} />
+                <Like name="hearto" size={15}  />
               </View>
               <Text style={styles.text}>Like</Text>
             </TouchableOpacity>
@@ -248,11 +250,12 @@ const singlePost = ({ item, getPosts }) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              setShowComment(!showComment);
+              setShowComment(!showComment) ;
+
             }}
           >
             <View style={styles.icon}>
-              <Comment name="comment" size={15} />
+              <Comment name="comment-text-outline" size={15} />
             </View>
             <Text style={styles.text}>Comment</Text>
           </TouchableOpacity>
@@ -408,6 +411,13 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
+    
+  },
+  commentbutton: {
+    flexDirection: "row",
+    alignItems: "center",
+    
+    backgroundColor:'#3491ff',
   },
 
   icon: {

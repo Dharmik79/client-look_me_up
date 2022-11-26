@@ -45,10 +45,13 @@ const SingleComment = ({ item }) => {
             <Text style={styles.commentUser}>{item.userId.fullName}</Text>
             <View style={styles.commentsRow}>
               <Text style={styles.commentContent}>{item.comment}</Text>
+              
             </View>
           </View>
         </View>
+        
       </View>
+      
       {/* <Icon name="dots-three-vertical" size={20} /> */}
     </View>
   );

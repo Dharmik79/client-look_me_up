@@ -113,7 +113,7 @@ const BottomTabView = ({}) => {
         )}
       />
       <Tab.Screen
-        name="Suggestions"
+        name="Followers"
         children={() => (
           <Suggestions
             suggestions={suggestions}

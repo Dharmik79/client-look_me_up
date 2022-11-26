@@ -282,39 +282,7 @@ const EditProfile = ({ navigation }) => {
                   <Text style={styles.errors}>{props.errors.phone}</Text>
                 )}
               </View>
-              <View>
-                <Text
-                  style={{
-                    opacity: 0.5,
-                  }}
-                >
-                  Password
-                </Text>
-                <TextInput
-                  placeholder="Change Password"
-                  style={styles.textInputEdit}
-                />
-              </View>
-              {/* <View style={{ paddingVertical: 10 }}>
-          <TextInput
-            placeholder="Website"
-            style={{
-              fontSize: 16,
-              borderBottomWidth: 1,
-              borderColor: "#CDCDCD",
-            }}
-          />
-        </View>
-        <View style={{ paddingVertical: 10 }}>
-          <TextInput
-            placeholder="Bio"
-            style={{
-              fontSize: 16,
-              borderBottomWidth: 1,
-              borderColor: "#CDCDCD",
-            }}
-          />
-        </View> */}
+              
             </View>
             <TouchableOpacity
               style={{

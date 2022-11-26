@@ -101,7 +101,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
                     <Text
                       style={{ fontSize: 14, color: "grey", fontWeight: "300" }}
                     >
-                      {friend.followers.length} {"\t"} Followers {"\t"}{" "}
+                      {friend.followers.length} Followers {"\t"}{" "}
                       {friend.following.length} Friends
                     </Text>
                   </View>
@@ -109,14 +109,14 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
                   <View style={{ alignItems: "center", flexDirection: "row" }}>
                     <TouchableOpacity
                       style={{
-                        flex: 0.5,
+                        flex: 0.8,
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "center",
                         marginLeft: 2,
                         marginRight: 2,
                         height: 35,
-                        //width:50,
+                       // width:70,
                         backgroundColor: "#a3a3a3",
                         // opacity:0.2,
                         borderRadius: 10,
