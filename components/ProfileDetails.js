@@ -19,34 +19,40 @@ const ProfileDetails = ({ navigation }) => {
   const token = useSelector((state) => state.Reducers.token);
   return (
     <View style={styles.container}>
-       <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
-          {user.fullName}
-        </Text>
-        <View style={styles.separator} />
-        <View style={styles.userInfoWrapper}>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>22</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
-          </View>
+      <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>
+        {user.fullName}
+      </Text>
+      <View style={styles.separator} />
+      <View style={styles.userInfoWrapper}>
+        <View style={styles.userInfoItem}>
+          <Text style={styles.userInfoTitle}>
+            {user.postCount ? user.postCount : 0}
+          </Text>
+          <Text style={styles.userInfoSubTitle}>Posts</Text>
+        </View>
 
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{user.followers.length}</Text>
-            <Text style={styles.userInfoSubTitle}>Followers</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{user.following.length}</Text>
-            <Text style={styles.userInfoSubTitle}>Friends</Text>
-          </View>
+        <View style={styles.userInfoItem}>
+          <Text style={styles.userInfoTitle}>{user.followers.length}</Text>
+          <Text style={styles.userInfoSubTitle}>Followers</Text>
         </View>
-        <View style={styles.separator} />
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.login} onPress={()=>navigation.navigate('EditProfile',{
-            screen:"EditProfile"
-          })}>
-            <Text style={styles.loginText}>Edit Profile</Text>
-          </TouchableOpacity>
+        <View style={styles.userInfoItem}>
+          <Text style={styles.userInfoTitle}>{user.following.length}</Text>
+          <Text style={styles.userInfoSubTitle}>Friends</Text>
         </View>
-     
+      </View>
+      <View style={styles.separator} />
+      <View style={styles.buttons}>
+        <TouchableOpacity
+          style={styles.login}
+          onPress={() =>
+            navigation.navigate("EditProfile", {
+              screen: "EditProfile",
+            })
+          }
+        >
+          <Text style={styles.loginText}>Edit Profile</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-   // marginTop: 35,
+    // marginTop: 35,
     //padding:10,
     //paddingLeft:10,
     //paddingRight:10,
@@ -108,6 +114,5 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: "center",
   },
-  
 });
 export default ProfileDetails;

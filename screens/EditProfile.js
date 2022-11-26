@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Switch } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
-
+import { baseUrl } from "../api/index";
 const profileSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
   lastName: yup.string().required("Last Name is required"),
@@ -31,6 +31,11 @@ const EditProfile = ({ navigation }) => {
   const [privateAccount, setPrivateAccount] = useState(
     user.accountType == "private" ? true : false
   );
+  const [pickedImagePath, setPickedImagePath] = useState(null);
+  const [path, setPath] = useState(
+    user.profilePicture ? user.profilePicture : ""
+  );
+
   const updateAccountType = async () => {
     let data = {
       accountType: privateAccount ? "public" : "private",
@@ -46,7 +51,7 @@ const EditProfile = ({ navigation }) => {
       .then(async ({ DATA = {} }) => {
         dispatch({ type: "UPDATE_USER", payload: DATA });
         await AsyncStorage.setItem("user", JSON.stringify(DATA));
-        
+        setPickedImagePath(null);
       })
       .catch((error) => {
         console.error(error);
@@ -82,8 +87,8 @@ const EditProfile = ({ navigation }) => {
       });
   };
 
-   // The path of the picked image
-   const [pickedImagePath, setPickedImagePath] = useState("");
+  // The path of the picked image
+
   const showImagePicker = async () => {
     // Ask the user for the permission to access the media library
     const permissionResult =
@@ -103,8 +108,48 @@ const EditProfile = ({ navigation }) => {
 
     if (!result.cancelled) {
       setPickedImagePath(result);
+      if (pickedImagePath) {
+        let formData = new FormData();
+        let name = Date.now() + ".PNG";
+        formData.append("photo", {
+          name: name,
+          type: pickedImagePath.type,
+          uri: pickedImagePath.uri,
+        });
+        await commonApi({
+          action: "upload",
+          data: formData,
+          config: {
+            contentType: "multipart/form-data",
+          },
+        })
+          .then(async (response) => {
+            setPath(name);
+            await commonApi({
+              action: "updateProfile",
+              data: {
+                profilePicture: name,
+              },
+              config: {
+                authToken: token,
+              },
+            })
+              .then(async ({ DATA = {} }) => {
+                dispatch({ type: "UPDATE_USER", payload: DATA });
+                await AsyncStorage.setItem("user", JSON.stringify(DATA));
+                
+              })
+              .catch((error) => {
+                console.error("error", error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error in Upload File ", error);
+          });
+      }
     }
   };
+
   return (
     <KeyboardAwareScrollView style={{ backgroundColor: "#ffffff" }}>
       <Formik
@@ -124,7 +169,11 @@ const EditProfile = ({ navigation }) => {
         {(props) => (
           <View style={styles.container}>
             <View style={styles.topBar}>
-              <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
                 <Ionic name="close-outline" style={{ fontSize: 35 }} />
               </TouchableOpacity>
               <Text style={{ fontSize: 16, fontWeight: "bold" }}>
@@ -137,12 +186,34 @@ const EditProfile = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={{ padding: 20, alignItems: "center" }} onPress={showImagePicker}>
-            {pickedImagePath && <Image source={{ uri: pickedImagePath.uri }} />}
-              <Image
-                source={require("../assets/a4.png")}
-                style={{ width: 80, height: 80, borderRadius: 100 }}
-              />
+            <TouchableOpacity
+              style={{ padding: 20, alignItems: "center" }}
+              onPress={showImagePicker}
+            >
+              {pickedImagePath && (
+                <Image
+                  source={{
+                    uri: pickedImagePath.uri,
+                  }}
+                  style={{ width: 80, height: 80, borderRadius: 100 }}
+                />
+              )}
+              {!pickedImagePath && path && (
+                <Image
+                  source={{
+                    uri: baseUrl + "assets/" + path,
+                  }}
+                  style={{ width: 80, height: 80, borderRadius: 100 }}
+                />
+              )}
+              {!pickedImagePath && !path && (
+                <Image
+                  source={{
+                    uri: require("../assets/4.jpg"),
+                  }}
+                  style={{ width: 80, height: 80, borderRadius: 100 }}
+                />
+              )}
               <Text
                 style={{
                   color: "#3493D9",
