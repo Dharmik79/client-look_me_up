@@ -26,10 +26,11 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
-  const getPosts = async () => {
+  const getPosts = async (query={}) => {
     await commonApi({
       action: "findAllPost",
       data: {
+        query:query,
         options: {
           pagination: false,
           populate: [
