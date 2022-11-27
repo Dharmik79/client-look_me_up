@@ -27,7 +27,6 @@ const HomeScreen = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
   const getPosts = async () => {
-   
     await commonApi({
       action: "findAllPost",
       data: {
@@ -37,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
             {
               path: "userId",
               model: "user",
-              select: ["_id", "fullName","profilePicture"],
+              select: ["_id", "fullName", "profilePicture"],
             },
             {
               path: "comments.userId",
@@ -73,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
     // <StatusBar backgroundColor="#ffffff"
     // barStyle="dark-content">
     <View style={styles.container}>
-      <TopBar getPosts={getPosts} navigation={navigation}/>
+      <TopBar getPosts={getPosts} navigation={navigation} />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={() => pullMe()} />
@@ -83,10 +82,14 @@ const HomeScreen = ({ navigation }) => {
         {/* <Story />
         <GroupsHome />*/}
         <Post getPosts={getPosts} posts={posts} />
-        <View style={styles.noPostsFound}>
-          <NoPost name="camera" size={50} color="grey"/>
-          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No Post Found</Text>
-        </View>
+        {posts.length == 0 && (
+          <View style={styles.noPostsFound}>
+            <NoPost name="camera" size={50} color="grey" />
+            <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
+              No Post Found
+            </Text>
+          </View>
+        )}
         {/* <SafeAreaView
           style={styles.bottomNavigation}
         >
@@ -115,9 +118,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     backgroundColor: "#3491ff",
   },
-  noPostsFound:{
-    alignItems:'center',
-    marginTop:20,
+  noPostsFound: {
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 
