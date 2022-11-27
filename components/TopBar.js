@@ -56,21 +56,20 @@ const TopBar = ({ navigation }) => {
     if (index == 0) {
       // Navigate to Profile screen
 
-      navigation.navigate('EditProfile',{
-        screen:"EditProfile"
-      })
+      navigation.navigate("EditProfile", {
+        screen: "EditProfile",
+      });
     }
-    if (index == 1) 
-    // {
-    //   // Navigate to change password screen
-    //   console.log("Chnage Password");
-    // }
-    {
+    if (index == 1) {
+      // {
+      //   // Navigate to change password screen
+      //   console.log("Chnage Password");
+      // }
       // Navigate to Change Passeord screen
 
-      navigation.navigate('ChangePasswordScreen',{
-        screen:"ChangePasswordScreen"
-      })
+      navigation.navigate("ChangePasswordScreen", {
+        screen: "ChangePasswordScreen",
+      });
     }
     if (index == 2) {
       setmodalOpen(true);
