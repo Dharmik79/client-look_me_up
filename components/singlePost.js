@@ -247,7 +247,23 @@ const singlePost = ({ item, getPosts }) => {
               <Text style={styles.text}>Like</Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity
+          {showComment && (<TouchableOpacity
+            style={styles.button1}
+            onPress={() => {
+              setShowComment(!showComment) ;
+
+            }}
+          >
+            <View style={styles.icon}>
+              <Comment name="comment-text-outline" size={15} color='#3491ff' />
+            </View>
+            <Text style={styles.text1}>Comment</Text>
+          </TouchableOpacity>
+          )}
+
+
+          
+          {!showComment && (<TouchableOpacity
             style={styles.button}
             onPress={() => {
               setShowComment(!showComment) ;
@@ -259,6 +275,7 @@ const singlePost = ({ item, getPosts }) => {
             </View>
             <Text style={styles.text}>Comment</Text>
           </TouchableOpacity>
+          )}
           <TouchableOpacity style={styles.button}>
             <View style={styles.icon}>
               <Share name="share" size={15} />
@@ -413,6 +430,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     
   },
+  button1: {
+    flexDirection: "row",
+    alignItems: "center",
+    //backgroundColor:"#3491ff",
+   // borderRadius:10,
+   // paddingLeft:10,
+   // paddingRight:10,
+   // height:30,
+    //borderColor:'#3491ff',
+   // borderWidth:2,
+    
+  },
   commentbutton: {
     flexDirection: "row",
     alignItems: "center",
@@ -425,6 +454,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+  },
+  text1: {
+    fontSize: 14,
+    color:'#3491ff',
   },
 
   textInput: {
