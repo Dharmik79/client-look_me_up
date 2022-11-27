@@ -28,21 +28,21 @@ const BottomTabView = ({}) => {
 
   const Tab = createMaterialTopTabNavigator();
   const dispatch = useDispatch();
-  const [suggestions, setSuggestions] = useState([]);
+  const [followers, setFollowers] = useState([]);
   const [friends, setFriends] = useState([]);
-  const getSuggestions = async () => {
+  const getFollowers = async () => {
     await commonApi({
-      action: "suggestions",
+      action: "followers",
       data: {
         options: {
-          select: ["fullName", "following", "followers"],
+          select: ["fullName", "following", "followers","profilePicture"],
         },
       },
       config: {
         authToken: token,
       },
     }).then(({ DATA }) => {
-      setSuggestions(DATA.data);
+      setFollowers(DATA.data);
     });
   };
 
@@ -51,7 +51,7 @@ const BottomTabView = ({}) => {
       action: "friends",
       data: {
         options: {
-          select: ["fullName", "following", "followers"],
+          select: ["fullName", "following", "followers","profilePicture"],
         },
       },
       config: {
@@ -107,7 +107,6 @@ const BottomTabView = ({}) => {
           <Friends
             friends={friends}
             fetchFriends={fetchFriends}
-            getSuggestions={getSuggestions}
             getProfile={getProfile}
           />
         )}
@@ -116,9 +115,8 @@ const BottomTabView = ({}) => {
         name="Followers"
         children={() => (
           <Suggestions
-            suggestions={suggestions}
-            getSuggestions={getSuggestions}
-            fetchFriends={fetchFriends}
+            followers={followers}
+            getFollowers={getFollowers}
             getProfile={getProfile}
           />
         )}

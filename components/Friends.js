@@ -18,8 +18,9 @@ import NoPost from "react-native-vector-icons/FontAwesome5";
 import { Avatar } from "react-native-paper";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
+import { baseUrl } from "../api";
 
-const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
+const Friends = ({ friends, fetchFriends, getProfile }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
 
@@ -35,8 +36,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
     })
       .then(() => {
         fetchFriends();
-        getSuggestions();
-        getProfile()
+        getProfile();
       })
       .catch((error) => {
         console.error("Error - Add Friend", error);
@@ -44,7 +44,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
   };
   useEffect(() => {
     fetchFriends();
-  }, []);
+  }, [user]);
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -54,9 +54,17 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
         backgroundColor: "#ffffff",
       }}
     >
-      {friends.map((friend) => {
+      {friends.length == 0 && (
+        <View style={{ alignItems: "center", marginTop: 20 }}>
+          <NoPost name="user-friends" size={40} color="grey" />
+          <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
+            No friends found
+          </Text>
+        </View>
+      )}
+      {friends.map((friend, index) => {
         return (
-          <>
+          <View key={index}>
             <View
               style={{
                 width: "100%",
@@ -77,10 +85,21 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
               }}
             >
               <View style={{ alignItems: "center", flexDirection: "row" }}>
-                <Image
-                  source={require("../assets/a4.png")}
-                  style={{ width: 80, height: 80, borderRadius: 100 }}
-                />
+                {friend.profilePicture && (
+                  <Image
+                    source={{
+                      uri: baseUrl + "assets/" + friend.profilePicture,
+                    }}
+                    style={{ width: 80, height: 80, borderRadius: 100 }}
+                  />
+                )}
+
+                {!friend.profilePicture && (
+                  <Image
+                    source={require("../assets/a4.png")}
+                    style={{ width: 80, height: 80, borderRadius: 100 }}
+                  />
+                )}
                 <View style={{ paddingLeft: 10 }}>
                   <Text
                     style={{
@@ -117,7 +136,7 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
                         marginLeft: 2,
                         marginRight: 2,
                         height: 35,
-                       // width:70,
+                        // width:70,
                         backgroundColor: "#a3a3a3",
                         // opacity:0.2,
                         borderRadius: 10,
@@ -160,14 +179,9 @@ const Friends = ({ friends, fetchFriends, getSuggestions,getProfile }) => {
                 backgroundColor: "#f0f0f0",
               }}
             />
-          </>
+          </View>
         );
       })}
-      <View style={{alignItems:'center',
-    marginTop:20,}}>
-          <NoPost name="user-friends" size={40} color="grey"/>
-          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No friends found</Text>
-        </View>
     </ScrollView>
   );
 };

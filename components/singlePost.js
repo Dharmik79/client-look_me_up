@@ -60,7 +60,6 @@ const singlePost = ({ item, getPosts }) => {
       });
   };
   let url = baseUrl + "assets/" + item.userId.profilePicture;
-  console.log("url", url);
   const dislikeHandler = async () => {
     await commonApi({
       action: "likeDisLike",
@@ -288,10 +287,10 @@ const singlePost = ({ item, getPosts }) => {
         <View style={styles.footerMenu}>
           <View style={styles.button}>
             <View style={styles.icon}>
-            {item.userId.profilePicture && (
+            {user.profilePicture && (
               <Image
                 source={{
-                  uri: url,
+                  uri: baseUrl+"assets/"+user.profilePicture,
                 }}
                 style={{ width: 40, height: 40, borderRadius: 100 }}
               />
