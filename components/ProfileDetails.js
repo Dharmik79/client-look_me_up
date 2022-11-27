@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -14,9 +14,29 @@ import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const ProfileDetails = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
+  const dispatch = useDispatch();
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    }).then(async ({ DATA }) => {
+      dispatch({ type: "UPDATE_USER", payload: DATA });
+      await AsyncStorage.setItem("user", JSON.stringify(DATA));
+    }).catch((error)=>{
+      console.error("Error",error)
+    })
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, [user]);
   return (
     <View style={styles.container}>
       <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>

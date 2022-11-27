@@ -80,5 +80,9 @@ const apiList = {
     url:()=>"user/followers",
     method:"post"
   },
+  changePassword:{
+    url:()=>"user/change-password",
+    method:"put"
+  }
 };
 export default apiList;

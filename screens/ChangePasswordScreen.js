@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -7,154 +7,148 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  BackHandler
+  BackHandler,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Formik } from "formik";
 import commonApi from "../api/common";
 import * as yup from "yup";
-// const validationSchema = yup.object().shape({
+import { useSelector } from "react-redux";
+const validationSchema = yup.object().shape({
+  currentPassword: yup.string().required("Old Password is required"),
 
-//   password: yup
-//     .string()
-//     // .min(8, ({ min }) => `Password must be at least ${min} characters`)
-//     .required("Password is required")
-//     .matches(/[0-9]/, "Password requires a number"),
-//   // .matches(/[a-z]/, "Password requires a lowercase letter")
-//   // .matches(/[A-Z]/, "Password requires an uppercase letter")
-//   // .matches(/[^\w]/, "Password requires a symbol"),
+  password: yup
+    .string()
+    .min(8, ({ min }) => `Password must be at least ${min} characters`)
+    .required("Password is required")
+    .matches(/[0-9]/, "Password requires a number")
+    .matches(/[a-z]/, "Password requires a lowercase letter")
+    .matches(/[A-Z]/, "Password requires an uppercase letter")
+    .matches(/[^\w]/, "Password requires a symbol"),
 
-//   confirmPassword: yup
-//     .string()
-//     .oneOf([yup.ref("password"), null], "Must match password field value")
-//     .required("Confirm Password is Required"),
-// });
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Must match password field value")
+    .required("Confirm Password is Required"),
+});
 
-const ChangePasswordScreen = ({ navigation}) => {
-//   let {email,OTP} = route.params;
+const ChangePasswordScreen = ({ navigation }) => {
+  const token = useSelector((state) => state.Reducers.token);
+  const setPassword = async (data, setFieldError, setSubmitting, actions) => {
+    await commonApi({
+      action: "changePassword",
+      data: {
+        currentPassword: data.currentPassword,
+        newPassword: data.password,
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        navigation.navigate("HomeScreen", {
+          screen: "HomeScreen",
+        })
+      })
+      .catch((error) => {
+        setFieldError("currentPassword", error.MESSAGE);
+        setSubmitting(true);
+      });
+  };
 
-//   const setPassword = async (data, setFieldError, setSubmitting, actions) => {
-//     await commonApi({
-//       action: "resetOTPpassword",
-//       data: {
-//         email:email,
-//         OTP:OTP,
-//         password:data.password
-//       },
-//     })
-//       .then(async ({ DATA = {} }) => {
-    
-//           navigation.navigate("AuthScreen", {
-//             screen: "LoginScreen",
-//           });
-//           actions.resetForm();
-      
-//       })
-//       .catch((error) => {
-//         setFieldError(error.DATA, error.MESSAGE);
-//         setSubmitting(true);
-//       });
-//   };
-
-//   useEffect(() => {
-//     const backHandler = BackHandler.addEventListener(
-//       "hardwareBackPress",
-//       () => true
-//     );
-//     return () => backHandler.remove();
-//   }, []);
   return (
     <KeyboardAwareScrollView>
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.mainText}>Choose new {"\n"}Password</Text>
-        <Image
-          style={styles.logo}
-          source={require("../assets/new_password.png")}
-        />
-      </View>
-      {/* <Formik
-      initialValues={{
-        password: "",
-        confirmPassword:""
-      }}
-      validateOnBlur={true}
-      validateOnChange={true}
-      validateOnMount={true}
-      onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
-        setPassword(values, setFieldError, setSubmitting, actions);
-      }}
-      validationSchema={validationSchema}
-    > */}
-      {/* {(props) => ( */}
-      <View style={styles.body}>
-      <Text style={{ marginTop: 80, marginBottom: 5 }}>
-          Old password
-        </Text>
-
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          keyboardType="default"
-
-        //   onChangeText={props.handleChange("password")}
-        //   value={props.values.password}
-        //   onBlur={props.handleBlur("password")}
-        />
-        <Text style={{ marginBottom: 5 }}>
-          Create new password
-        </Text>
-
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          keyboardType="default"
-
-        //   onChangeText={props.handleChange("password")}
-        //   value={props.values.password}
-        //   onBlur={props.handleBlur("password")}
-        />
-        {/* {props.errors.password && props.touched.password && (
-          <Text style={styles.errors}>{props.errors.password}</Text>
-        )} */}
-        <Text style={{ marginBottom: 5 }}>Confirm password</Text>
-
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          keyboardType="default"
-        //   onChangeText={props.handleChange("confirmPassword")}
-        //   value={props.values.confirmPassword}
-        //   onBlur={props.handleBlur("confirmPassword")}
-        />
-        {/* {props.errors.confirmPassword && props.touched.confirmPassword && (
-          <Text style={styles.errors}>{props.errors.confirmPassword}</Text>
-        )} */}
-      <View style={styles.buttons}>
-        <TouchableOpacity
-        //  onPress={props.handleSubmit}
-         >
-          <View style={styles.done} >
-            <Text style={styles.doneText}>Submit</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-      onPress={() =>
-            navigation.navigate("HomeScreen", {
-              screen: "HomeScreen",
-            })
-          }
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.mainText}>Choose new {"\n"}Password</Text>
+          <Image
+            style={styles.logo}
+            source={require("../assets/new_password.png")}
+          />
+        </View>
+        <Formik
+          initialValues={{
+            currentPassword: "",
+            password: "",
+            confirmPassword: "",
+          }}
+          validateOnBlur={true}
+          validateOnChange={true}
+          validateOnMount={true}
+          onSubmit={(values, { actions, setFieldError, setSubmitting }) => {
+            setPassword(values, setFieldError, setSubmitting, actions);
+          }}
+          validationSchema={validationSchema}
         >
-          <View style={styles.cancel}>
-            <Text style={styles.cancelText}>Cancel</Text>
-          </View>
-        </TouchableOpacity>
+          {(props) => (
+            <View style={styles.body}>
+              <Text style={{ marginTop: 80, marginBottom: 5 }}>
+                Old password
+              </Text>
+              <TextInput
+                secureTextEntry={true}
+                style={styles.input}
+                keyboardType="default"
+                onChangeText={props.handleChange("currentPassword")}
+                value={props.values.currentPassword}
+                onBlur={props.handleBlur("currentPassword")}
+              />
+              {props.errors.currentPassword &&
+                props.touched.currentPassword && (
+                  <Text style={styles.errors}>
+                    {props.errors.currentPassword}
+                  </Text>
+                )}
+              <Text style={{ marginBottom: 5 }}>Create new password</Text>
+              <TextInput
+                secureTextEntry={true}
+                style={styles.input}
+                keyboardType="default"
+                onChangeText={props.handleChange("password")}
+                value={props.values.password}
+                onBlur={props.handleBlur("password")}
+              />
+              {props.errors.password && props.touched.password && (
+                <Text style={styles.errors}>{props.errors.password}</Text>
+              )}
+              <Text style={{ marginBottom: 5 }}>Confirm password</Text>
+              <TextInput
+                secureTextEntry={true}
+                style={styles.input}
+                keyboardType="default"
+                onChangeText={props.handleChange("confirmPassword")}
+                value={props.values.confirmPassword}
+                onBlur={props.handleBlur("confirmPassword")}
+              />
+              {props.errors.confirmPassword &&
+                props.touched.confirmPassword && (
+                  <Text style={styles.errors}>
+                    {props.errors.confirmPassword}
+                  </Text>
+                )}
+              <View style={styles.buttons}>
+                <TouchableOpacity onPress={props.handleSubmit}>
+                  <View style={styles.done}>
+                    <Text style={styles.doneText}>Submit</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("HomeScreen", {
+                      screen: "HomeScreen",
+                    })
+                  }
+                >
+                  <View style={styles.cancel}>
+                    <Text style={styles.cancelText}>Cancel</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </Formik>
       </View>
-      </View>
-      {/* )} */}
-      {/* </Formik> */}
-    </View>
-     </KeyboardAwareScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -202,7 +196,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "100%",
     height: "60%",
-   // marginTop:50,
+    // marginTop:50,
   },
 
   input: {
