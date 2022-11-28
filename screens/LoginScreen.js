@@ -304,6 +304,15 @@ const styles = StyleSheet.create({
     //alignContent:'center',
     alignItems: "center",
   },
+  logindisabled: {
+    marginBottom: 10,
+    backgroundColor: "#BABABA",
+    borderRadius: 10,
+    padding: 10,
+    height:40,
+    //alignContent:'center',
+    alignItems: "center",
+  },
   loginText: {
     color: "#ffffff",
     fontSize: 16,
