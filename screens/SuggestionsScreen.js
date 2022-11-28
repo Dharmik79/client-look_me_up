@@ -96,6 +96,7 @@ const SuggestionsScreen = ({ navigation }) => {
           width: "100%",
           height: "100%",
           backgroundColor: "#ffffff",
+          padding:5,
         }}
       >
         {suggestions.map((suggestion, index) => {
@@ -175,7 +176,7 @@ const SuggestionsScreen = ({ navigation }) => {
                           marginLeft: 2,
                           marginRight: 2,
                           height: 35,
-                          width: 120,
+                          width: 130,
                           backgroundColor: "#3491ff",
                           // opacity:0.2,
                           borderRadius: 10,
@@ -193,6 +194,7 @@ const SuggestionsScreen = ({ navigation }) => {
                             color: "#ffffff",
                             //backgroundColor:'grey',
                             borderRadius: 10,
+                            marginLeft:5,
                           }}
                         >
                           Add Friend

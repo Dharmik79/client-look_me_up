@@ -157,8 +157,8 @@ const Suggestions = ({ followers, getFollowers, getProfile }) => {
                           marginLeft: 2,
                           marginRight: 2,
                           height: 35,
-                          width: 120,
-                          backgroundColor: "#3491ff",
+                          width: 130,
+                          backgroundColor: "#a3a3a3",
                           // opacity:0.2,
                           borderRadius: 10,
                         }}
@@ -166,7 +166,7 @@ const Suggestions = ({ followers, getFollowers, getProfile }) => {
                           unFollowFriend(follower._id);
                         }}
                       >
-                        <Icon2 name="person-add" size={20} color="#ffffff" />
+                        <Icon2 name="close-circle-sharp" size={20} color="#ffffff" />
                         <Text
                           style={{
                             //paddingLeft:10,
@@ -175,6 +175,7 @@ const Suggestions = ({ followers, getFollowers, getProfile }) => {
                             color: "#ffffff",
                             //backgroundColor:'grey',
                             borderRadius: 10,
+                            marginLeft:5,
                           }}
                         >
                           Remove Friend
@@ -230,7 +231,7 @@ const Suggestions = ({ followers, getFollowers, getProfile }) => {
                           marginLeft: 2,
                           marginRight: 2,
                           height: 35,
-                          width: 120,
+                          width: 130,
                           backgroundColor: "#3491ff",
                           // opacity:0.2,
                           borderRadius: 10,
@@ -248,6 +249,7 @@ const Suggestions = ({ followers, getFollowers, getProfile }) => {
                             color: "#ffffff",
                             //backgroundColor:'grey',
                             borderRadius: 10,
+                            marginLeft:5,
                           }}
                         >
                           Add Friend

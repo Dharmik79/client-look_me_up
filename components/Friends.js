@@ -129,14 +129,14 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
                   <View style={{ alignItems: "center", flexDirection: "row" }}>
                     <TouchableOpacity
                       style={{
-                        flex: 0.8,
+                        //flex: 0.8,
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "center",
                         marginLeft: 2,
                         marginRight: 2,
                         height: 35,
-                        // width:70,
+                        width:130,
                         backgroundColor: "#a3a3a3",
                         // opacity:0.2,
                         borderRadius: 10,
@@ -158,6 +158,7 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
                           color: "#ffffff",
                           //backgroundColor:'grey',
                           borderRadius: 10,
+                          marginLeft:5,
                         }}
                       >
                         Remove Friend

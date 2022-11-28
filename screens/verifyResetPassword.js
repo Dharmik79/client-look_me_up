@@ -1,4 +1,4 @@
-import React ,{useEffect}from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  BackHandler
+  BackHandler,
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -50,14 +50,50 @@ const VerifyResetScreen = ({ navigation, route }) => {
         // Add the animation for the button to stop
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         console.log("Error in sending the OTP");
       });
   };
+
+  let clockCall = null
+  const defaultCountdown = 60;
+  const [countdown, setCountdown] = useState(defaultCountdown);
+  const [enableResend,setEnableResend] = useState(false)
+  useEffect(() => {
+    clockCall = setInterval(() => {
+      decrementClock();
+    }, 1000);
+    return () => {
+      clearInterval(clockCall);
+    };
+  })
+
+
+  const decrementClock = () => {
+    if (countdown === 0) {
+      setEnableResend(true);
+      setCountdown(0);
+      clearInterval(clockCall);
+    } else {
+      setCountdown(countdown - 1);
+    }
+  };
+
+  const onResendOTP = () => {
+    if (enableResend){
+      setCountdown(defaultCountdown)
+      setEnableResend(false)
+      clearInterval(clockCall)
+      clockCall = setInterval (()=> {
+        decrementClock(0)
+      },1000)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.mainText}>Verify {"\n"}Account</Text>
+        <Text style={styles.mainText}>Verify{"\n"}Account</Text>
         <Image
           style={styles.logo}
           source={require("../assets/verify_account.png")}
@@ -81,7 +117,7 @@ const VerifyResetScreen = ({ navigation, route }) => {
         {(props) => (
           <View style={styles.body}>
             <Text style={{ marginBottom: 5 }}>
-              Enter 6 digit OTP send on mobile
+              Enter 6 digit OTP sent on mobile
             </Text>
             <TextInput
               style={styles.input}
@@ -97,13 +133,19 @@ const VerifyResetScreen = ({ navigation, route }) => {
             <View style={styles.buttons}>
               <TouchableOpacity onPress={props.handleSubmit}>
                 <View style={styles.done}>
-                  <Text style={styles.doneText}>SUBMIT</Text>
+                  <Text style={styles.doneText}>Submit</Text>
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={resendOTP}>
+              <TouchableOpacity 
+              //onPress={resendOTP}
+              onPress={onResendOTP}
+              disabled={countdown!=0}
+              >
                 <View style={styles.done}>
-                  <Text style={styles.doneText}>Resend OTP</Text>
+                  <Text style={styles.doneText}>
+                    Resend OTP in {countdown} seconds
+                  </Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
