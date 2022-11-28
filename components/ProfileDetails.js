@@ -36,7 +36,7 @@ const ProfileDetails = ({ navigation }) => {
 
   useEffect(() => {
     getProfile();
-  }, [user]);
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={{ textAlign: "center", fontSize: 18, fontWeight: "bold" }}>

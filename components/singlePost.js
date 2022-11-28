@@ -26,7 +26,8 @@ import commonApi from "../api/common";
 // import Shares from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import SingleComment from "./singleComment";
-
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const singlePost = ({ item, getPosts }) => {
   item = item.item;
   const { likes, comments } = item;
@@ -37,7 +38,20 @@ const singlePost = ({ item, getPosts }) => {
   const [likeCount, setLikeCount] = useState(likes.length);
   const [com, setCom] = useState("");
   const [showComment, setShowComment] = useState(false);
-  
+  const dispatch = useDispatch();
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    }).then(async ({ DATA }) => {
+      dispatch({ type: "UPDATE_USER", payload: DATA });
+      await AsyncStorage.setItem("user", JSON.stringify(DATA));
+    }).catch((error)=>{
+      console.error("Error",error)
+    })
+  };
 
   // const [isActive, setIsActive] = useState(false);
 
@@ -55,6 +69,7 @@ const singlePost = ({ item, getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
+        getProfile();
         setmodalOpen(false);
       })
       .catch((error) => {

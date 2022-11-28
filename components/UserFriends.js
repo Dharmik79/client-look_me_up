@@ -42,7 +42,7 @@ const UserFriends = ({ navigation }) => {
 
   useEffect(() => {
     fetchFriends();
-  }, [user]);
+  }, [user.following]);
   return (
     <View style={styles.container}>
       <View style={styles.friendsContainerBox}>
@@ -51,7 +51,7 @@ const UserFriends = ({ navigation }) => {
             <Text>Friends ({count}) </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Friend");
+                navigation.navigate("Friends");
               }}
             >
               <Text style={{ textDecorationLine: "underline" }}>View All</Text>
