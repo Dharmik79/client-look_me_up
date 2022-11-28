@@ -322,7 +322,12 @@ const styles = StyleSheet.create({
     height: 40,
     marginRight: 5,
     padding:10,
-}
+  },
+  errors: {
+    // marginTop: 5,
+    marginBottom: 5,
+    color: "red",
+  }
 });
 
 export default LoginScreen;

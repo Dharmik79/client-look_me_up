@@ -329,7 +329,7 @@ const CreatePost = ({ getPosts }) => {
         <TouchableOpacity
           onPress={handleSubmit}
           style={styles.menuPost}
-          disabled={post.desc == "" && post.images.length == 0}
+          disabled={post.desc == "" && !pickedImagePath }
         >
           <Icon2 name="send" size={20} color="#ffffff" />
           <Text style={styles.menuText}>Post</Text>
