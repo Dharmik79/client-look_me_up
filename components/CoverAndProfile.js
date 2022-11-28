@@ -28,9 +28,7 @@ const CoverAndProfile = ({ navigation }) => {
           <Image
             style={styles.profilePhoto}
             source={{
-              uri: user.profilePicture
-                ? baseUrl + "assets/" + user.profilePicture
-                : require("../assets/a4.png"),
+              uri: baseUrl + "assets/" + user.profilePicture
             }}
           />
         )}
