@@ -223,9 +223,9 @@ const EditProfile = ({ navigation }) => {
               )}
               {!pickedImagePath && !path && (
                 <Image
-                  source={{
-                    uri: require("../assets/4.jpg"),
-                  }}
+                  source={
+                     require("../assets/4.jpg")
+                  }
                   style={{ width: 80, height: 80, borderRadius: 100 }}
                 />
               )}

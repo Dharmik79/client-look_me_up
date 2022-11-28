@@ -24,15 +24,23 @@ const CoverAndProfile = ({ navigation }) => {
           style={styles.coverPhoto}
           source={require("../assets/story5.jpg")}
         />
-        <Image
-          style={styles.profilePhoto}
-          source={{
-            uri: user.profilePicture
-              ? baseUrl + "assets/" + user.profilePicture
-              : require("../assets/a4.png"),
-          }}
-        />
-       {/* <TouchableOpacity style={styles.changeCoverPhoto}>
+        {user.profilePicture && (
+          <Image
+            style={styles.profilePhoto}
+            source={{
+              uri: user.profilePicture
+                ? baseUrl + "assets/" + user.profilePicture
+                : require("../assets/a4.png"),
+            }}
+          />
+        )}
+        {!user.profilePicture && (
+          <Image
+            style={styles.profilePhoto}
+            source={require("../assets/a4.png")}
+          />
+        )}
+        {/* <TouchableOpacity style={styles.changeCoverPhoto}>
           <Image source={require("../assets/changecover.png")} />
         </TouchableOpacity>*/}
       </View>
