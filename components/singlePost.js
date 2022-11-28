@@ -130,6 +130,7 @@ const singlePost = ({ item, getPosts }) => {
     try {
       const result = await Share.share({
         message: (item.desc),
+        url: (baseUrl + "assets/" + item.images[0]),
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
