@@ -46,9 +46,13 @@ const SingleComment = ({ item }) => {
             <View style={styles.commentsRow}>
               <Text style={styles.commentContent}>{item.comment}</Text>
               
+            
             </View>
+           
           </View>
+          <Text style={{fontSize:9,color:'grey',marginLeft:5,}}>8 hours ago</Text>
         </View>
+        
         
       </View>
       
@@ -184,9 +188,10 @@ const styles = StyleSheet.create({
   },
   commentsHeader: {
     height: 50,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+   flexDirection: "row",
+   alignItems: "center",
+    justifyContent: 'space-between',
+    paddingRight:5,
     //marginTop:10,
     // marginLeft: 5,
   },
@@ -202,6 +207,10 @@ const styles = StyleSheet.create({
   },
   commentContent: {
     fontSize: 12,
+    color: "grey",
+  },
+  commentContentTime: {
+    fontSize: 10,
     color: "grey",
   },
   commentBoxBorder: {
