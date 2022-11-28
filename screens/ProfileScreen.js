@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -17,24 +17,75 @@ import ProfileDetails from "../components/ProfileDetails";
 import UserFriends from "../components/UserFriends";
 import UserGroups from "../components/UserGroups";
 import NoPost from "react-native-vector-icons/Entypo";
+import { useSelector } from "react-redux";
+import commonApi from "../api/common";
 const ProfileScreen = ({ navigation }) => {
+  const [posts, setPosts] = useState([]);
+  const user = useSelector((state) => state.Reducers.user);
+  const token = useSelector((state) => state.Reducers.token);
+  const getPosts = async (query = {}) => {
+    console.log("Called");
+    await commonApi({
+      action: "findAllPost",
+      data: {
+        query: { userId: user._id },
+        options: {
+          pagination: false,
+          populate: [
+            {
+              path: "userId",
+              model: "user",
+              select: ["_id", "fullName", "profilePicture"],
+            },
+            {
+              path: "comments.userId",
+              model: "user",
+              select: ["_id", "fullName", "profilePicture"],
+            },
+          ],
+          sort: { createdAt: -1 },
+        },
+      },
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA = {} }) => {
+        setPosts(DATA.data);
+      })
+      .catch((error) => {
+        console.error("Fetch Posts", error);
+      });
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getPosts();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <ScrollView>
         <CoverAndProfile />
-        <ProfileDetails navigation={navigation}/>
-        <UserFriends navigation={navigation}/>
+        <ProfileDetails navigation={navigation} />
+        <UserFriends navigation={navigation} />
         {/*<UserGroups />*/}
 
         {/* Show only if the profile is users profile */}
         {/*<CreatePost /> */}
 
         {/* Show only users posts */}
-        {/*<Post />*/}
-        <View style={styles.noPostsFound}>
-          <NoPost name="camera" size={50} color="grey"/>
-          <Text style={{fontSize:22,color:'grey',marginTop:5}}>No Post Found</Text>
-        </View>
+        {posts.length == 0 && (
+          <View style={styles.noPostsFound}>
+            <NoPost name="camera" size={50} color="grey" />
+            <Text style={{ fontSize: 22, color: "grey", marginTop: 5 }}>
+              No Post Found
+            </Text>
+          </View>
+        )}
+       {posts.length != 0 && <Post getPosts={getPosts} posts={posts} />}
       </ScrollView>
     </View>
   );
@@ -87,9 +138,9 @@ const styles = StyleSheet.create({
     height: 20,
     width: "100%",
   },
-  noPostsFound:{
-    alignItems:'center',
-    marginTop:20,
+  noPostsFound: {
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 export default ProfileScreen;
