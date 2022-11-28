@@ -248,6 +248,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
   },
+  errors: {
+    // marginTop: 5,
+    marginBottom: 5,
+    color: "red",
+  }
 });
 
 export default NewPasswordScreen;
