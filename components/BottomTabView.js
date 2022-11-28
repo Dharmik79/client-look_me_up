@@ -102,7 +102,7 @@ const BottomTabView = ({}) => {
       }}
     >
       <Tab.Screen
-        name="Friends"
+        name="Friend"
         children={() => (
           <Friends
             friends={friends}
@@ -110,6 +110,7 @@ const BottomTabView = ({}) => {
             getProfile={getProfile}
           />
         )}
+        options={{title:"Friends"}}
       />
       <Tab.Screen
         name="Followers"

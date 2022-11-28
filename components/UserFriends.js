@@ -51,7 +51,7 @@ const UserFriends = ({ navigation }) => {
             <Text>Friends ({count}) </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Friends");
+                navigation.navigate("Friend");
               }}
             >
               <Text style={{ textDecorationLine: "underline" }}>View All</Text>
