@@ -50,7 +50,7 @@ const SingleComment = ({ item }) => {
             </View>
            
           </View>
-          <Text style={{fontSize:9,color:'grey',marginLeft:5,}}>8 hours ago</Text>
+          <Text style={{fontSize:9,color:'grey',textAlign:'right',marginRight:3}}>8 hours ago</Text>
         </View>
         
         

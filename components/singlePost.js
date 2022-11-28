@@ -129,7 +129,8 @@ const singlePost = ({ item, getPosts }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: (item.desc),
+        
+        message: (item.userId.fullName) + ' posted on LookMeUp : ' + (item.desc),
         url: (baseUrl + "assets/" + item.images[0]),
       });
       if (result.action === Share.sharedAction) {
@@ -490,7 +491,7 @@ const styles = StyleSheet.create({
   commentBox: {
     flexDirection: "row",
     alignItems: "center",
-    width: "86%",
+    width: "87.5%",
     borderWidth: 2,
     borderColor: "#f0f0f0",
     borderRadius: 10,
