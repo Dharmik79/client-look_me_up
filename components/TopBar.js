@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -26,7 +26,7 @@ import { Logout } from "./context/Actions";
 import { presentPermissionsPickerAsync } from "expo-media-library";
 import ActionSheet from "react-native-actionsheet";
 import EditProfile from "../screens/EditProfile";
-const TopBar = ({ navigation }) => {
+const TopBar = ({ navigation, getPosts }) => {
   let actionSheet = useRef();
   let optionArray = ["Edit Profile", "Change Password", "Log Out", "Cancel"];
   const showActionSheet = () => {
@@ -56,21 +56,20 @@ const TopBar = ({ navigation }) => {
     if (index == 0) {
       // Navigate to Profile screen
 
-      navigation.navigate('EditProfile',{
-        screen:"EditProfile"
-      })
+      navigation.navigate("EditProfile", {
+        screen: "EditProfile",
+      });
     }
-    if (index == 1) 
-    // {
-    //   // Navigate to change password screen
-    //   console.log("Chnage Password");
-    // }
-    {
+    if (index == 1) {
+      // {
+      //   // Navigate to change password screen
+      //   console.log("Chnage Password");
+      // }
       // Navigate to Change Passeord screen
 
-      navigation.navigate('ChangePasswordScreen',{
-        screen:"ChangePasswordScreen"
-      })
+      navigation.navigate("ChangePasswordScreen", {
+        screen: "ChangePasswordScreen",
+      });
     }
     if (index == 2) {
       setmodalOpen(true);
@@ -79,6 +78,19 @@ const TopBar = ({ navigation }) => {
       setmodalOpen(false);
     }
   };
+  const [searchValue, setSearchValue] = useState("");
+  useEffect(() => {
+    if (searchValue) {
+      getPosts({
+        desc: { $regex: searchValue, $options: "i" },
+        showPosts: true,
+      });
+    }
+    else
+    {
+      getPosts()
+    }
+  }, [searchValue]);
   return (
     // <BottomSheetModalProvider>
 
@@ -135,7 +147,13 @@ const TopBar = ({ navigation }) => {
 
       <View style={styles.topBarRow}>
         <TouchableOpacity style={styles.searchButton}>
-          <TextInput style={styles.searchText} placeholder="Search"></TextInput>
+          <TextInput
+            style={styles.searchText}
+            placeholder="Search"
+            onChangeText={(e) => {
+              setSearchValue(e);
+            }}
+          ></TextInput>
           <Icon name="search" size={25} color="#3491ff" />
         </TouchableOpacity>
         <TouchableOpacity

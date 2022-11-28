@@ -86,6 +86,24 @@ const EditProfile = ({ navigation }) => {
       });
   };
 
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    }).then(async ({ DATA }) => {
+      dispatch({ type: "UPDATE_USER", payload: DATA });
+      await AsyncStorage.setItem("user", JSON.stringify(DATA));
+    }).catch((error)=>{
+      console.error("Error",error)
+    })
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, [user]);
+
   // The path of the picked image
 
   const showImagePicker = async () => {
@@ -103,7 +121,7 @@ const EditProfile = ({ navigation }) => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    }); 
+    });
 
     if (result) {
       setPickedImagePath(result);
@@ -135,7 +153,6 @@ const EditProfile = ({ navigation }) => {
               .then(async ({ DATA = {} }) => {
                 dispatch({ type: "UPDATE_USER", payload: DATA });
                 await AsyncStorage.setItem("user", JSON.stringify(DATA));
-                
               })
               .catch((error) => {
                 console.error("error", error);
@@ -206,9 +223,9 @@ const EditProfile = ({ navigation }) => {
               )}
               {!pickedImagePath && !path && (
                 <Image
-                  source={{
-                    uri: require("../assets/4.jpg"),
-                  }}
+                  source={
+                     require("../assets/4.jpg")
+                  }
                   style={{ width: 80, height: 80, borderRadius: 100 }}
                 />
               )}
@@ -282,7 +299,6 @@ const EditProfile = ({ navigation }) => {
                   <Text style={styles.errors}>{props.errors.phone}</Text>
                 )}
               </View>
-              
             </View>
             <TouchableOpacity
               style={{
