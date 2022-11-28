@@ -14,6 +14,7 @@ import CreatePost from "../components/CreatePost";
 import Post from "../components/Post";
 import commonApi from "../api/common";
 import { useSelector } from "react-redux";
+import { baseUrl } from "../api";
 const UserFriends = ({ navigation }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
@@ -24,7 +25,7 @@ const UserFriends = ({ navigation }) => {
       action: "friends",
       data: {
         options: {
-          select: ["fullName", "following", "followers"],
+          select: ["fullName", "following", "followers","profilePicture"],
         },
       },
       config: {
@@ -59,10 +60,20 @@ const UserFriends = ({ navigation }) => {
           <View style={styles.friendsContainer}>
             {friends.map((friend) => {
               return (
-                <Image
-                  style={styles.friendImage}
-                  source={require("../assets/1.jpg")}
-                />
+                <>
+                  {friend.profilePicture && (
+                    <Image
+                      style={styles.friendImage}
+                      source={{uri:baseUrl+"assets/"+friend.profilePicture}}
+                    />
+                  )}
+                  {!friend.profilePicture && (
+                    <Image
+                      style={styles.friendImage}
+                      source={require("../assets/1.jpg")}
+                    />
+                  )}
+                </>
               );
             })}
           </View>
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
     width: "23%",
     height: 125,
     marginTop: 5,
-    marginRight:10,
+    marginRight: 10,
     marginBottom: 5,
     borderRadius: 10,
     //marginLeft:6,
