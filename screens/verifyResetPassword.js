@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     // marginTop: '10%',
     width: "100%",
     flexDirection: "row",
-    height: "30%",
+    height: "40%",
     //marginTop:100,
     justifyContent: "center",
     //padding: 20,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     //flex: 5,
     padding: 10,
     width: "100%",
-    height: "70%",
+    height: "60%",
   },
 
   input: {
