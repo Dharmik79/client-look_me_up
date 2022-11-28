@@ -295,7 +295,7 @@ const singlePost = ({ item, getPosts }) => {
                 style={{ width: 40, height: 40, borderRadius: 100 }}
               />
             )}
-            {!item.userId.profilePicture && (
+            {!user.profilePicture && (
               <Avatar source={require("../assets/a3.png")} />
             )}
             </View>
