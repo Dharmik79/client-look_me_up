@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  Share,
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
@@ -15,13 +16,14 @@ import {
 import Icon from "react-native-vector-icons/Entypo";
 import Like from "react-native-vector-icons/AntDesign";
 import Comment from "react-native-vector-icons/MaterialCommunityIcons";
-import Share from "react-native-vector-icons/MaterialIcons";
+import Shares from "react-native-vector-icons/MaterialIcons";
 import moment from "moment";
 import Avatar from "./Avatar";
 import { baseUrl } from "../api/index";
 import Send from "react-native-vector-icons/MaterialIcons";
 import DropDown from "react-native-vector-icons/MaterialCommunityIcons";
 import commonApi from "../api/common";
+// import Shares from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import SingleComment from "./singleComment";
 
@@ -123,6 +125,25 @@ const singlePost = ({ item, getPosts }) => {
   useEffect(() => {
     setIsLiked(likes.includes(user._id));
   }, [likes, user._id]);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: (item.desc),
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <View style={styles.container} key={item._id}>
@@ -275,9 +296,9 @@ const singlePost = ({ item, getPosts }) => {
             <Text style={styles.text}>Comment</Text>
           </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={onShare}>
             <View style={styles.icon}>
-              <Share name="share" size={15} />
+              <Shares name="share" size={15} />
             </View>
             <Text style={styles.text}>Share</Text>
           </TouchableOpacity>
