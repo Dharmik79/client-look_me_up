@@ -137,17 +137,30 @@ const VerifyResetScreen = ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity 
+              {countdown!=0 && ( <TouchableOpacity 
               //onPress={resendOTP}
               onPress={onResendOTP}
               disabled={countdown!=0}
               >
-                <View style={styles.done}>
+                <View style={styles.done1}>
                   <Text style={styles.doneText}>
                     Resend OTP in {countdown} seconds
                   </Text>
                 </View>
               </TouchableOpacity>
+              )}
+              {countdown == 0 && ( <TouchableOpacity 
+              //onPress={resendOTP}
+              onPress={onResendOTP}
+             // disabled={countdown!=0}
+              >
+                <View style={styles.done}>
+                  <Text style={styles.doneText}>
+                    Resend OTP
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              )}
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("LoginScreen", {
@@ -238,6 +251,15 @@ const styles = StyleSheet.create({
   done: {
     marginBottom: 10,
     backgroundColor: "#3491ff",
+    borderRadius: 10,
+    padding: 10,
+    //height:40,
+    //alignContent:'center',
+    alignItems: "center",
+  },
+  done1: {
+    marginBottom: 10,
+    backgroundColor: "#bababa",
     borderRadius: 10,
     padding: 10,
     //height:40,
