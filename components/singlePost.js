@@ -182,16 +182,17 @@ const singlePost = ({ item, getPosts }) => {
             title="Delete"
             color={'red'}
           /> */}
-              <View style={styles.deletePost}>
+          <TouchableOpacity onPress={() => {
+                    deletePost(item._id);
+                  }}>
+          <View style={styles.deletePost}>
                 <Text
                   style={styles.deleteYes}
-                  onPress={() => {
-                    deletePost(item._id);
-                  }}
                 >
                   Delete
                 </Text>
               </View>
+          </TouchableOpacity>
 
               <View style={styles.deletefix}>
                 {/* <Button
@@ -200,16 +201,18 @@ const singlePost = ({ item, getPosts }) => {
               setmodalOpen(false)
             }}
           /> */}
-                <View style={styles.cancelPost}>
+              <TouchableOpacity onPress={() => {
+                      setmodalOpen(false);
+                    }}>
+              <View style={styles.cancelPost}>
                   <Text
                     style={styles.deleteCancel}
-                    onPress={() => {
-                      setmodalOpen(false);
-                    }}
                   >
                     Cancel
                   </Text>
                 </View>
+              </TouchableOpacity>
+                
               </View>
             </View>
           </View>
