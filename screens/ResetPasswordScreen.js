@@ -87,11 +87,26 @@ const ResetPasswordScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.buttons}>
-              <TouchableOpacity onPress={props.handleSubmit}>
-                <View style={styles.done}>
-                  <Text style={styles.doneText}>Send One Time Password</Text>
-                </View>
-              </TouchableOpacity>
+              {
+                (!(props.isValid && props.dirty))
+                ?
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={true}>
+                    <View style={styles.doneDisabled}>
+                      <Text style={styles.doneText}>Send One Time Password</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={false}>
+                    <View style={styles.done}>
+                      <Text style={styles.doneText}>Send One Time Password</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              }
+              
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("LoginScreen", { screen: "LoginScreen" })
@@ -181,6 +196,15 @@ const styles = StyleSheet.create({
   done: {
     marginBottom: 10,
     backgroundColor: "#3491ff",
+    borderRadius: 10,
+    padding: 10,
+    //height:40,
+    //alignContent:'center',
+    alignItems: "center",
+  },
+  doneDisabled: {
+    marginBottom: 10,
+    backgroundColor: "#BABABA",
     borderRadius: 10,
     padding: 10,
     //height:40,
