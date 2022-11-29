@@ -26,6 +26,7 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
+  const [searchValue, setSearchValue] = useState("");
   const getPosts = async (query={}) => {
     await commonApi({
       action: "findAllPost",
@@ -61,6 +62,7 @@ const HomeScreen = ({ navigation }) => {
       });
   };
   const pullMe = () => {
+    setSearchValue("")
     setRefresh(true);
     getPosts();
   };
@@ -73,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
     // <StatusBar backgroundColor="#ffffff"
     // barStyle="dark-content">
     <View style={styles.container}>
-      <TopBar getPosts={getPosts} navigation={navigation} />
+      <TopBar getPosts={getPosts} navigation={navigation} searchValue={searchValue} setSearchValue={setSearchValue}/>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={() => pullMe()} />

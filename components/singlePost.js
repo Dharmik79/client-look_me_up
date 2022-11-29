@@ -139,6 +139,7 @@ const singlePost = ({ item, getPosts }) => {
   };
   useEffect(() => {
     setIsLiked(likes.includes(user._id));
+    setLikeCount(likes.length)
   }, [likes, user._id]);
 
   const onShare = async () => {
