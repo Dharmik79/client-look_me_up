@@ -345,15 +345,34 @@ const singlePost = ({ item, getPosts }) => {
                 value={com}
                 onChangeText={(e) => setCom(e)}
               ></TextInput>
-              <TouchableOpacity>
-                <Send
-                  name="send"
-                  size={20}
-                  color="#3491ff"
-                  disabled={com == ""}
-                  onPress={createComment}
-                />
-              </TouchableOpacity>
+              {
+                (com == "")
+                ?
+                (
+                  <TouchableOpacity disabled={true}>
+                    <Send
+                      name="send"
+                      size={20}
+                      color="#BABABA"
+                      disabled={com == ""}
+                      onPress={createComment}
+                  />
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity disabled={false}>
+                    <Send
+                      name="send"
+                      size={20}
+                      color="#3491ff"
+                      disabled={com == ""}
+                      onPress={createComment}
+                  />
+                  </TouchableOpacity>
+                )
+              }
+              
             </View>
           </View>
         </View>
