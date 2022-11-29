@@ -170,11 +170,26 @@ const LoginScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
             <View style={styles.buttons}>
-              <TouchableOpacity onPress={props.handleSubmit}>
-                <View style={styles.login}>
-                  <Text style={styles.loginText}>Log In</Text>
-                </View>
-              </TouchableOpacity>
+              {
+                (!(props.isValid && props.dirty))
+                ?
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={true} >
+                    <View style={styles.loginDisabled}>
+                      <Text style={styles.loginText}>Log In</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} >
+                    <View style={styles.login}>
+                      <Text style={styles.loginText}>Log In</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              }
+
 
               <Text>Don't have an account?</Text>
               <Text
@@ -298,6 +313,15 @@ const styles = StyleSheet.create({
   login: {
     marginBottom: 10,
     backgroundColor: "#3491ff",
+    borderRadius: 10,
+    padding: 10,
+    height:40,
+    //alignContent:'center',
+    alignItems: "center",
+  },
+  loginDisabled: {
+    marginBottom: 10,
+    backgroundColor: "#BABABA",
     borderRadius: 10,
     padding: 10,
     height:40,
