@@ -344,14 +344,32 @@ const CreatePost = ({ getPosts }) => {
           <Text style={styles.menuText}>Video</Text>
         </TouchableOpacity> */}
         {/* <View style={styles.separator}/> */}
-        <TouchableOpacity
-          onPress={handleSubmit}
-          style={styles.menuPost}
-          disabled={post.desc == "" && !pickedImagePath}
-        >
-          <Icon2 name="send" size={20} color="#ffffff" />
-          <Text style={styles.menuText}>Post</Text>
-        </TouchableOpacity>
+
+        {
+          (post.desc == "" && !pickedImagePath)
+          ?
+          (
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={styles.menuPostDisabled}
+              disabled={true}
+            >
+              <Icon2 name="send" size={20} color="#ffffff" />
+              <Text style={styles.menuText}>Post</Text>
+            </TouchableOpacity>
+          )
+          :
+          (
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={styles.menuPost}
+              disabled={false}
+            >
+              <Icon2 name="send" size={20} color="#ffffff" />
+              <Text style={styles.menuText}>Post</Text>
+            </TouchableOpacity>
+          )
+        }
       </View>
     </View>
   );
@@ -452,6 +470,19 @@ const styles = StyleSheet.create({
     height: 40,
     //width:50,
     backgroundColor: "#3491ff",
+    // opacity:0.2,
+    borderRadius: 10,
+  },
+  menuPostDisabled: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginLeft: 2,
+    marginRight: 2,
+    height: 40,
+    //width:50,
+    backgroundColor: "#BABABA",
     // opacity:0.2,
     borderRadius: 10,
   },
