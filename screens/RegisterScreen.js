@@ -209,11 +209,25 @@ const RegisterScreen = ({ navigation }) => {
               </View>
 
               <View style={styles.buttons}>
-                <TouchableOpacity onPress={props.handleSubmit}>
-                  <View style={styles.signup}>
-                    <Text style={styles.signupText}>Create Account</Text>
-                  </View>
-                </TouchableOpacity>
+                {
+                  (!(props.isValid && props.dirty))
+                  ?
+                  (
+                    <TouchableOpacity onPress={props.handleSubmit} disabled={true}>
+                      <View style={styles.signupDisabled}>
+                        <Text style={styles.signupText}>Create Account</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
+                  :
+                  (
+                    <TouchableOpacity onPress={props.handleSubmit} disabled={false}>
+                      <View style={styles.signup}>
+                        <Text style={styles.signupText}>Create Account</Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
+                }
 
                 {/* <StatusBar style="auto" /> */}
                 <Text>Already have an account?</Text>
@@ -306,6 +320,15 @@ const styles = StyleSheet.create({
   signup: {
     marginBottom: 10,
     backgroundColor: "#3491ff",
+    borderRadius: 10,
+    padding: 10,
+    //height:40,
+    //alignContent:'center',
+    alignItems: "center",
+  },
+  signupDisabled: {
+    marginBottom: 10,
+    backgroundColor: "#BABABA",
     borderRadius: 10,
     padding: 10,
     //height:40,
