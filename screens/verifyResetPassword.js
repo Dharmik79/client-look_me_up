@@ -14,7 +14,7 @@ import { Formik } from "formik";
 import commonApi from "../api/common";
 
 const loginValidationSchema = yup.object().shape({
-  OTP: yup.string().required("OTP is required"),
+  OTP: yup.string().min(6).required("OTP is required"),
 });
 const VerifyResetScreen = ({ navigation, route }) => {
   let { email } = route.params;
@@ -131,11 +131,25 @@ const VerifyResetScreen = ({ navigation, route }) => {
               <Text style={styles.errors}>{props.errors.OTP}</Text>
             )}
             <View style={styles.buttons}>
-              <TouchableOpacity onPress={props.handleSubmit}>
-                <View style={styles.done}>
-                  <Text style={styles.doneText}>Submit</Text>
-                </View>
-              </TouchableOpacity>
+              {
+                (!(props.isValid && props.dirty))
+                ?
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={true}>
+                    <View style={styles.doneDisabled}>
+                      <Text style={styles.doneText}>Submit</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={false}>
+                    <View style={styles.done}>
+                      <Text style={styles.doneText}>Submit</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              }
 
               {countdown!=0 && ( <TouchableOpacity 
               //onPress={resendOTP}
@@ -251,6 +265,15 @@ const styles = StyleSheet.create({
   done: {
     marginBottom: 10,
     backgroundColor: "#3491ff",
+    borderRadius: 10,
+    padding: 10,
+    //height:40,
+    //alignContent:'center',
+    alignItems: "center",
+  },
+  doneDisabled: {
+    marginBottom: 10,
+    backgroundColor: "#BABABA",
     borderRadius: 10,
     padding: 10,
     //height:40,
