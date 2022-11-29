@@ -26,7 +26,7 @@ import { Logout } from "./context/Actions";
 import { presentPermissionsPickerAsync } from "expo-media-library";
 import ActionSheet from "react-native-actionsheet";
 import EditProfile from "../screens/EditProfile";
-const TopBar = ({ navigation, getPosts }) => {
+const TopBar = ({ navigation, getPosts,searchValue, setSearchValue }) => {
   let actionSheet = useRef();
   let optionArray = ["Edit Profile", "Change Password", "Log Out", "Cancel"];
   const showActionSheet = () => {
@@ -78,9 +78,8 @@ const TopBar = ({ navigation, getPosts }) => {
       setmodalOpen(false);
     }
   };
-  const [searchValue, setSearchValue] = useState("");
   useEffect(() => {
-    if (searchValue) {
+    if (searchValue!="") {
       getPosts({
         desc: { $regex: searchValue, $options: "i" },
         showPosts: true,
@@ -153,6 +152,7 @@ const TopBar = ({ navigation, getPosts }) => {
             onChangeText={(e) => {
               setSearchValue(e);
             }}
+            value={searchValue}
           ></TextInput>
           <Icon name="search" size={25} color="#3491ff" />
         </TouchableOpacity>
