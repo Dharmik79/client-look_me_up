@@ -12,6 +12,7 @@ import {
 import * as yup from "yup";
 import { Formik } from "formik";
 import commonApi from "../api/common";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const loginValidationSchema = yup.object().shape({
   OTP: yup.string().min(6).required("OTP is required"),
@@ -91,6 +92,7 @@ const VerifyResetScreen = ({ navigation, route }) => {
   }
 
   return (
+    <KeyboardAwareScrollView>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.mainText}>Verify{"\n"}Account</Text>
@@ -191,6 +193,7 @@ const VerifyResetScreen = ({ navigation, route }) => {
         )}
       </Formik>
     </View>
+    </KeyboardAwareScrollView>
   );
 };
 
