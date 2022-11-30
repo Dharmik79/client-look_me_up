@@ -26,7 +26,8 @@ import commonApi from "../api/common";
 // import Shares from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import SingleComment from "./singleComment";
-
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const singlePost = ({ item, getPosts }) => {
   item = item.item;
   const { likes, comments } = item;
@@ -37,7 +38,20 @@ const singlePost = ({ item, getPosts }) => {
   const [likeCount, setLikeCount] = useState(likes.length);
   const [com, setCom] = useState("");
   const [showComment, setShowComment] = useState(false);
-  
+  const dispatch = useDispatch();
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    }).then(async ({ DATA }) => {
+      dispatch({ type: "UPDATE_USER", payload: DATA });
+      await AsyncStorage.setItem("user", JSON.stringify(DATA));
+    }).catch((error)=>{
+      console.error("Error",error)
+    })
+  };
 
   // const [isActive, setIsActive] = useState(false);
 
@@ -55,6 +69,7 @@ const singlePost = ({ item, getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
+        getProfile();
         setmodalOpen(false);
       })
       .catch((error) => {
@@ -124,6 +139,7 @@ const singlePost = ({ item, getPosts }) => {
   };
   useEffect(() => {
     setIsLiked(likes.includes(user._id));
+    setLikeCount(likes.length)
   }, [likes, user._id]);
 
   const onShare = async () => {
@@ -166,16 +182,17 @@ const singlePost = ({ item, getPosts }) => {
             title="Delete"
             color={'red'}
           /> */}
-              <View style={styles.deletePost}>
+          <TouchableOpacity onPress={() => {
+                    deletePost(item._id);
+                  }}>
+          <View style={styles.deletePost}>
                 <Text
                   style={styles.deleteYes}
-                  onPress={() => {
-                    deletePost(item._id);
-                  }}
                 >
                   Delete
                 </Text>
               </View>
+          </TouchableOpacity>
 
               <View style={styles.deletefix}>
                 {/* <Button
@@ -184,16 +201,18 @@ const singlePost = ({ item, getPosts }) => {
               setmodalOpen(false)
             }}
           /> */}
-                <View style={styles.cancelPost}>
+              <TouchableOpacity onPress={() => {
+                      setmodalOpen(false);
+                    }}>
+              <View style={styles.cancelPost}>
                   <Text
                     style={styles.deleteCancel}
-                    onPress={() => {
-                      setmodalOpen(false);
-                    }}
                   >
                     Cancel
                   </Text>
                 </View>
+              </TouchableOpacity>
+                
               </View>
             </View>
           </View>
@@ -329,15 +348,34 @@ const singlePost = ({ item, getPosts }) => {
                 value={com}
                 onChangeText={(e) => setCom(e)}
               ></TextInput>
-              <TouchableOpacity>
-                <Send
-                  name="send"
-                  size={20}
-                  color="#3491ff"
-                  disabled={com == ""}
-                  onPress={createComment}
-                />
-              </TouchableOpacity>
+              {
+                (com == "")
+                ?
+                (
+                  <TouchableOpacity disabled={true}>
+                    <Send
+                      name="send"
+                      size={20}
+                      color="#BABABA"
+                      disabled={com == ""}
+                      onPress={createComment}
+                  />
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity disabled={false}>
+                    <Send
+                      name="send"
+                      size={20}
+                      color="#3491ff"
+                      disabled={com == ""}
+                      onPress={createComment}
+                  />
+                  </TouchableOpacity>
+                )
+              }
+              
             </View>
           </View>
         </View>

@@ -42,7 +42,7 @@ const UserFriends = ({ navigation }) => {
 
   useEffect(() => {
     fetchFriends();
-  }, [user]);
+  }, [user.following]);
   return (
     <View style={styles.container}>
       <View style={styles.friendsContainerBox}>

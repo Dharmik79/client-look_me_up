@@ -25,7 +25,8 @@ import * as MediaLibrary from "expo-media-library";
 // import { Camera } from "expo-camera";
 import { Camera, CameraType } from "expo-camera";
 import { baseUrl } from "../api";
-
+import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const CreatePost = ({ getPosts }) => {
   const user = useSelector((state) => state.Reducers.user);
   const token = useSelector((state) => state.Reducers.token);
@@ -33,8 +34,24 @@ const CreatePost = ({ getPosts }) => {
     images: [],
     desc: "",
   });
+  const dispatch = useDispatch();
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
+  const getProfile = async () => {
+    await commonApi({
+      action: "getProfile",
+      config: {
+        authToken: token,
+      },
+    })
+      .then(async ({ DATA }) => {
+        dispatch({ type: "UPDATE_USER", payload: DATA });
+        await AsyncStorage.setItem("user", JSON.stringify(DATA));
+      })
+      .catch((error) => {
+        console.error("Error", error);
+      });
+  };
   const handleSubmit = async () => {
     let data = {};
     if (post.desc != "") {
@@ -73,6 +90,7 @@ const CreatePost = ({ getPosts }) => {
     })
       .then(async ({ DATA = {} }) => {
         getPosts();
+        getProfile();
         setPost({ images: [], desc: "" });
         setPickedImagePath(null);
       })
@@ -326,14 +344,32 @@ const CreatePost = ({ getPosts }) => {
           <Text style={styles.menuText}>Video</Text>
         </TouchableOpacity> */}
         {/* <View style={styles.separator}/> */}
-        <TouchableOpacity
-          onPress={handleSubmit}
-          style={styles.menuPost}
-          disabled={post.desc == "" && !pickedImagePath }
-        >
-          <Icon2 name="send" size={20} color="#ffffff" />
-          <Text style={styles.menuText}>Post</Text>
-        </TouchableOpacity>
+
+        {
+          (post.desc == "" && !pickedImagePath)
+          ?
+          (
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={styles.menuPostDisabled}
+              disabled={true}
+            >
+              <Icon2 name="send" size={20} color="#ffffff" />
+              <Text style={styles.menuText}>Post</Text>
+            </TouchableOpacity>
+          )
+          :
+          (
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={styles.menuPost}
+              disabled={false}
+            >
+              <Icon2 name="send" size={20} color="#ffffff" />
+              <Text style={styles.menuText}>Post</Text>
+            </TouchableOpacity>
+          )
+        }
       </View>
     </View>
   );
@@ -434,6 +470,19 @@ const styles = StyleSheet.create({
     height: 40,
     //width:50,
     backgroundColor: "#3491ff",
+    // opacity:0.2,
+    borderRadius: 10,
+  },
+  menuPostDisabled: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    marginLeft: 2,
+    marginRight: 2,
+    height: 40,
+    //width:50,
+    backgroundColor: "#BABABA",
     // opacity:0.2,
     borderRadius: 10,
   },
