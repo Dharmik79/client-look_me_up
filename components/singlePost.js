@@ -182,16 +182,17 @@ const singlePost = ({ item, getPosts }) => {
             title="Delete"
             color={'red'}
           /> */}
-              <View style={styles.deletePost}>
+          <TouchableOpacity onPress={() => {
+                    deletePost(item._id);
+                  }}>
+          <View style={styles.deletePost}>
                 <Text
                   style={styles.deleteYes}
-                  onPress={() => {
-                    deletePost(item._id);
-                  }}
                 >
                   Delete
                 </Text>
               </View>
+          </TouchableOpacity>
 
               <View style={styles.deletefix}>
                 {/* <Button
@@ -200,16 +201,18 @@ const singlePost = ({ item, getPosts }) => {
               setmodalOpen(false)
             }}
           /> */}
-                <View style={styles.cancelPost}>
+              <TouchableOpacity onPress={() => {
+                      setmodalOpen(false);
+                    }}>
+              <View style={styles.cancelPost}>
                   <Text
                     style={styles.deleteCancel}
-                    onPress={() => {
-                      setmodalOpen(false);
-                    }}
                   >
                     Cancel
                   </Text>
                 </View>
+              </TouchableOpacity>
+                
               </View>
             </View>
           </View>
@@ -345,15 +348,34 @@ const singlePost = ({ item, getPosts }) => {
                 value={com}
                 onChangeText={(e) => setCom(e)}
               ></TextInput>
-              <TouchableOpacity>
-                <Send
-                  name="send"
-                  size={20}
-                  color="#3491ff"
-                  disabled={com == ""}
-                  onPress={createComment}
-                />
-              </TouchableOpacity>
+              {
+                (com == "")
+                ?
+                (
+                  <TouchableOpacity disabled={true}>
+                    <Send
+                      name="send"
+                      size={20}
+                      color="#BABABA"
+                      disabled={com == ""}
+                      onPress={createComment}
+                  />
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity disabled={false}>
+                    <Send
+                      name="send"
+                      size={20}
+                      color="#3491ff"
+                      disabled={com == ""}
+                      onPress={createComment}
+                  />
+                  </TouchableOpacity>
+                )
+              }
+              
             </View>
           </View>
         </View>

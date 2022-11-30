@@ -194,12 +194,31 @@ const EditProfile = ({ navigation }) => {
               <Text style={{ fontSize: 16, fontWeight: "bold" }}>
                 Edit Profile
               </Text>
-              <TouchableOpacity onPress={props.handleSubmit}>
-                <Ionic
-                  name="checkmark"
-                  style={{ fontSize: 35, color: "#3491ff" }}
-                />
-              </TouchableOpacity>
+              
+              
+              
+              {
+                ( !(props.isValid && props.dirty) )
+                ?
+                ( 
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={true}>
+                    <Ionic
+                    name="checkmark"
+                    style={{ fontSize: 35, color: "#BABABA" }}
+                  />
+                  </TouchableOpacity>
+                )
+                :
+                (
+                  <TouchableOpacity onPress={props.handleSubmit} disabled={false}>
+                    <Ionic
+                    name="checkmark"
+                    style={{ fontSize: 35, color: "#3491ff" }}
+                  />
+                  </TouchableOpacity>
+                )
+              }
+
             </View>
             <TouchableOpacity
               style={{ padding: 20, alignItems: "center" }}
