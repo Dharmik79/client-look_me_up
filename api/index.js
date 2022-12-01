@@ -3,7 +3,7 @@ import qs from "qs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // export const baseUrl = "https://look-me-up-server.herokuapp.com/";
-export const baseUrl = "http://142.3.92.87:3000/";
+export const baseUrl = "http://172.16.1.132:3000/"
 const GET = "GET";
 const DELETE = "DELETE";
 const POST = "POST";

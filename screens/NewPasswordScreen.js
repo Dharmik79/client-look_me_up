@@ -12,6 +12,7 @@ import {
 import { Formik } from "formik";
 import commonApi from "../api/common";
 import * as yup from "yup";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 const validationSchema = yup.object().shape({
 
   password: yup
@@ -63,6 +64,7 @@ const NewPasswordScreen = ({ navigation ,route}) => {
     return () => backHandler.remove();
   }, []);
   return (
+    <KeyboardAwareScrollView style={{backgroundColor:'#ffffff'}}>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.mainText}>Choose new {"\n"}Password</Text>
@@ -137,6 +139,7 @@ const NewPasswordScreen = ({ navigation ,route}) => {
       )}
       </Formik>
     </View>
+     </KeyboardAwareScrollView>
   );
 };
 
@@ -183,7 +186,7 @@ const styles = StyleSheet.create({
     //flex: 5,
     padding: 10,
     width: "100%",
-    height: "50%",
+    height: "60%",
   },
 
   input: {
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
     width: "100%",
     //flex: 2,
     //width: 100,
-    padding: 10,
+    //padding: 10,
     // backgroundColor: 'red',
   },
   done: {

@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     width: "100%",
     //flex: 2,
     //width: 100,
-    padding: 10,
+    //padding: 10,
     // backgroundColor: 'red',
   },
   done: {

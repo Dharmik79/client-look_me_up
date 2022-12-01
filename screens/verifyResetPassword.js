@@ -92,7 +92,7 @@ const VerifyResetScreen = ({ navigation, route }) => {
   }
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView style={{backgroundColor:'#ffffff'}}>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.mainText}>Verify{"\n"}Account</Text>

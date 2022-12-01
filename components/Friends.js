@@ -171,7 +171,7 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
               <Icon name="dots-three-vertical" size={20} />
             </TouchableOpacity> */}
             </View>
-            <View
+            {/* <View
               style={{
                 width: "100%",
                 height: 1,
@@ -179,7 +179,7 @@ const Friends = ({ friends, fetchFriends, getProfile }) => {
                 marginBottom: 8,
                 backgroundColor: "#f0f0f0",
               }}
-            />
+            /> */}
           </View>
         );
       })}
